@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
+            $table->string('code_client');
+            $table->string('nom_client');
+            $table->string('email_client');
+            $table->string('password_client');
+            $table->unsignedBigInteger('division_id');
+            $table->foreign('division_id')->references('id')->on('divisions');
             $table->timestamps();
         });
     }
@@ -23,5 +29,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('clients');
+        Schema::table('clients', function (Blueprint $table) {
+            $table->dropForeign(['division_id']);
+            $table->dropColumn('division_id');
+        });
     }
 };

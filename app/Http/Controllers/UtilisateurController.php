@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Clients;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class ClientsController extends Controller
+class UtilisateurController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $clients = Clients::all();
         $division = User::all();
-
-        return view('clients.clients', compact('clients', 'division'));
+        return view('utilisateurs.utilisateur', compact('division'));
     }
 
     /**
@@ -34,25 +31,25 @@ class ClientsController extends Controller
     public function store(Request $request)
     {
         $roles = [
-            'division' => 'required',
-            'code' => 'required',
             'name' => 'required',
-            'email' => 'required|email|unique:clients,email_client,',
+            'type' => 'required',
+            'phone' => 'required|unique:users,telephone',
+            'email' => 'required|email|unique:users,email',
         ];
         $customMessages = [
-            'division.required' => "Veuillez sélectionner sa division",
-            'code.required' => "Veuillez saisir son code",
-            'name' => "Saisissez son nom",
-            'email.unique' => "L'adresse email est déjà utilisée. Veuillez essayer une autre!",
+            'nom.required' => "Veuillez saisir le nom",
+            'type.required' => "Veuillez saisir le prénom",
+            'phone.unique' => "Le numéro de téléphone est déjà utilisé. Veuillez essayer un autre!",
+            'email.unique' => "L'adresse email est déjà utilisé. Veuillez essayer un autre!",
         ];
         $request->validate($roles, $customMessages);
 
-        $user = new Clients();
-        $user->code_client = $request->code;
-        $user->nom_client = $request->name;
-        $user->email_client = $request->email;
-        $user->division_id = $request->division;
-        $user->password_client = Hash::make('1234567890');
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->telephone = $request->phone;
+        $user->type = $request->type;
+        $user->password = Hash::make('1234567890');
 
         if ($user->save()) {
             return back()->with('succes',  "Vous avez ajouter " . $request->name);
@@ -82,29 +79,34 @@ class ClientsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $user = Clients::findOrFail($id);
+        $user = User::findOrFail($id);
 
         $roles = [
-            'division' => 'required',
-            'code' => 'required',
             'name' => 'required',
-            'email' => 'required|email|unique:clients,email_client,' . $user->id,
+            'type' => 'required',
+            'phone' => 'required|unique:users,telephone,' . $user->id,
+            'email' => 'required|email|unique:users,email,' . $user->id,
         ];
+
         $customMessages = [
-            'division.required' => "Veuillez sélectionner sa division",
-            'code.required' => "Veuillez saisir son code",
-            'name' => "Saisissez son nom",
+            'name.required' => "Veuillez saisir le nom",
+            'type.required' => "Veuillez saisir le type",
+            'phone.unique' => "Le numéro de téléphone est déjà utilisé. Veuillez essayer un autre!",
             'email.unique' => "L'adresse email est déjà utilisée. Veuillez essayer une autre!",
         ];
+
         $request->validate($roles, $customMessages);
 
         // Mettre à jour les données uniquement si elles ont changé
-        $user->code_client = $request->code;
-        $user->nom_client = $request->name;
-        $user->division_id = $request->division;
+        $user->name = $request->name;
+        $user->type = $request->type;
 
-        if ($user->email_client !== $request->email) {
-            $user->email_client = $request->email;
+        if ($user->email !== $request->email) {
+            $user->email = $request->email;
+        }
+
+        if ($user->telephone !== $request->phone) {
+            $user->telephone = $request->phone;
         }
 
         if ($user->save()) {
@@ -119,7 +121,7 @@ class ClientsController extends Controller
      */
     public function destroy(string $id)
     {
-        Clients::findOrFail($id)->delete();
+        User::findOrFail($id)->delete();
 
         return back()->with('succes', "La suppression a été effectué");
     }

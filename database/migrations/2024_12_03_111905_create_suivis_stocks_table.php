@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('detail_stock', function (Blueprint $table) {
+        Schema::create('suivis_stocks', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('stock_id');
+            $table->foreign('stock_id')->references('id')->on('stocks');
             $table->timestamps();
         });
     }
@@ -22,6 +24,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('detail_stock');
+        Schema::dropIfExists('suivis_stocks');
+        Schema::table('suivis_stocks', function (Blueprint $table) {
+            $table->dropForeign(['stock_id']);
+            $table->dropColumn('stock_id');
+        });
     }
 };

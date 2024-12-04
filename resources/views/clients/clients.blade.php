@@ -4,6 +4,8 @@
 
 @section('content')
     <main class="main-content w-full px-[var(--margin-x)] pb-8">
+        @include('layouts.status')
+
         <div class="flex items-center space-x-4 py-5 lg:py-6">
             <h2 class="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">
                 Clients
@@ -51,18 +53,24 @@
                                                 </svg>
                                             </button>
                                         </div>
-                                        <form action="#" method="POST" role="form">
+                                        <form action="{{ route('clients.store') }}" method="POST" role="form">
                                             @csrf
                                             <div class="px-4 py-4 sm:px-5">
                                                 <label class="block">
                                                     <span>Division</span>
-                                                    <select name="client"
+                                                    <select name="division"
                                                         class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
-                                                        <option value="">Laravel</option>
-                                                        <option value="">Node JS</option>
-                                                        <option value="">Django</option>
-                                                        <option value="">Other</option>
+                                                        <option value="">Sélectionne</option>
+                                                        @foreach ($division as $item)
+                                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                        @endforeach
                                                     </select>
+                                                </label>
+                                                <label class="block">
+                                                    <span>Code</span>
+                                                    <input name="code" required
+                                                        class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                                                        placeholder="Saisir le code client" type="text" />
                                                 </label>
                                                 <label class="block">
                                                     <span>Nom</span>
@@ -76,16 +84,13 @@
                                                         class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                         placeholder="Saisir son prénom" type="email" />
                                                 </label>
-                                                <label class="block">
+                                                {{-- <label class="block">
                                                     <span>Description:</span>
                                                     <textarea rows="4" placeholder=" Enter Text"
                                                         class="form-textarea mt-1.5 w-full resize-none rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"></textarea>
-                                                </label>
+                                                </label> --}}
+                                                <br><br>
                                                 <div class="space-x-2 text-right">
-                                                    {{-- <button @click="showModal = false"
-                                                            class="btn min-w-[7rem] rounded-full border border-slate-300 font-medium text-slate-800 hover:bg-slate-150 focus:bg-slate-150 active:bg-slate-150/80 dark:border-navy-450 dark:text-navy-50 dark:hover:bg-navy-500 dark:focus:bg-navy-500 dark:active:bg-navy-500/90">
-                                                            Annuler
-                                                        </button> --}}
                                                     <button type="submit"
                                                         class="btn min-w-[7rem] rounded-full bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
                                                         Enregistrer
@@ -112,15 +117,23 @@
                                     </th>
                                     <th
                                         class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                        Name
+                                        Code
                                     </th>
                                     <th
                                         class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                        Job
+                                        Nom
                                     </th>
                                     <th
-                                        class="whitespace-nowrap rounded-r-lg bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                        Favorite Color
+                                        class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                                        email
+                                    </th>
+                                    <th
+                                        class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                                        Division
+                                    </th>
+                                    <th
+                                        class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                                        Stocks
                                     </th>
                                     <th
                                         class="whitespace-nowrap rounded-r-lg bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
@@ -139,11 +152,22 @@
                                     <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                                         Quality Control Specialist
                                     </td>
+                                    <td class="whitespace-nowrap px-4 py-3 sm:px-5">
+                                        Cy Ganderton
+                                    </td>
+                                    <td class="whitespace-nowrap px-4 py-3 sm:px-5">
+                                        Quality Control Specialist
+                                    </td>
                                     <td class="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
                                         Blue
                                     </td>
-                                    <td data-column-id="actions" class="gridjs-td"><span>
+                                    <td data-column-id="actions" class="gridjs-td">
+                                        <span>
                                             <div class="flex justify-center space-x-2">
+                                                <button
+                                                    class="btn size-8 p-0 text-slate-600 hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
+                                                    <i class="fa fa-eye"></i>
+                                                </button>
                                                 <button
                                                     class="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
                                                     <i class="fa fa-edit"></i>
@@ -153,7 +177,8 @@
                                                     <i class="fa fa-trash-alt"></i>
                                                 </button>
                                             </div>
-                                        </span></td>
+                                        </span>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
