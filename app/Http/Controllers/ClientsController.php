@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Clients;
+use App\Models\Divisions;
+use App\Models\Stocks;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class ClientsController extends Controller
@@ -14,8 +17,16 @@ class ClientsController extends Controller
      */
     public function index()
     {
-        $clients = Clients::all();
-        $division = User::all();
+        $clients = Clients::leftJoin('divisions', 'clients.division_id', '=', 'divisions.id')
+            ->leftJoin('stocks', 'clients.id', '=', 'stocks.client_id')
+            ->select(
+                'clients.*',
+                'divisions.libelle',
+                DB::raw('(SELECT SUM(COALESCE(stocks.quantite_initiale, 0)) FROM stocks WHERE stocks.client_id = clients.id) as sommeQuantiteInitiale')
+            )
+            ->get();
+
+        $division = Divisions::all();
 
         return view('clients.clients', compact('clients', 'division'));
     }
@@ -66,7 +77,8 @@ class ClientsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $stock = Stocks::where('client_id', '=', $id)->get();
+        return view('clients.clients-details', compact('stock'));
     }
 
     /**
