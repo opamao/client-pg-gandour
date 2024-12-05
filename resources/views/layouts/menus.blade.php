@@ -51,7 +51,7 @@
                                         alt="avatar" />
                                 </div>
                                 <div>
-                                    <a href="dashboards-orders.html#"
+                                    <a href="#"
                                         class="text-base font-medium text-slate-700 hover:text-primary focus:text-primary dark:text-navy-100 dark:hover:text-accent-light dark:focus:text-accent-light">
                                         Travis Fuller
                                     </a>
@@ -61,7 +61,7 @@
                                 </div>
                             </div>
                             <div class="flex flex-col pt-2 pb-5">
-                                <a href="dashboards-orders.html#"
+                                <a href="#"
                                     class="group flex items-center space-x-3 py-2 px-4 tracking-wide outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600">
                                     <div
                                         class="flex size-8 items-center justify-center rounded-lg bg-warning text-white">
@@ -75,14 +75,14 @@
                                     <div>
                                         <h2
                                             class="font-medium text-slate-700 transition-colors group-hover:text-primary group-focus:text-primary dark:text-navy-100 dark:group-hover:text-accent-light dark:group-focus:text-accent-light">
-                                            Profile
+                                            Profil
                                         </h2>
                                         <div class="text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
                                             Your profile setting
                                         </div>
                                     </div>
                                 </a>
-                                <a href="dashboards-orders.html#"
+                                <a href="#"
                                     class="group flex items-center space-x-3 py-2 px-4 tracking-wide outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600">
                                     <div class="flex size-8 items-center justify-center rounded-lg bg-info text-white">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="size-4.5" fill="none"
@@ -102,7 +102,7 @@
                                         </div>
                                     </div>
                                 </a>
-                                <a href="dashboards-orders.html#"
+                                <a href="#"
                                     class="group flex items-center space-x-3 py-2 px-4 tracking-wide outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600">
                                     <div
                                         class="flex size-8 items-center justify-center rounded-lg bg-secondary text-white">
@@ -123,7 +123,7 @@
                                         </div>
                                     </div>
                                 </a>
-                                <a href="dashboards-orders.html#"
+                                <a href="#"
                                     class="group flex items-center space-x-3 py-2 px-4 tracking-wide outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600">
                                     <div class="flex size-8 items-center justify-center rounded-lg bg-error text-white">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="size-4.5" fill="none"
@@ -136,14 +136,14 @@
                                     <div>
                                         <h2
                                             class="font-medium text-slate-700 transition-colors group-hover:text-primary group-focus:text-primary dark:text-navy-100 dark:group-hover:text-accent-light dark:group-focus:text-accent-light">
-                                            Activity
+                                            Activités
                                         </h2>
                                         <div class="text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
                                             Your activity and events
                                         </div>
                                     </div>
                                 </a>
-                                <a href="dashboards-orders.html#"
+                                <a href="#"
                                     class="group flex items-center space-x-3 py-2 px-4 tracking-wide outline-none transition-all hover:bg-slate-100 focus:bg-slate-100 dark:hover:bg-navy-600 dark:focus:bg-navy-600">
                                     <div
                                         class="flex size-8 items-center justify-center rounded-lg bg-success text-white">
@@ -159,7 +159,7 @@
                                     <div>
                                         <h2
                                             class="font-medium text-slate-700 transition-colors group-hover:text-primary group-focus:text-primary dark:text-navy-100 dark:group-hover:text-accent-light dark:group-focus:text-accent-light">
-                                            Settings
+                                            Paramètres
                                         </h2>
                                         <div class="text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
                                             Webapp settings

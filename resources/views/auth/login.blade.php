@@ -41,7 +41,7 @@
     <!-- Page Wrapper -->
     <div id="root" class="min-h-100vh flex grow bg-slate-50 dark:bg-navy-900" x-cloak>
         <div class="fixed top-0 hidden p-6 lg:block lg:px-12">
-            <a href="pages-login-2.html#" class="flex items-center space-x-2">
+            <a href="#" class="flex items-center space-x-2">
                 <img class="size-12" src="{{ asset('assets') }}/images/app-logo.svg" alt="logo" />
                 <p class="text-xl font-semibold uppercase text-slate-700 dark:text-navy-100">
                     lineone
@@ -105,7 +105,7 @@
                                 type="checkbox" />
                             <span class="line-clamp-1">Souviens-toi de moi</span>
                         </label>
-                        <a href="pages-login-2.html#"
+                        <a href="#"
                             class="text-xs text-slate-400 transition-colors line-clamp-1 hover:text-slate-800 focus:text-slate-800 dark:text-navy-300 dark:hover:text-navy-100 dark:focus:text-navy-100">Mot
                             de passe oublié?</a>
                     </div>

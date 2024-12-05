@@ -20,9 +20,21 @@ class ClientsController extends Controller
         $clients = Clients::leftJoin('divisions', 'clients.division_id', '=', 'divisions.id')
             ->leftJoin('stocks', 'clients.id', '=', 'stocks.client_id')
             ->select(
-                'clients.*',
+                'clients.id',
+                'clients.code_client',
+                'clients.nom_client',
+                'clients.email_client',
+                'clients.division_id',
                 'divisions.libelle',
-                DB::raw('(SELECT SUM(COALESCE(stocks.quantite_initiale, 0)) FROM stocks WHERE stocks.client_id = clients.id) as sommeQuantiteInitiale')
+                DB::raw('SUM(COALESCE(stocks.quantite_initiale, 0)) as sommeQuantiteInitiale')
+            )
+            ->groupBy(
+                'clients.id',
+                'clients.code_client',
+                'clients.nom_client',
+                'clients.email_client',
+                'clients.division_id',
+                'divisions.libelle'
             )
             ->get();
 
