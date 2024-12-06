@@ -2,6 +2,22 @@
     'title' => 'Utilisateurs',
 ])
 
+@push('haut')
+    <link href="{{ asset('assets/table/css') }}/dataTables.tailwindcss.css" />
+@endpush
+
+@push('bas')
+    <script src="{{ asset('assets/table/js') }}/jquery-3.7.1.js"></script>
+    <link href="{{ asset('assets/table/css') }}/tailwindcss.css" />
+    <script src="{{ asset('assets/table/js') }}/dataTables.js"></script>
+    <script src="{{ asset('assets/table/js') }}/dataTables.tailwindcss.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable();
+        });
+    </script>
+@endpush
+
 @section('content')
     <main class="main-content w-full px-[var(--margin-x)] pb-8">
         @include('layouts.status')
@@ -84,10 +100,6 @@
                                                         </select>
                                                     </label>
                                                     <div class="space-x-2 text-right">
-                                                        {{-- <button @click="showModal = false"
-                                                            class="btn min-w-[7rem] rounded-full border border-slate-300 font-medium text-slate-800 hover:bg-slate-150 focus:bg-slate-150 active:bg-slate-150/80 dark:border-navy-450 dark:text-navy-50 dark:hover:bg-navy-500 dark:focus:bg-navy-500 dark:active:bg-navy-500/90">
-                                                            Annuler
-                                                        </button> --}}
                                                         <button type="submit"
                                                             class="btn min-w-[7rem] rounded-full bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
                                                             Enregistrer
@@ -105,7 +117,7 @@
                 <div>
                     <div class="mt-5">
                         <div class="is-scrollbar-hidden min-w-full overflow-x-auto">
-                            <table class="is-zebra w-full text-left">
+                            <table id="example" class="display" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th
@@ -131,10 +143,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php
+                                        $i = 1;
+                                    @endphp
                                     @foreach ($division as $liste)
-                                        @php
-                                            $i = 1;
-                                        @endphp
                                         <tr>
                                             <td class="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
                                                 {{ $i++ }}
@@ -244,10 +256,6 @@
                                                                                         </select>
                                                                                     </label>
                                                                                     <div class="space-x-2 text-right">
-                                                                                        {{-- <button @click="showModal = false"
-                                                                                            class="btn min-w-[7rem] rounded-full border border-slate-300 font-medium text-slate-800 hover:bg-slate-150 focus:bg-slate-150 active:bg-slate-150/80 dark:border-navy-450 dark:text-navy-50 dark:hover:bg-navy-500 dark:focus:bg-navy-500 dark:active:bg-navy-500/90">
-                                                                                            Annuler
-                                                                                        </button> --}}
                                                                                         <button type="submit"
                                                                                             class="btn min-w-[7rem] rounded-full bg-info font-medium text-white hover:bg-info-focus focus:bg-info-focus active:bg-info-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
                                                                                             Modifier
@@ -267,7 +275,8 @@
                                                             </button>
                                                             <template x-teleport="#x-teleport-target">
                                                                 <div class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5"
-                                                                    x-show="showModalDelete{{ $liste->id }}" role="dialog"
+                                                                    x-show="showModalDelete{{ $liste->id }}"
+                                                                    role="dialog"
                                                                     @keydown.window.escape="showModalDelete{{ $liste->id }} = false">
                                                                     <div class="absolute inset-0 bg-slate-900/60 transition-opacity duration-300"
                                                                         @click="showModalDelete{{ $liste->id }} = false"
