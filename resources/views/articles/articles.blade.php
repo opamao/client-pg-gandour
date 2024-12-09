@@ -1,5 +1,5 @@
 @extends('layouts.master', [
-    'title' => 'Clients',
+    'title' => 'Articles',
 ])
 
 @push('haut')
@@ -29,7 +29,7 @@
 
         <div class="flex items-center space-x-4 py-5 lg:py-6">
             <h2 class="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">
-                Clients
+                Articles
             </h2>
         </div>
 
@@ -38,26 +38,12 @@
                 <div class="rounded-lg bg-slate-50 px-4 py-4 dark:bg-navy-900 sm:px-5">
                     <div>
                         <h2 class="text-lg font-medium tracking-wide text-slate-600 line-clamp-1 dark:text-navy-100">
-                            Nombre de client
+                            Nombre article
                         </h2>
                     </div>
                     <div class="pt-2">
                         <p>
-                            {{ $nbreClient }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="rounded-lg bg-gradient-to-r from-sky-400 to-blue-600 p-1">
-                <div class="rounded-lg bg-slate-50 px-4 py-4 dark:bg-navy-900 sm:px-5">
-                    <div>
-                        <h2 class="text-lg font-medium tracking-wide text-slate-600 line-clamp-1 dark:text-navy-100">
-                            Total stock
-                        </h2>
-                    </div>
-                    <div class="pt-2">
-                        <p>
-                            {{ $totalStock }}
+                            {{ $nbreArticle }}
                         </p>
                     </div>
                 </div>
@@ -77,7 +63,7 @@
                         <div x-data="{ showModal: false }">
                             <button @click="showModal = true"
                                 class="btn relative bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
-                                Ajouter client
+                                Importer article
                             </button>
                             <template x-teleport="#x-teleport-target">
                                 <div class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5"
@@ -97,7 +83,7 @@
                                         <div
                                             class="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
                                             <h3 class="text-base font-medium text-slate-700 dark:text-navy-100">
-                                                Ajouter d'un client
+                                                Importation
                                             </h3>
                                             <button @click="showModal = !showModal"
                                                 class="btn -mr-1.5 size-7 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
@@ -108,22 +94,10 @@
                                                 </svg>
                                             </button>
                                         </div>
-                                        <form action="{{ route('clients.store') }}" method="POST" role="form"
+                                        <form action="{{ route('articles.store') }}" method="POST" role="form"
                                             enctype="multipart/form-data">
                                             @csrf
                                             <div class="px-4 py-4 sm:px-5">
-                                                <label class="block">
-                                                    <span>Division</span>
-                                                    <select name="division" required
-                                                        class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
-                                                        <option value="">Sélectionne</option>
-                                                        @foreach ($division as $item)
-                                                            <option value="{{ $item->id }}">{{ $item->libelle }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </label>
-                                                <br>
                                                 <label class="block">
                                                     <span>Fichier</span><br>
                                                     <small><em>Cliquez pour importer le fichier</em></small>
@@ -131,28 +105,6 @@
                                                         class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                         placeholder="Veuillez sélectionner le fichier" type="file"
                                                         accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
-                                                </label>
-                                                <br>
-                                                <hr>
-                                                <div class="text-center"><strong>Ou</strong></div>
-                                                <hr>
-                                                <label class="block">
-                                                    <span>Code</span>
-                                                    <input name="code"
-                                                        class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                        placeholder="Saisir le code client" type="text" />
-                                                </label>
-                                                <label class="block">
-                                                    <span>Nom</span>
-                                                    <input name="name"
-                                                        class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                        placeholder="Saisir son nom" type="text" />
-                                                </label>
-                                                <label class="block">
-                                                    <span>E-mail</span>
-                                                    <input name="email"
-                                                        class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                        placeholder="Saisir son prénom" type="email" />
                                                 </label>
                                                 <br><br>
                                                 <div class="space-x-2 text-right">
@@ -178,23 +130,15 @@
                                 <tr>
                                     <th
                                         class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                        Code
-                                    </th>
-                                    <th
-                                        class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                         Nom
                                     </th>
                                     <th
-                                        class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                        email
+                                        class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                                        Code
                                     </th>
                                     <th
                                         class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                        Division
-                                    </th>
-                                    <th
-                                        class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                        Stocks
+                                        CLS
                                     </th>
                                     <th
                                         class="whitespace-nowrap rounded-r-lg bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
@@ -203,33 +147,101 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($clients as $liste)
+                                @foreach ($articles as $liste)
                                     <tr>
                                         <td class="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
-                                            {{ $liste->code_client }}
+                                            {{ $liste->nom_article }}
                                         </td>
                                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                                            {{ $liste->nom_client }}
+                                            {{ $liste->code_article }}
                                         </td>
                                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                                            {{ $liste->email_client }}
-                                        </td>
-                                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                                            <div
-                                                class="badge bg-primary text-white shadow-soft shadow-primary/50 dark:bg-accent dark:shadow-accent/50">
-                                                {{ $liste->libelle }}
-                                            </div>
-                                        </td>
-                                        <td class="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
-                                            {{ $liste->sommeQuantiteInitiale }}
+                                            {{ $liste->cls_article }}
                                         </td>
                                         <td data-column-id="actions" class="gridjs-td">
                                             <span>
                                                 <div class="flex justify-center space-x-2">
-                                                    <a href="{{ route('clients.show', $liste->id) }}"
-                                                        class="btn size-8 p-0 text-slate-600 hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
-                                                        <i class="fa fa-eye"></i>
-                                                    </a>
+                                                    <div x-data="{ showModalDelete{{ $liste->id }}: false }">
+                                                        <button @click="showModalDelete{{ $liste->id }} = true"
+                                                            class="btn size-8 p-0 text-slate-600 hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
+                                                            <i class="fa fa-eye"></i>
+                                                        </button>
+                                                        <template x-teleport="#x-teleport-target">
+                                                            <div class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5"
+                                                                x-show="showModalDelete{{ $liste->id }}" role="dialog"
+                                                                @keydown.window.escape="showModalDelete{{ $liste->id }} = false">
+                                                                <div class="absolute inset-0 bg-slate-900/60 transition-opacity duration-300"
+                                                                    @click="showModalDelete{{ $liste->id }} = false"
+                                                                    x-show="showModalDelete{{ $liste->id }}"
+                                                                    x-transition:enter="ease-out"
+                                                                    x-transition:enter-start="opacity-0"
+                                                                    x-transition:enter-end="opacity-100"
+                                                                    x-transition:leave="ease-in"
+                                                                    x-transition:leave-start="opacity-100"
+                                                                    x-transition:leave-end="opacity-0"></div>
+                                                                <div class="relative w-full max-w-lg origin-top rounded-lg bg-white transition-all duration-300 dark:bg-navy-700"
+                                                                    x-show="showModalDelete{{ $liste->id }}"
+                                                                    x-transition:enter="easy-out"
+                                                                    x-transition:enter-start="opacity-0 scale-95"
+                                                                    x-transition:enter-end="opacity-100 scale-100"
+                                                                    x-transition:leave="easy-in"
+                                                                    x-transition:leave-start="opacity-100 scale-100"
+                                                                    x-transition:leave-end="opacity-0 scale-95">
+                                                                    <div
+                                                                        class="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
+                                                                        <h3
+                                                                            class="text-base font-medium text-slate-700 dark:text-navy-100">
+                                                                            Détails
+                                                                        </h3>
+                                                                        <button
+                                                                            @click="showModalDelete{{ $liste->id }} = !showModalDelete{{ $liste->id }}"
+                                                                            class="btn -mr-1.5 size-7 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                class="size-4.5" fill="none"
+                                                                                viewBox="0 0 24 24" stroke="currentColor"
+                                                                                stroke-width="2">
+                                                                                <path stroke-linecap="round"
+                                                                                    stroke-linejoin="round"
+                                                                                    d="M6 18L18 6M6 6l12 12"></path>
+                                                                            </svg>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="px-4 py-4 sm:px-5">
+                                                                        <div class="mt-4 space-y-4">
+                                                                            <label class="block">
+                                                                                <span>Nom</span>
+                                                                                <h3
+                                                                                    class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                    {{ $liste->nom_article }}
+                                                                                    <h4>
+                                                                            </label>
+                                                                            <label class="block">
+                                                                                <span>Code</span>
+                                                                                <h3
+                                                                                    class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                    {{ $liste->code_article }}
+                                                                                </h3>
+                                                                            </label>
+                                                                            <label class="block">
+                                                                                <span>CLS</span>
+                                                                                <h3
+                                                                                    class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                    {{ $liste->cls_article }}
+                                                                                </h3>
+                                                                            </label>
+                                                                            <label class="block">
+                                                                                <span>Description:</span>
+                                                                                <h3
+                                                                                    class="form-textarea mt-1.5 w-full resize-none rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                    {{ $liste->description_article }}
+                                                                                </h3>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </template>
+                                                    </div>
                                                     <div x-data="{ showModal{{ $liste->id }}: false }">
                                                         <button @click="showModal{{ $liste->id }} = true"
                                                             class="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
@@ -276,57 +288,44 @@
                                                                         </button>
                                                                     </div>
                                                                     <form
-                                                                        action="{{ route('clients.update', $liste->id) }}"
+                                                                        action="{{ route('articles.update', $liste->id) }}"
                                                                         method="POST" role="form">
                                                                         @csrf
                                                                         @method('PATCH')
                                                                         <div class="px-4 py-4 sm:px-5">
                                                                             <div class="mt-4 space-y-4">
                                                                                 <label class="block">
-                                                                                    <span>Division</span>
-                                                                                    <select name="division" required
-                                                                                        class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
-                                                                                        <option
-                                                                                            value="{{ $liste->division_id }}">
-                                                                                            Sélectionne
-                                                                                        </option>
-                                                                                        @foreach ($division as $item)
-                                                                                            <option
-                                                                                                value="{{ $item->id }}">
-                                                                                                {{ $item->libelle }}
-                                                                                            </option>
-                                                                                        @endforeach
-                                                                                    </select>
-                                                                                </label>
-                                                                                <label class="block">
-                                                                                    <span>Code</span>
-                                                                                    <input name="code" required
-                                                                                        value="{{ $liste->code_client }}"
-                                                                                        class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                                                        placeholder="Saisir le code client"
-                                                                                        type="text" />
-                                                                                </label>
-                                                                                <label class="block">
                                                                                     <span>Nom</span>
                                                                                     <input name="name" required
-                                                                                        value="{{ $liste->nom_client }}"
+                                                                                        value="{{ $liste->nom_article }}"
                                                                                         class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                                                         placeholder="Saisir son nom"
                                                                                         type="text" />
                                                                                 </label>
                                                                                 <label class="block">
-                                                                                    <span>E-mail</span>
-                                                                                    <input name="email" required
-                                                                                        value="{{ $liste->email_client }}"
+                                                                                    <span>Code</span>
+                                                                                    <input name="code" required
+                                                                                        value="{{ $liste->code_article }}"
+                                                                                        class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                                                                                        placeholder="Saisir le code client"
+                                                                                        type="text" />
+                                                                                </label>
+                                                                                <label class="block">
+                                                                                    <span>CLS</span>
+                                                                                    <input name="cls" required
+                                                                                        value="{{ $liste->cls_article }}"
                                                                                         class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                                                         placeholder="Saisir son prénom"
-                                                                                        type="email" />
+                                                                                        type="text" />
+                                                                                </label>
+                                                                                <label class="block">
+                                                                                    <span>Description:</span>
+                                                                                    <textarea name="description" rows="4" placeholder="Entrez le texte"
+                                                                                        class="form-textarea mt-1.5 w-full resize-none rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                    {{ $liste->description_article }}
+                                                                                    </textarea>
                                                                                 </label>
                                                                                 <div class="space-x-2 text-right">
-                                                                                    {{-- <button @click="showModal = false"
-                                                                                    class="btn min-w-[7rem] rounded-full border border-slate-300 font-medium text-slate-800 hover:bg-slate-150 focus:bg-slate-150 active:bg-slate-150/80 dark:border-navy-450 dark:text-navy-50 dark:hover:bg-navy-500 dark:focus:bg-navy-500 dark:active:bg-navy-500/90">
-                                                                                    Annuler
-                                                                                </button> --}}
                                                                                     <button type="submit"
                                                                                         class="btn min-w-[7rem] rounded-full bg-info font-medium text-white hover:bg-info-focus focus:bg-info-focus active:bg-info-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
                                                                                         Modifier
@@ -386,7 +385,7 @@
                                                                         </button>
                                                                     </div>
                                                                     <form
-                                                                        action="{{ route('clients.destroy', $liste->id) }}"
+                                                                        action="{{ route('articles.destroy', $liste->id) }}"
                                                                         method="POST" role="form">
                                                                         @csrf
                                                                         @method('DELETE')

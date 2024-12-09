@@ -8,12 +8,17 @@
 
 @push('bas')
     <script src="{{ asset('assets/table/js') }}/jquery-3.7.1.js"></script>
-    <link href="{{ asset('assets/table/css') }}/tailwindcss.css" />
+    {{-- <link href="{{ asset('assets/table/css') }}/tailwindcss.css" /> --}}
     <script src="{{ asset('assets/table/js') }}/dataTables.js"></script>
     <script src="{{ asset('assets/table/js') }}/dataTables.tailwindcss.js"></script>
     <script>
         $(document).ready(function() {
             $('#example').DataTable();
+        });
+        $('#example').DataTable({
+            dom: "<'flex justify-between items-center'<'flex items-center'l><'flex items-center'f>>" +
+                "<'mt-4'tr>" +
+                "<'flex justify-between items-center'<'p-2'i><'p-2'p>>",
         });
     </script>
 @endpush
