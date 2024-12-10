@@ -58,7 +58,7 @@
                     <h2 class="font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 lg:text-base">
 
                     </h2>
-                    <div x-data="usePopper({ placement: 'bottom-end', offset: 4 })" @click.outside="isShowPopper &amp;&amp; (isShowPopper = false)"
+                    {{-- <div x-data="usePopper({ placement: 'bottom-end', offset: 4 })" @click.outside="isShowPopper &amp;&amp; (isShowPopper = false)"
                         class="inline-flex">
                         <div x-data="{ showModal: false }">
                             <button @click="showModal = true"
@@ -119,7 +119,7 @@
                                 </div>
                             </template>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             <div class="card px-4 pb-4 sm:px-5">
@@ -130,15 +130,19 @@
                                 <tr>
                                     <th
                                         class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                        Nom
+                                        Code
                                     </th>
                                     <th
                                         class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                        Code
+                                        Unité
                                     </th>
                                     <th
                                         class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                         CLS
+                                    </th>
+                                    <th
+                                        class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                                        Désignation
                                     </th>
                                     <th
                                         class="whitespace-nowrap rounded-r-lg bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
@@ -150,13 +154,16 @@
                                 @foreach ($articles as $liste)
                                     <tr>
                                         <td class="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
-                                            {{ $liste->nom_article }}
-                                        </td>
-                                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                                             {{ $liste->code_article }}
                                         </td>
                                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                                            {{ $liste->cls_article }}
+                                            {{ $liste->unite }}
+                                        </td>
+                                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">
+                                            {{ $liste->cls }}
+                                        </td>
+                                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">
+                                            {{ $liste->designation }}
                                         </td>
                                         <td data-column-id="actions" class="gridjs-td">
                                             <span>
@@ -186,7 +193,8 @@
                                                                     x-transition:enter-end="opacity-100 scale-100"
                                                                     x-transition:leave="easy-in"
                                                                     x-transition:leave-start="opacity-100 scale-100"
-                                                                    x-transition:leave-end="opacity-0 scale-95">
+                                                                    x-transition:leave-end="opacity-0 scale-95"
+                                                                    style="max-width: 80rem;">
                                                                     <div
                                                                         class="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
                                                                         <h3
@@ -208,41 +216,207 @@
                                                                     </div>
                                                                     <div class="px-4 py-4 sm:px-5">
                                                                         <div class="mt-4 space-y-4">
-                                                                            <label class="block">
-                                                                                <span>Nom</span>
-                                                                                <h3
-                                                                                    class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
-                                                                                    {{ $liste->nom_article }}
-                                                                                    <h4>
-                                                                            </label>
-                                                                            <label class="block">
-                                                                                <span>Code</span>
-                                                                                <h3
-                                                                                    class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
-                                                                                    {{ $liste->code_article }}
-                                                                                </h3>
-                                                                            </label>
-                                                                            <label class="block">
-                                                                                <span>CLS</span>
-                                                                                <h3
-                                                                                    class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
-                                                                                    {{ $liste->cls_article }}
-                                                                                </h3>
-                                                                            </label>
-                                                                            <label class="block">
-                                                                                <span>Description:</span>
-                                                                                <h3
-                                                                                    class="form-textarea mt-1.5 w-full resize-none rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
-                                                                                    {{ $liste->description_article }}
-                                                                                </h3>
-                                                                            </label>
+                                                                            <div class="flex flex-wrap space-x-4">
+                                                                                <div class="w-1/3 bg-blue-500 p-4">
+                                                                                    <label class="block">
+                                                                                        <span>Code</span>
+                                                                                        <h3
+                                                                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                            {{ $liste->code_article }}
+                                                                                            <h4>
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="w-1/3 bg-blue-500 p-4">
+                                                                                    <label class="block">
+                                                                                        <span>Unité</span>
+                                                                                        <h3
+                                                                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                            {{ $liste->unite }}
+                                                                                        </h3>
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="w-1/3 bg-blue-500 p-4">
+                                                                                    <label class="block">
+                                                                                        <span>CLS</span>
+                                                                                        <h3
+                                                                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                            {{ $liste->cls }}
+                                                                                        </h3>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="flex flex-wrap space-x-4">
+                                                                                <div class="w-1/3 bg-green-500 p-4">
+                                                                                    <label class="block">
+                                                                                        <span>CLS2</span>
+                                                                                        <h3
+                                                                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                            {{ $liste->cls2 }}
+                                                                                        </h3>
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="w-1/3 bg-blue-500 p-4">
+                                                                                    <label class="block">
+                                                                                        <span>Référence</span>
+                                                                                        <h3
+                                                                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                            {{ $liste->ref }}
+                                                                                        </h3>
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="w-1/3 bg-green-500 p-4">
+                                                                                    <label class="block">
+                                                                                        <span>Description</span>
+                                                                                        <h3
+                                                                                            class="form-textarea mt-1.5 w-full resize-none rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                            {{ $liste->designation }}
+                                                                                        </h3>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="flex flex-wrap space-x-4">
+                                                                                <div class="w-1/3 bg-blue-500 p-4">
+                                                                                    <label class="block">
+                                                                                        <span>Code ABC</span>
+                                                                                        <h3
+                                                                                            class="form-textarea mt-1.5 w-full resize-none rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                            {{ $liste->code_abc }}
+                                                                                        </h3>
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="w-1/3 bg-green-500 p-4">
+                                                                                    <label class="block">
+                                                                                        <span>Désignation ABC</span>
+                                                                                        <h3
+                                                                                            class="form-textarea mt-1.5 w-full resize-none rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                            {{ $liste->designation_abc }}
+                                                                                        </h3>
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="w-1/3 bg-blue-500 p-4">
+                                                                                    <label class="block">
+                                                                                        <span>PRODH</span>
+                                                                                        <h3
+                                                                                            class="form-textarea mt-1.5 w-full resize-none rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                            {{ $liste->PRODH }}
+                                                                                        </h3>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="flex flex-wrap space-x-4">
+                                                                                <div class="w-1/3 bg-green-500 p-4">
+                                                                                    <label class="block">
+                                                                                        <span>VTEXT</span>
+                                                                                        <h3
+                                                                                            class="form-textarea mt-1.5 w-full resize-none rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                            {{ $liste->VTEXT }}
+                                                                                        </h3>
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="w-1/3 bg-blue-500 p-4">
+                                                                                    <label class="block">
+                                                                                        <span>MVGR1</span>
+                                                                                        <h3
+                                                                                            class="form-textarea mt-1.5 w-full resize-none rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                            {{ $liste->MVGR1 }}
+                                                                                        </h3>
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="w-1/3 bg-green-500 p-4">
+                                                                                    <label class="block">
+                                                                                        <span>BEZEI</span>
+                                                                                        <h3
+                                                                                            class="form-textarea mt-1.5 w-full resize-none rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                            {{ $liste->BEZEI }}
+                                                                                        </h3>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="flex flex-wrap space-x-4">
+                                                                                <div class="w-1/3 bg-blue-500 p-4">
+                                                                                    <label class="block">
+                                                                                        <span>MVGR2</span>
+                                                                                        <h3
+                                                                                            class="form-textarea mt-1.5 w-full resize-none rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                            {{ $liste->MVGR2 }}
+                                                                                        </h3>
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="w-1/3 bg-green-500 p-4">
+                                                                                    <label class="block">
+                                                                                        <span>BEZE2</span>
+                                                                                        <h3
+                                                                                            class="form-textarea mt-1.5 w-full resize-none rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                            {{ $liste->BEZE2 }}
+                                                                                        </h3>
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="w-1/3 bg-blue-500 p-4">
+                                                                                    <label class="block">
+                                                                                        <span>MVGR3</span>
+                                                                                        <h3
+                                                                                            class="form-textarea mt-1.5 w-full resize-none rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                            {{ $liste->MVGR3 }}
+                                                                                        </h3>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="flex flex-wrap space-x-4">
+                                                                                <div class="w-1/3 bg-green-500 p-4">
+                                                                                    <label class="block">
+                                                                                        <span>BEZE3</span>
+                                                                                        <h3
+                                                                                            class="form-textarea mt-1.5 w-full resize-none rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                            {{ $liste->BEZE3 }}
+                                                                                        </h3>
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="w-1/3 bg-blue-500 p-4">
+                                                                                    <label class="block">
+                                                                                        <span>MVGR4</span>
+                                                                                        <h3
+                                                                                            class="form-textarea mt-1.5 w-full resize-none rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                            {{ $liste->MVGR4 }}
+                                                                                        </h3>
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="w-1/3 bg-green-500 p-4">
+                                                                                    <label class="block">
+                                                                                        <span>BEZE4</span>
+                                                                                        <h3
+                                                                                            class="form-textarea mt-1.5 w-full resize-none rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                            {{ $liste->BEZE4 }}
+                                                                                        </h3>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="flex flex-wrap space-x-4">
+                                                                                <div class="w-1/3 bg-blue-500 p-4">
+                                                                                    <label class="block">
+                                                                                        <span>VMSTA</span>
+                                                                                        <h3
+                                                                                            class="form-textarea mt-1.5 w-full resize-none rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                            {{ $liste->VMSTA }}
+                                                                                        </h3>
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="w-1/3 bg-green-500 p-4">
+                                                                                    <label class="block">
+                                                                                        <span>VMSTD</span>
+                                                                                        <h3
+                                                                                            class="form-textarea mt-1.5 w-full resize-none rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                            {{ $liste->VMSTD }}
+                                                                                        </h3>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </template>
                                                     </div>
-                                                    <div x-data="{ showModal{{ $liste->id }}: false }">
+                                                    {{-- <div x-data="{ showModal{{ $liste->id }}: false }">
                                                         <button @click="showModal{{ $liste->id }} = true"
                                                             class="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
                                                             <i class="fa fa-edit"></i>
@@ -295,7 +469,7 @@
                                                                         <div class="px-4 py-4 sm:px-5">
                                                                             <div class="mt-4 space-y-4">
                                                                                 <label class="block">
-                                                                                    <span>Nom</span>
+                                                                                    <span>Code</span>
                                                                                     <input name="name" required
                                                                                         value="{{ $liste->nom_article }}"
                                                                                         class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
@@ -303,9 +477,9 @@
                                                                                         type="text" />
                                                                                 </label>
                                                                                 <label class="block">
-                                                                                    <span>Code</span>
+                                                                                    <span>Unité</span>
                                                                                     <input name="code" required
-                                                                                        value="{{ $liste->code_article }}"
+                                                                                        value="{{ $liste->unite }}"
                                                                                         class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                                                         placeholder="Saisir le code client"
                                                                                         type="text" />
@@ -313,16 +487,16 @@
                                                                                 <label class="block">
                                                                                     <span>CLS</span>
                                                                                     <input name="cls" required
-                                                                                        value="{{ $liste->cls_article }}"
+                                                                                        value="{{ $liste->cls }}"
                                                                                         class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                                                         placeholder="Saisir son prénom"
                                                                                         type="text" />
                                                                                 </label>
                                                                                 <label class="block">
-                                                                                    <span>Description:</span>
+                                                                                    <span>Désignation</span>
                                                                                     <textarea name="description" rows="4" placeholder="Entrez le texte"
                                                                                         class="form-textarea mt-1.5 w-full resize-none rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
-                                                                                    {{ $liste->description_article }}
+                                                                                    {{ $liste->designation }}
                                                                                     </textarea>
                                                                                 </label>
                                                                                 <div class="space-x-2 text-right">
@@ -406,7 +580,7 @@
                                                                 </div>
                                                             </div>
                                                         </template>
-                                                    </div>
+                                                    </div> --}}
                                                 </div>
                                             </span>
                                         </td>
