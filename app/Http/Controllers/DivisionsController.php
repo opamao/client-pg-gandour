@@ -6,6 +6,7 @@ use App\Models\AssoDivisions;
 use App\Models\Divisions;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DivisionsController extends Controller
 {
@@ -14,9 +15,16 @@ class DivisionsController extends Controller
      */
     public function index()
     {
-        $division = Divisions::all();
-        $membre = User::all();
-        return view('divisions.division', compact('division', 'membre'));
+        if (Auth::check()) {
+
+            $division = Divisions::all();
+            $membre = User::all();
+            return view('divisions.division', compact('division', 'membre'));
+
+        } else {
+            return view('auth.login');
+        }
+
     }
 
     /**

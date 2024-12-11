@@ -61,12 +61,17 @@ class CustomAuthController extends Controller
 
     public function dashboard()
     {
-        $nbreClient = Clients::count();
-        $division = Divisions::count();
-        $article = Articles::count();
-        $totalStock = Stocks::sum('quantite_initiale');
+        if (Auth::check()) {
 
-        return view('dashboard.dashboard', compact('nbreClient', 'totalStock', 'division', 'article'));
+            $nbreClient = Clients::count();
+            $division = Divisions::count();
+            $article = Articles::count();
+            $totalStock = Stocks::sum('quantite_initiale');
+
+            return view('dashboard.dashboard', compact('nbreClient', 'totalStock', 'division', 'article'));
+        } else {
+            return view('auth.login');
+        }
     }
 
     public function signOut()

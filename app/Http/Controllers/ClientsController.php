@@ -7,6 +7,7 @@ use App\Models\Divisions;
 use App\Models\ImportFichierClient;
 use App\Models\Stocks;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -19,7 +20,9 @@ class ClientsController extends Controller
      */
     public function index()
     {
-        $clients = Clients::leftJoin('divisions', 'clients.division_id', '=', 'divisions.id')
+        if (Auth::check()) {
+
+            $clients = Clients::leftJoin('divisions', 'clients.division_id', '=', 'divisions.id')
             ->leftJoin('stocks', 'clients.id', '=', 'stocks.client_id')
             ->select(
                 'clients.id',
@@ -46,6 +49,11 @@ class ClientsController extends Controller
         $totalStock = Stocks::sum('quantite_initiale');
 
         return view('clients.clients', compact('clients', 'division', 'nbreClient', 'totalStock'));
+
+        } else {
+            return view('auth.login');
+        }
+
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UtilisateurController extends Controller
@@ -13,8 +14,15 @@ class UtilisateurController extends Controller
      */
     public function index()
     {
-        $division = User::all();
-        return view('utilisateurs.utilisateur', compact('division'));
+        if (Auth::check()) {
+
+            $division = User::all();
+            return view('utilisateurs.utilisateur', compact('division'));
+
+        } else {
+            return view('auth.login');
+        }
+
     }
 
     /**

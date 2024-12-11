@@ -38,6 +38,10 @@
                                             Quantité
                                         </th>
                                         <th
+                                            class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                                            Date
+                                        </th>
+                                        <th
                                             class="whitespace-nowrap rounded-r-lg bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
 
                                         </th>
@@ -51,6 +55,9 @@
                                             </td>
                                             <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                                                 {{ $liste->quantite_initiale }}
+                                            </td>
+                                            <td class="whitespace-nowrap px-4 py-3 sm:px-5">
+                                                {{ $liste->created_at }}
                                             </td>
                                             <td data-column-id="actions" class="gridjs-td">
                                                 <span>

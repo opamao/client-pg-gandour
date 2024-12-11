@@ -5,6 +5,7 @@ use App\Http\Controllers\ClientsController;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\DivisionsController;
 use App\Http\Controllers\UtilisateurController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('index', [CustomAuthController::class, 'dashboard']);
@@ -13,7 +14,7 @@ Route::post('custom-login', [CustomAuthController::class, 'customLogin']);
 Route::get('signout', [CustomAuthController::class, 'signOut']);
 
 Route::get('/', function () {
-    if (session()->has('id')) {
+    if (Auth::check()) {
         return redirect()->intended('index')->withSuccess('Bon retour');
     }
     return view('auth.login');
