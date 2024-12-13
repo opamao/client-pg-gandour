@@ -114,9 +114,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @php
-                                        $i = 1;
-                                    @endphp
                                     @foreach ($division as $liste)
                                         @php
                                             $membres = App\Models\AssoDivisions::join(
@@ -126,12 +123,12 @@
                                                 'users.id',
                                             )
                                                 ->where('asso_divisions.division_id', '=', $liste->id)
-                                                ->select('users.username', 'users.id')
+                                                ->select('users.name', 'users.id')
                                                 ->get();
                                         @endphp
                                         <tr>
                                             <td class="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
-                                                {{ $i++ }}
+                                                {{ $liste->id }}
                                             </td>
                                             <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                                                 {{ $liste->libelle }}
@@ -149,7 +146,7 @@
                                                                     <i class="fa fa-user"></i>
                                                                 </div>
                                                             </span>
-                                                            <span class="mx-2">{{ $memb->username }}</span>
+                                                            <span class="mx-2">{{ $memb->name }}</span>
                                                         </span>
                                                     @endforeach
                                                 </div>
@@ -231,7 +228,7 @@
                                                                                             @foreach ($membre as $itemM)
                                                                                                 <option
                                                                                                     value="{{ $itemM->id }}">
-                                                                                                    {{ $itemM->username }}
+                                                                                                    {{ $itemM->name }}
                                                                                             @endforeach
                                                                                             </option>
                                                                                         </select>

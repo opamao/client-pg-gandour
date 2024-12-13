@@ -91,10 +91,10 @@
                                                     <div class="text-center"><strong>Ou</strong></div>
                                                     <hr>
                                                     <label class="block">
-                                                        <span>Username</span>
+                                                        <span>Nom</span>
                                                         <input name="name"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                            placeholder="Saisir son nom utilisateur" type="text" />
+                                                            placeholder="Saisir son nom" type="text" />
                                                     </label>
                                                     <label class="block">
                                                         <span>E-mail</span>
@@ -149,11 +149,11 @@
                                         </th>
                                         <th
                                             class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                            Username
+                                            Nom
                                         </th>
                                         <th
                                             class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                            Email
+                                            E-mail
                                         </th>
                                         <th
                                             class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
@@ -175,7 +175,7 @@
                                                 {{ $i++ }}
                                             </td>
                                             <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                                                {{ $liste->username }}
+                                                {{ $liste->name }}
                                             </td>
                                             <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                                                 {{ $liste->email }}
@@ -240,9 +240,9 @@
                                                                             <div class="px-4 py-4 sm:px-5">
                                                                                 <div class="mt-4 space-y-4">
                                                                                     <label class="block">
-                                                                                        <span>Username</span>
+                                                                                        <span>Nom</span>
                                                                                         <input name="name" required
-                                                                                            value="{{ $liste->username }}"
+                                                                                            value="{{ $liste->name }}"
                                                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                                                             placeholder="Saisir son nom utilisateur"
                                                                                             type="text" />

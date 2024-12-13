@@ -29,6 +29,7 @@ class ClientsController extends Controller
                     ->where('asso_divisions.user_id', '=', Auth::user()->id)
                     ->select(
                         'clients.id',
+                        'clients.username',
                         'clients.code_client',
                         'clients.precode_client',
                         'clients.email_client',
@@ -38,6 +39,7 @@ class ClientsController extends Controller
                     )
                     ->groupBy(
                         'clients.id',
+                        'clients.username',
                         'clients.code_client',
                         'clients.precode_client',
                         'clients.email_client',
@@ -62,6 +64,7 @@ class ClientsController extends Controller
                     ->leftJoin('stocks', 'clients.id', '=', 'stocks.client_id')
                     ->select(
                         'clients.id',
+                        'clients.username',
                         'clients.code_client',
                         'clients.precode_client',
                         'clients.email_client',
@@ -71,6 +74,7 @@ class ClientsController extends Controller
                     )
                     ->groupBy(
                         'clients.id',
+                        'clients.username',
                         'clients.code_client',
                         'clients.precode_client',
                         'clients.email_client',
@@ -143,22 +147,22 @@ class ClientsController extends Controller
                 }
 
                 // Récupère les colonnes du fichier
-                $code = $row[0];
-                $precode = $row[1];
-                $name = $row[2];
-                $adresse = $row[3];
-                $status = $row[4];
-                $date = $row[5];
-                $password = $row[6];
+                $username = $row[0];
+                $password = $row[1];
+                $code = $row[2];
+                $precode = $row[3];
+                $name = $row[4];
+                $adresse = $row[5];
+                $status = $row[6];
                 $division = $row[7];
 
                 // Création du client
                 Clients::create([
+                    'username' => $username,
                     'code_client' => $code,
                     'precode_client' => $precode,
                     'name_client' => $name,
                     'address_client' => $adresse,
-                    'last_sync_attempt' => $date,
                     'status_client' => $status,
                     'password_client' => Hash::make($password),
                     'division_id' => $division,
@@ -176,6 +180,7 @@ class ClientsController extends Controller
         } else {
             // Traitement manuel (ajout d'un utilisateur unique)
             $user = new Clients();
+            $user->username = $request->username;
             $user->code_client = $request->code;
             $user->nom_client = $request->name;
             $user->email_client = $request->email;

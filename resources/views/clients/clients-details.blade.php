@@ -88,7 +88,8 @@
                                                                         x-transition:enter-end="opacity-100 scale-100"
                                                                         x-transition:leave="easy-in"
                                                                         x-transition:leave-start="opacity-100 scale-100"
-                                                                        x-transition:leave-end="opacity-0 scale-95">
+                                                                        x-transition:leave-end="opacity-0 scale-95"
+                                                                        style="max-width: 60rem;">
                                                                         <div
                                                                             class="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
                                                                             <h3
@@ -101,8 +102,7 @@
                                                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                                                     class="size-4.5" fill="none"
                                                                                     viewBox="0 0 24 24"
-                                                                                    stroke="currentColor"
-                                                                                    stroke-width="2">
+                                                                                    stroke="currentColor" stroke-width="2">
                                                                                     <path stroke-linecap="round"
                                                                                         stroke-linejoin="round"
                                                                                         d="M6 18L18 6M6 6l12 12"></path>
@@ -110,10 +110,38 @@
                                                                             </button>
                                                                         </div>
                                                                         <div class="px-4 py-4 sm:px-5">
+                                                                            @php
+                                                                                $stockUp = \App\Models\StockUpdate::where(
+                                                                                    'code_stock',
+                                                                                    '=',
+                                                                                    $liste->code_stock,
+                                                                                )->get();
+                                                                            @endphp
                                                                             <div class="mt-4 space-y-4">
-                                                                                <label class="block">
-
-                                                                                </label>
+                                                                                <table class="is-zebra w-full text-left">
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">Action</th>
+                                                                                            <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">Quantité avant</th>
+                                                                                            <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">Quantité après</th>
+                                                                                            <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">Created</th>
+                                                                                        </tr>
+                                                                                    </thead>
+                                                                                    <tbody>
+                                                                                        @foreach ($stockUp as $itemCli)
+                                                                                            <tr>
+                                                                                                <td>{{ $itemCli->action }}
+                                                                                                </td>
+                                                                                                <td>{{ $itemCli->quantite_avant }}
+                                                                                                </td>
+                                                                                                <td>{{ $itemCli->quantite_apres }}
+                                                                                                </td>
+                                                                                                <td>{{ $itemCli->created_at }}
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        @endforeach
+                                                                                    </tbody>
+                                                                                </table>
                                                                             </div>
                                                                         </div>
                                                                     </div>

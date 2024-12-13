@@ -67,7 +67,7 @@
         <br>
 
         <div class="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6">
-            @if (!Auth::user()->type == 'division')
+            @if (Auth::user()->type !== 'division')
                 <div class="card px-4 pb-4 sm:px-5">
                     <div class="my-3 flex h-8 items-center justify-between px-4 sm:px-5">
                         <h2 class="font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 lg:text-base">
@@ -138,6 +138,12 @@
                                                         </select>
                                                     </label>
                                                     <label class="block">
+                                                        <span>Username</span>
+                                                        <input name="username"
+                                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                                                            placeholder="Saisir le nom utiisateur" type="text" />
+                                                    </label>
+                                                    <label class="block">
                                                         <span>Code</span>
                                                         <input name="code"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
@@ -181,6 +187,10 @@
                                 <tr>
                                     <th
                                         class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                                        Username
+                                    </th>
+                                    <th
+                                        class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                         Code
                                     </th>
                                     <th
@@ -208,6 +218,9 @@
                             <tbody>
                                 @foreach ($clients as $liste)
                                     <tr>
+                                        <td class="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
+                                            {{ $liste->username }}
+                                        </td>
                                         <td class="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
                                             {{ $liste->code_client }}
                                         </td>

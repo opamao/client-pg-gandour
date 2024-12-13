@@ -69,18 +69,22 @@ class UtilisateurController extends Controller
 
             foreach ($rows as $index => $row) {
                 // Ignore les lignes vides ou mal formatées
-                if (empty($row[0]) || empty($row[1]) || empty($row[2])) {
+                if (empty($row[0])) {
                     continue;
                 }
 
                 // Récupère les colonnes du fichier
                 $username = $row[0];
-                $password = $row[1];
-                $type = $row[2];
+                $email = $row[1];
+                $telephone = $row[2];
+                $type = $row[3];
+                $password = $row[4];
 
                 // Création d'utilisateur
                 User::create([
-                    'username' => $username,
+                    'name' => $username,
+                    'email' => $email,
+                    'telephone' => $telephone,
                     'type' => $type,
                     'password' => Hash::make($password),
                 ]);
@@ -96,7 +100,7 @@ class UtilisateurController extends Controller
             return back()->withErrors($errors);
         } else {
             $user = new User();
-            $user->username = $request->name;
+            $user->name = $request->name;
             $user->email = $request->email;
             $user->telephone = $request->phone;
             $user->type = $request->type;
