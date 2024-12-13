@@ -22,37 +22,32 @@ class CustomAuthController extends Controller
     public function customLogin(Request $request)
     {
         $roles = [
-            'email' => 'required|email',
+            'email' => 'required',
             'password' => 'required',
         ];
         $customMessages = [
-            'email.required|email' => "Veuillez saisir votre adresse email",
-            'password.required' => "Veuillez saisir cotre mot de passe",
+            'email.required' => "Veuillez saisir votre nom utilisateur",
+            'password.required' => "Veuillez saisir votre mot de passe",
         ];
         $request->validate($roles, $customMessages);
 
         $credentials = $request->only('email', 'password');
 
-        $user = User::where('email', $credentials['email'])->first();
+        $user = User::where('username', $credentials['email'])->first();
 
         if ($user && Hash::check($credentials['password'], $user->password)) {
             // Lorque les paramètres sont valides, garde les informations dans la session
             Auth::login($user);
 
-            return redirect()->intended('index')->withSuccess('Bon retour');
+            if (Auth::user()->type == 'admin') {
 
-            // if (Auth::user()->type_user == 'responsable') {
+                return redirect()->intended('index')->withSuccess('Bon retour');
+            } else if (Auth::user()->type == 'division') {
 
-            //     return redirect()->intended('comme')->withSuccess('Bon retour');
-            // } else if (Auth::user()->type_user == 'directeur') {
+                return redirect()->intended('clients')->withSuccess('Bon retour');
+            }
 
-            //     return redirect()->intended('dashboard')->withSuccess('Bon retour');
-            // }else if (Auth::user()->type_user == 'super') {
-
-            //     return redirect()->intended('entreprise')->withSuccess('Bon retour');
-            // }
-
-            // return redirect('index')->withErrors(["Vous n'êtes pas autoriser"]);
+            return back()->withInput()->withErrors(["Vous n'êtes pas autoriser"]);
         } else {
             // Les identifiants ne sont pas valides
             return back()->withInput()->withErrors(['E-mail ou mot de passe incorrect']);

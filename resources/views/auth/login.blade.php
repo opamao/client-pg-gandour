@@ -44,7 +44,7 @@
             <a href="#" class="flex items-center space-x-2">
                 <img class="size-12" src="{{ asset('assets') }}/images/app-logo.svg" alt="logo" />
                 <p class="text-xl font-semibold uppercase text-slate-700 dark:text-navy-100">
-                    GANDOUR
+                    GANDOUR ADMIN
                 </p>
             </a>
         </div>
@@ -59,7 +59,8 @@
         <main class="flex w-full flex-col items-center bg-white dark:bg-navy-700 lg:max-w-md">
             <div class="flex w-full max-w-sm grow flex-col justify-center p-5">
                 <div class="text-center">
-                    <img class="mx-auto size-16 lg:hidden" src="{{ asset('assets') }}/images/app-logo.svg" alt="logo" />
+                    <img class="mx-auto size-16 lg:hidden" src="{{ asset('assets') }}/images/app-logo.svg"
+                        alt="logo" />
                     <div class="mt-4">
                         <h2 class="text-2xl font-semibold text-slate-600 dark:text-navy-100">
                             Content de te revoir
@@ -77,7 +78,7 @@
                         <label class="relative flex">
                             <input
                                 class="form-input peer w-full rounded-lg bg-slate-150 px-3 py-2 pl-9 ring-primary/50 placeholder:text-slate-400 hover:bg-slate-200 focus:ring dark:bg-navy-900/90 dark:ring-accent/50 dark:placeholder:text-navy-300 dark:hover:bg-navy-900 dark:focus:bg-navy-900"
-                                placeholder="E-mail" type="email" required name="email" />
+                                placeholder="Username" type="text" required name="email" />
                             <span
                                 class="pointer-events-none absolute flex h-full w-10 items-center justify-center text-slate-400 peer-focus:text-primary dark:text-navy-300 dark:peer-focus:text-accent">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="size-5 transition-colors duration-200"

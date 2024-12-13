@@ -18,7 +18,7 @@ class DivisionsController extends Controller
         if (Auth::check()) {
 
             $division = Divisions::all();
-            $membre = User::all();
+            $membre = User::where('type', '=', 'division')->get();
             return view('divisions.division', compact('division', 'membre'));
 
         } else {

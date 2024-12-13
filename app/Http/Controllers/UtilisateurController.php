@@ -18,11 +18,9 @@ class UtilisateurController extends Controller
 
             $division = User::all();
             return view('utilisateurs.utilisateur', compact('division'));
-
         } else {
             return view('auth.login');
         }
-
     }
 
     /**
@@ -39,30 +37,76 @@ class UtilisateurController extends Controller
     public function store(Request $request)
     {
         $roles = [
-            'name' => 'required',
-            'type' => 'required',
-            'phone' => 'required|unique:users,telephone',
-            'email' => 'required|email|unique:users,email',
+            'name' => 'nullable',
+            'type' => 'nullable',
+            'phone' => 'nullable|unique:users,telephone',
+            'email' => 'nullable|email|unique:users,email',
+            'fichier' => 'nullable|mimes:xlsx,xls,csv|max:2048',
         ];
         $customMessages = [
-            'nom.required' => "Veuillez saisir le nom",
-            'type.required' => "Veuillez saisir le prénom",
-            'phone.unique' => "Le numéro de téléphone est déjà utilisé. Veuillez essayer un autre!",
-            'email.unique' => "L'adresse email est déjà utilisé. Veuillez essayer un autre!",
+            'email.unique' => "L'adresse email est déjà utilisée. Veuillez essayer une autre!",
+            'fichier.mimes' => "Le fichier doit être un fichier de type : xlsx, xls, ou csv.",
+            'fichier.max' => "La taille du fichier ne doit pas dépasser 2 Mo.",
         ];
         $request->validate($roles, $customMessages);
 
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->telephone = $request->phone;
-        $user->type = $request->type;
-        $user->password = Hash::make('1234567890');
+        // Vérifie si un fichier a été uploadé
+        if ($request->hasFile('fichier')) {
+            $file = $request->file('fichier');
 
-        if ($user->save()) {
-            return back()->with('succes',  "Vous avez ajouter " . $request->name);
+            // Utiliser Maatwebsite\Excel pour lire le fichier
+            $data = \Maatwebsite\Excel\Facades\Excel::toArray([], $file);
+
+            // Vérifie si des données sont disponibles dans le fichier
+            if (empty($data) || count($data[0]) === 0) {
+                return back()->withErrors(["Le fichier est vide ou mal formaté."]);
+            }
+
+            $rows = $data[0]; // Première feuille du fichier
+
+            $errors = [];
+            $successCount = 0;
+
+            foreach ($rows as $index => $row) {
+                // Ignore les lignes vides ou mal formatées
+                if (empty($row[0]) || empty($row[1]) || empty($row[2])) {
+                    continue;
+                }
+
+                // Récupère les colonnes du fichier
+                $username = $row[0];
+                $password = $row[1];
+                $type = $row[2];
+
+                // Création d'utilisateur
+                User::create([
+                    'username' => $username,
+                    'type' => $type,
+                    'password' => Hash::make($password),
+                ]);
+
+                $successCount++;
+            }
+
+            // Retourne les résultats de l'importation
+            if ($successCount > 0) {
+                return back()->with('succes',  $successCount . " utilisateurs ont été importés avec succès.");
+            }
+
+            return back()->withErrors($errors);
         } else {
-            return back()->withErrors(["Impossible d'ajouter " . $request->name . ". Veuillez réessayer!!"]);
+            $user = new User();
+            $user->username = $request->name;
+            $user->email = $request->email;
+            $user->telephone = $request->phone;
+            $user->type = $request->type;
+            $user->password = Hash::make($request->password);
+
+            if ($user->save()) {
+                return back()->with('succes',  "Vous avez ajouter " . $request->name);
+            } else {
+                return back()->withErrors(["Impossible d'ajouter " . $request->name . ". Veuillez réessayer!!"]);
+            }
         }
     }
 
@@ -92,13 +136,11 @@ class UtilisateurController extends Controller
         $roles = [
             'name' => 'required',
             'type' => 'required',
-            'phone' => 'required|unique:users,telephone,' . $user->id,
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'phone' => 'nullable|unique:users,telephone,' . $user->id,
+            'email' => 'nullable|email|unique:users,email,' . $user->id,
         ];
 
         $customMessages = [
-            'name.required' => "Veuillez saisir le nom",
-            'type.required' => "Veuillez saisir le type",
             'phone.unique' => "Le numéro de téléphone est déjà utilisé. Veuillez essayer un autre!",
             'email.unique' => "L'adresse email est déjà utilisée. Veuillez essayer une autre!",
         ];

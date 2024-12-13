@@ -22,38 +22,73 @@ class ClientsController extends Controller
     {
         if (Auth::check()) {
 
-            $clients = Clients::leftJoin('divisions', 'clients.division_id', '=', 'divisions.id')
-            ->leftJoin('stocks', 'clients.id', '=', 'stocks.client_id')
-            ->select(
-                'clients.id',
-                'clients.code_client',
-                'clients.nom_client',
-                'clients.email_client',
-                'clients.division_id',
-                'divisions.libelle',
-                DB::raw('SUM(COALESCE(stocks.quantite_initiale, 0)) as sommeQuantiteInitiale')
-            )
-            ->groupBy(
-                'clients.id',
-                'clients.code_client',
-                'clients.nom_client',
-                'clients.email_client',
-                'clients.division_id',
-                'divisions.libelle'
-            )
-            ->get();
+            if (Auth::user()->type == 'division') {
+                $clients = Clients::leftJoin('divisions', 'clients.division_id', '=', 'divisions.id')
+                    ->leftJoin('stocks', 'clients.id', '=', 'stocks.client_id')
+                    ->join('asso_divisions', 'clients.division_id', '=', 'asso_divisions.division_id')
+                    ->where('asso_divisions.user_id', '=', Auth::user()->id)
+                    ->select(
+                        'clients.id',
+                        'clients.code_client',
+                        'clients.precode_client',
+                        'clients.email_client',
+                        'clients.division_id',
+                        'divisions.libelle',
+                        DB::raw('SUM(COALESCE(stocks.quantite_initiale, 0)) as sommeQuantiteInitiale')
+                    )
+                    ->groupBy(
+                        'clients.id',
+                        'clients.code_client',
+                        'clients.precode_client',
+                        'clients.email_client',
+                        'clients.division_id',
+                        'divisions.libelle'
+                    )
+                    ->get();
 
-        $division = Divisions::all();
+                $division = Divisions::all();
 
-        $nbreClient = Clients::count();
-        $totalStock = Stocks::sum('quantite_initiale');
+                $nbreClient = Clients::join('asso_divisions', 'clients.division_id', '=', 'asso_divisions.division_id')
+                    ->where('asso_divisions.user_id', '=', Auth::user()->id)
+                    ->count();
+                $totalStock = Stocks::join('clients', 'stocks.client_id', '=', 'clients.id')
+                    ->join('asso_divisions', 'clients.division_id', '=', 'asso_divisions.division_id')
+                    ->where('asso_divisions.user_id', '=', Auth::user()->id)
+                    ->sum('stocks.quantite_initiale');
 
-        return view('clients.clients', compact('clients', 'division', 'nbreClient', 'totalStock'));
+                return view('clients.clients', compact('clients', 'division', 'nbreClient', 'totalStock'));
+            } else {
+                $clients = Clients::leftJoin('divisions', 'clients.division_id', '=', 'divisions.id')
+                    ->leftJoin('stocks', 'clients.id', '=', 'stocks.client_id')
+                    ->select(
+                        'clients.id',
+                        'clients.code_client',
+                        'clients.precode_client',
+                        'clients.email_client',
+                        'clients.division_id',
+                        'divisions.libelle',
+                        DB::raw('SUM(COALESCE(stocks.quantite_initiale, 0)) as sommeQuantiteInitiale')
+                    )
+                    ->groupBy(
+                        'clients.id',
+                        'clients.code_client',
+                        'clients.precode_client',
+                        'clients.email_client',
+                        'clients.division_id',
+                        'divisions.libelle'
+                    )
+                    ->get();
 
+                $division = Divisions::all();
+
+                $nbreClient = Clients::count();
+                $totalStock = Stocks::sum('quantite_initiale');
+
+                return view('clients.clients', compact('clients', 'division', 'nbreClient', 'totalStock'));
+            }
         } else {
             return view('auth.login');
         }
-
     }
 
     /**
@@ -71,14 +106,13 @@ class ClientsController extends Controller
     {
         // Règles de validation
         $roles = [
-            'division' => 'required',
+            'division' => 'nullable',
             'code' => 'nullable',
             'name' => 'nullable',
             'email' => 'nullable|email|unique:clients,email_client',
             'fichier' => 'nullable|mimes:xlsx,xls,csv|max:2048',
         ];
         $customMessages = [
-            'division.required' => "Veuillez sélectionner sa division",
             'email.unique' => "L'adresse email est déjà utilisée. Veuillez essayer une autre!",
             'fichier.mimes' => "Le fichier doit être un fichier de type : xlsx, xls, ou csv.",
             'fichier.max' => "La taille du fichier ne doit pas dépasser 2 Mo.",
@@ -98,7 +132,6 @@ class ClientsController extends Controller
             }
 
             $rows = $data[0]; // Première feuille du fichier
-            $division_id = $request->division; // Récupération de l'input division
 
             $errors = [];
             $successCount = 0;
@@ -110,35 +143,25 @@ class ClientsController extends Controller
                 }
 
                 // Récupère les colonnes du fichier
-                $code_client = $row[0];
-                $nom_client = $row[1];
-                $email_client = $row[2];
-
-                // Validation pour chaque ligne
-                $validator = Validator::make(
-                    [
-                        'email_client' => $email_client,
-                    ],
-                    [
-                        'email_client' => 'required|email|unique:clients,email_client',
-                    ],
-                    [
-                        'email_client.unique' => "L'email {$email_client} existe déjà.",
-                    ]
-                );
-
-                if ($validator->fails()) {
-                    $errors[] = "Ligne {" . $index + 1 . "} : " . implode(', ', $validator->errors()->all());
-                    continue;
-                }
+                $code = $row[0];
+                $precode = $row[1];
+                $name = $row[2];
+                $adresse = $row[3];
+                $status = $row[4];
+                $date = $row[5];
+                $password = $row[6];
+                $division = $row[7];
 
                 // Création du client
                 Clients::create([
-                    'code_client' => $code_client,
-                    'nom_client' => $nom_client,
-                    'email_client' => $email_client,
-                    'password_client' => Hash::make('1234567890'),
-                    'division_id' => $division_id,
+                    'code_client' => $code,
+                    'precode_client' => $precode,
+                    'name_client' => $name,
+                    'address_client' => $adresse,
+                    'last_sync_attempt' => $date,
+                    'status_client' => $status,
+                    'password_client' => Hash::make($password),
+                    'division_id' => $division,
                 ]);
 
                 $successCount++;
@@ -157,7 +180,7 @@ class ClientsController extends Controller
             $user->nom_client = $request->name;
             $user->email_client = $request->email;
             $user->division_id = $request->division;
-            $user->password_client = Hash::make('1234567890');
+            $user->password_client = Hash::make($request->password);
 
             if ($user->save()) {
                 return back()->with('succes', "Vous avez ajouté " . $request->name);

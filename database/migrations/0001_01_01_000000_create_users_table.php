@@ -9,16 +9,18 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
+
+    //  https://unicsc.org/Home/DataMobility
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('telephone')->unique();
+            $table->string('username');
+            $table->string('email')->unique()->nullable();
+            $table->string('telephone')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('type')->comment('superadmin, admin, employe');
+            $table->string('type')->comment('admin, division');
             $table->rememberToken();
             $table->timestamps();
         });

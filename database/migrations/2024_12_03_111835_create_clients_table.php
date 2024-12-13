@@ -14,8 +14,13 @@ return new class extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->string('code_client');
-            $table->string('nom_client');
-            $table->string('email_client');
+            $table->string('precode_client');
+            $table->string('name_client');
+            $table->string('email_client')->nullable();
+            $table->string('logo_client')->nullable();
+            $table->string('address_client');
+            $table->string('last_sync_attempt')->nullable();
+            $table->integer('status_client')->comment('0 = on, 1 = off');
             $table->string('password_client');
             $table->unsignedBigInteger('division_id');
             $table->foreign('division_id')->references('id')->on('divisions');

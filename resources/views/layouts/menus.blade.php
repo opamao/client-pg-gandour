@@ -53,7 +53,7 @@
                                 <div>
                                     <a href="#"
                                         class="text-base font-medium text-slate-700 hover:text-primary focus:text-primary dark:text-navy-100 dark:hover:text-accent-light dark:focus:text-accent-light">
-                                        {{ Auth::user()->name }}
+                                        {{ Auth::user()->username }}
                                     </a>
                                     <p class="text-xs text-slate-400 dark:text-navy-300">
                                         {{ Auth::user()->type }}
@@ -206,46 +206,57 @@
             <div x-data="{ expandedItem: null }" class="h-[calc(100%-4.5rem)] overflow-x-hidden pb-6"
                 x-init="$el._x_simplebar = new SimpleBar($el);">
                 <ul class="flex flex-1 flex-col px-4 font-inter">
-                    <li>
-                        <a x-data="navLink" href="{{ url('index') }}"
-                            :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
-                                'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
-                            class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                            Tableau de bord
-                        </a>
-                    </li>
-                    <li>
-                        <a x-data="navLink" href="{{ url('users') }}"
-                            :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
-                                'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
-                            class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                            Utilisateurs
-                        </a>
-                    </li>
-                    <li>
-                        <a x-data="navLink" href="{{ url('divisions') }}"
-                            :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
-                                'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
-                            class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                            Divisions
-                        </a>
-                    </li>
-                    <li>
-                        <a x-data="navLink" href="{{ url('clients') }}"
-                            :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
-                                'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
-                            class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                            Clients
-                        </a>
-                    </li>
-                    <li>
-                        <a x-data="navLink" href="{{ url('articles') }}"
-                            :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
-                                'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
-                            class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                            Articles
-                        </a>
-                    </li>
+                    @if (Auth::user()->type == 'division')
+                        <li>
+                            <a x-data="navLink" href="{{ url('clients') }}"
+                                :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
+                                    'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
+                                class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
+                                Clients
+                            </a>
+                        </li>
+                    @else
+                        <li>
+                            <a x-data="navLink" href="{{ url('index') }}"
+                                :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
+                                    'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
+                                class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
+                                Tableau de bord
+                            </a>
+                        </li>
+                        <li>
+                            <a x-data="navLink" href="{{ url('users') }}"
+                                :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
+                                    'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
+                                class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
+                                Utilisateurs
+                            </a>
+                        </li>
+                        <li>
+                            <a x-data="navLink" href="{{ url('divisions') }}"
+                                :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
+                                    'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
+                                class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
+                                Divisions
+                            </a>
+                        </li>
+                        <li>
+                            <a x-data="navLink" href="{{ url('clients') }}"
+                                :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
+                                    'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
+                                class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
+                                Clients
+                            </a>
+                        </li>
+                        <li>
+                            <a x-data="navLink" href="{{ url('articles') }}"
+                                :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
+                                    'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
+                                class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
+                                Articles
+                            </a>
+                        </li>
+                    @endif
                 </ul>
             </div>
         </div>

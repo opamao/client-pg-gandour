@@ -11,13 +11,18 @@ class Clients extends Model
 
     protected $fillable = [
         'code_client',
-        'nom_client',
+        'precode_client',
+        'name_client',
         'email_client',
+        'logo_client',
+        'address_client',
+        'status_client',
+        'last_sync_attempt',
         'password_client',
         'division_id',
-     ];
+    ];
 
-     protected $primaryKey = 'id';
+    protected $primaryKey = 'id';
 
-     protected $table = 'clients';
+    protected $table = 'clients';
 }

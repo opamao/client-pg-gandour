@@ -69,7 +69,7 @@
                                                             autocomplete="off">
                                                             <option value="">Sélectionne...</option>
                                                             @foreach ($membre as $item)
-                                                                <option value="{{ $item->id }}">{{ $item->name }}
+                                                                <option value="{{ $item->id }}">{{ $item->username }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
@@ -114,9 +114,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php
+                                        $i = 1;
+                                    @endphp
                                     @foreach ($division as $liste)
                                         @php
-                                            $i = 1;
                                             $membres = App\Models\AssoDivisions::join(
                                                 'users',
                                                 'asso_divisions.user_id',
@@ -124,7 +126,7 @@
                                                 'users.id',
                                             )
                                                 ->where('asso_divisions.division_id', '=', $liste->id)
-                                                ->select('users.name', 'users.id')
+                                                ->select('users.username', 'users.id')
                                                 ->get();
                                         @endphp
                                         <tr>
@@ -147,7 +149,7 @@
                                                                     <i class="fa fa-user"></i>
                                                                 </div>
                                                             </span>
-                                                            <span class="mx-2">{{ $memb->name }}</span>
+                                                            <span class="mx-2">{{ $memb->username }}</span>
                                                         </span>
                                                     @endforeach
                                                 </div>
@@ -210,7 +212,9 @@
                                                                                 <div class="mt-4 space-y-4">
                                                                                     <label class="block">
                                                                                         <span>Libelle</span>
-                                                                                        <input name="libelle" value="{{ $liste->libelle }}" required
+                                                                                        <input name="libelle"
+                                                                                            value="{{ $liste->libelle }}"
+                                                                                            required
                                                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                                                             placeholder="Saisir la division"
                                                                                             type="text" />
@@ -225,8 +229,9 @@
                                                                                             <option value="">
                                                                                                 Sélectionne...</option>
                                                                                             @foreach ($membre as $itemM)
-                                                                                                <option value="{{ $itemM->id }}">
-                                                                                                    {{ $itemM->name }}
+                                                                                                <option
+                                                                                                    value="{{ $itemM->id }}">
+                                                                                                    {{ $itemM->username }}
                                                                                             @endforeach
                                                                                             </option>
                                                                                         </select>

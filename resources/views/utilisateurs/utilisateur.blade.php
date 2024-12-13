@@ -73,35 +73,53 @@
                                                 </svg>
                                             </button>
                                         </div>
-                                        <form action="{{ route('users.store') }}" method="POST" role="form">
+                                        <form action="{{ route('users.store') }}" method="POST" role="form"
+                                            enctype="multipart/form-data">
                                             @csrf
                                             <div class="px-4 py-4 sm:px-5">
                                                 <div class="mt-4 space-y-4">
                                                     <label class="block">
-                                                        <span>Nom</span>
-                                                        <input name="name" required
+                                                        <span>Fichier</span><br>
+                                                        <small><em>Cliquez pour importer le fichier</em></small>
+                                                        <input name="fichier"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                            placeholder="Saisir son nom" type="text" />
+                                                            placeholder="Veuillez sélectionner le fichier" type="file"
+                                                            accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                                                    </label>
+                                                    <br>
+                                                    <hr>
+                                                    <div class="text-center"><strong>Ou</strong></div>
+                                                    <hr>
+                                                    <label class="block">
+                                                        <span>Username</span>
+                                                        <input name="name"
+                                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                                                            placeholder="Saisir son nom utilisateur" type="text" />
                                                     </label>
                                                     <label class="block">
                                                         <span>E-mail</span>
-                                                        <input name="email" required
+                                                        <input name="email"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                             placeholder="Saisir son prénom" type="email" />
                                                     </label>
                                                     <label class="block">
                                                         <span>Téléphone</span>
-                                                        <input name="phone" required
+                                                        <input name="phone"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                             placeholder="Saisir son prénom" type="text" />
                                                     </label>
                                                     <label class="block">
+                                                        <span>Mot de passe</span>
+                                                        <input name="password"
+                                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                                                            placeholder="Saisir son mot de passe" type="password" />
+                                                    </label>
+                                                    <label class="block">
                                                         <span>Type</span>
-                                                        <select name="type" required
+                                                        <select name="type"
                                                             class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
-                                                            <option value="superadmin">Super Admin</option>
                                                             <option value="admin">Admin</option>
-                                                            <option value="commercial">Commercial</option>
+                                                            <option value="division">Division</option>
                                                         </select>
                                                     </label>
                                                     <div class="space-x-2 text-right">
@@ -131,7 +149,7 @@
                                         </th>
                                         <th
                                             class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                            Nom
+                                            Username
                                         </th>
                                         <th
                                             class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
@@ -157,7 +175,7 @@
                                                 {{ $i++ }}
                                             </td>
                                             <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                                                {{ $liste->name }}
+                                                {{ $liste->username }}
                                             </td>
                                             <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                                                 {{ $liste->email }}
@@ -222,11 +240,11 @@
                                                                             <div class="px-4 py-4 sm:px-5">
                                                                                 <div class="mt-4 space-y-4">
                                                                                     <label class="block">
-                                                                                        <span>Nom</span>
+                                                                                        <span>Username</span>
                                                                                         <input name="name" required
-                                                                                            value="{{ $liste->name }}"
+                                                                                            value="{{ $liste->username }}"
                                                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                                                            placeholder="Saisir son nom"
+                                                                                            placeholder="Saisir son nom utilisateur"
                                                                                             type="text" />
                                                                                     </label>
                                                                                     <label class="block">
