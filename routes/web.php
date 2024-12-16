@@ -24,3 +24,4 @@ Route::resource('clients', ClientsController::class);
 Route::resource('users', UtilisateurController::class);
 Route::resource('divisions', DivisionsController::class);
 Route::resource('articles', ArticlesController::class);
+Route::post('password', [ArticlesController::class, 'editPassword']);

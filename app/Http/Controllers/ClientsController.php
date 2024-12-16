@@ -137,12 +137,14 @@ class ClientsController extends Controller
 
             $rows = $data[0]; // Première feuille du fichier
 
+            array_shift($rows);
+
             $errors = [];
             $successCount = 0;
 
             foreach ($rows as $index => $row) {
                 // Ignore les lignes vides ou mal formatées
-                if (empty($row[0]) || empty($row[1]) || empty($row[2])) {
+                if (empty($row[0])) {
                     continue;
                 }
 
@@ -182,15 +184,17 @@ class ClientsController extends Controller
             $user = new Clients();
             $user->username = $request->username;
             $user->code_client = $request->code;
+            $user->precode_client = $request->precode;
             $user->nom_client = $request->name;
             $user->email_client = $request->email;
+            $user->address_client = $request->pays;
             $user->division_id = $request->division;
             $user->password_client = Hash::make($request->password);
 
             if ($user->save()) {
-                return back()->with('succes', "Vous avez ajouté " . $request->name);
+                return back()->with('succes', "Vous avez ajouté " . $request->username);
             } else {
-                return back()->withErrors(["Impossible d'ajouter " . $request->name . ". Veuillez réessayer!!"]);
+                return back()->withErrors(["Impossible d'ajouter " . $request->username . ". Veuillez réessayer!!"]);
             }
         }
     }

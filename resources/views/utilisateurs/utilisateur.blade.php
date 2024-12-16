@@ -249,7 +249,7 @@
                                                                                     </label>
                                                                                     <label class="block">
                                                                                         <span>E-mail</span>
-                                                                                        <input name="email" required
+                                                                                        <input name="email"
                                                                                             value="{{ $liste->email }}"
                                                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                                                             placeholder="Saisir son prénom"
@@ -257,7 +257,7 @@
                                                                                     </label>
                                                                                     <label class="block">
                                                                                         <span>Téléphone</span>
-                                                                                        <input name="phone" required
+                                                                                        <input name="phone"
                                                                                             value="{{ $liste->telephone }}"
                                                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                                                             placeholder="Saisir son prénom"

@@ -39,6 +39,7 @@ class UtilisateurController extends Controller
         $roles = [
             'name' => 'nullable',
             'type' => 'nullable',
+            'password' => 'nullable',
             'phone' => 'nullable|unique:users,telephone',
             'email' => 'nullable|email|unique:users,email',
             'fichier' => 'nullable|mimes:xlsx,xls,csv|max:2048',
@@ -64,6 +65,8 @@ class UtilisateurController extends Controller
 
             $rows = $data[0]; // Première feuille du fichier
 
+            array_shift($rows);
+
             $errors = [];
             $successCount = 0;
 
@@ -77,8 +80,8 @@ class UtilisateurController extends Controller
                 $username = $row[0];
                 $email = $row[1];
                 $telephone = $row[2];
-                $type = $row[3];
-                $password = $row[4];
+                $password = $row[3];
+                $type = $row[4];
 
                 // Création d'utilisateur
                 User::create([

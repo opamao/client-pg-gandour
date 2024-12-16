@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Articles;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 
 class ArticlesController extends Controller
@@ -188,5 +190,39 @@ class ArticlesController extends Controller
         Articles::findOrFail($id)->delete();
 
         return back()->with('succes', "La suppression a été effectué");
+    }
+
+    public function editPassword(Request $request)
+    {
+        $roles = [
+            'code' => 'required',
+            'codenew' => 'required',
+            'codeconfirm' => 'required',
+        ];
+        $customMessages = [
+            'code.required' => "Veuillez saisir votre mot de passe que vous utilisez en ce moment.",
+            'codenew.required' => "Veuillez saisir votre nouveau mot de passe.",
+            'codeconfirm.required' => "Veuillez saisir a nouveau votre mot de passe.",
+        ];
+        $request->validate($roles, $customMessages);
+
+        if ($request->codenew == $request->codeconfirm) {
+
+            $user = User::where('email', Auth::user()->email)->first();
+
+            if ($user && Hash::check($request->codenew, $user->password)) {
+
+                User::where('id', Auth::user()->id)
+                    ->update([
+                        'password' => Hash::make($request->codenew),
+                    ]);
+
+                return back()->with('succes', "Votre mot de passe a été modifié.");
+            } else {
+                return back()->withErrors(["Votre mot de passe actuel n'est pas correct. Veuillez réessayer!!!"]);
+            }
+        } else {
+            return back()->withErrors(["Les nouveaux mot de passe ne correspondent pas."]);
+        }
     }
 }

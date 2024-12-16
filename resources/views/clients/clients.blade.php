@@ -150,6 +150,12 @@
                                                             placeholder="Saisir le code client" type="text" />
                                                     </label>
                                                     <label class="block">
+                                                        <span>Precode</span>
+                                                        <input name="precode"
+                                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                                                            placeholder="Saisir le precode client" type="text" />
+                                                    </label>
+                                                    <label class="block">
                                                         <span>Nom</span>
                                                         <input name="name"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
@@ -160,6 +166,24 @@
                                                         <input name="email"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                             placeholder="Saisir son prénom" type="email" />
+                                                    </label>
+                                                    <label class="block">
+                                                        <span>Mot de passe</span>
+                                                        <input name="password"
+                                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                                                            placeholder="Saisir un mot de passe" type="password" />
+                                                    </label>
+
+                                                    <label class="block">
+                                                        <span>Pays</span>
+                                                        <select name="division"
+                                                            class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                            <option value="">Sélectionne</option>
+                                                            @foreach ($division as $item)
+                                                                <option value="{{ $item->id }}">{{ $item->libelle }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
                                                     </label>
                                                     <br><br>
                                                     <div class="space-x-2 text-right">
@@ -246,7 +270,7 @@
                                                         class="btn size-8 p-0 text-slate-600 hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
                                                         <i class="fa fa-eye"></i>
                                                     </a>
-                                                    @if (!Auth::user()->type == 'division')
+                                                    @if (Auth::user()->type == 'admin')
                                                         <div x-data="{ showModal{{ $liste->id }}: false }">
                                                             <button @click="showModal{{ $liste->id }} = true"
                                                                 class="btn size-8 p-0 text-info hover:bg-info/20 focus:bg-info/20 active:bg-info/25">
