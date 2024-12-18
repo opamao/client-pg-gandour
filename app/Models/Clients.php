@@ -10,12 +10,13 @@ class Clients extends Model
     use HasFactory;
 
     protected $fillable = [
+        'username',
         'code_client',
         'precode_client',
         'name_client',
         'email_client',
         'logo_client',
-        'address_client',
+        'pays_id',
         'status_client',
         'last_sync_attempt',
         'password_client',

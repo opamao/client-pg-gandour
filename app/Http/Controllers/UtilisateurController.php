@@ -37,15 +37,9 @@ class UtilisateurController extends Controller
     public function store(Request $request)
     {
         $roles = [
-            'name' => 'nullable',
-            'type' => 'nullable',
-            'password' => 'nullable',
-            'phone' => 'nullable|unique:users,telephone',
-            'email' => 'nullable|email|unique:users,email',
             'fichier' => 'nullable|mimes:xlsx,xls,csv|max:2048',
         ];
         $customMessages = [
-            'email.unique' => "L'adresse email est déjà utilisée. Veuillez essayer une autre!",
             'fichier.mimes' => "Le fichier doit être un fichier de type : xlsx, xls, ou csv.",
             'fichier.max' => "La taille du fichier ne doit pas dépasser 2 Mo.",
         ];
@@ -71,8 +65,7 @@ class UtilisateurController extends Controller
             $successCount = 0;
 
             foreach ($rows as $index => $row) {
-                // Ignore les lignes vides ou mal formatées
-                if (empty($row[0])) {
+                if (empty($row[0]) || empty($row[1])) {
                     continue;
                 }
 
@@ -102,6 +95,22 @@ class UtilisateurController extends Controller
 
             return back()->withErrors($errors);
         } else {
+
+        $roles = [
+            'name' => 'required',
+            'type' => 'required',
+            'password' => 'required',
+            'phone' => 'nullable|unique:users,telephone',
+            'email' => 'required|email|unique:users,email',
+        ];
+        $customMessages = [
+            'email.unique' => "L'adresse email est déjà utilisée. Veuillez essayer une autre!",
+            'name.required' => "Saisissez son nom",
+            'type.required' => "Veuillez sélectionner son type",
+            'password.required' => "Saisissez son mot de passe",
+        ];
+        $request->validate($roles, $customMessages);
+
             $user = new User();
             $user->name = $request->name;
             $user->email = $request->email;

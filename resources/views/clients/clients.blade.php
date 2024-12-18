@@ -176,11 +176,12 @@
 
                                                     <label class="block">
                                                         <span>Pays</span>
-                                                        <select name="division"
+                                                        <select name="pays"
                                                             class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
                                                             <option value="">Sélectionne</option>
-                                                            @foreach ($division as $item)
-                                                                <option value="{{ $item->id }}">{{ $item->libelle }}
+                                                            @foreach ($pays as $pay)
+                                                                <option value="{{ $pay->id }}">
+                                                                    {{ $pay->libelle_pays }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
@@ -215,6 +216,10 @@
                                     </th>
                                     <th
                                         class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                                        Nom
+                                    </th>
+                                    <th
+                                        class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                         Code
                                     </th>
                                     <th
@@ -224,6 +229,10 @@
                                     <th
                                         class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                         email
+                                    </th>
+                                    <th
+                                        class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                                        Pays
                                     </th>
                                     <th
                                         class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
@@ -246,6 +255,9 @@
                                             {{ $liste->username }}
                                         </td>
                                         <td class="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
+                                            {{ $liste->name_client }}
+                                        </td>
+                                        <td class="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
                                             {{ $liste->code_client }}
                                         </td>
                                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
@@ -253,6 +265,9 @@
                                         </td>
                                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                                             {{ $liste->email_client }}
+                                        </td>
+                                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">
+                                            {{ $liste->libelle_pays }}
                                         </td>
                                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                                             <div
@@ -341,6 +356,22 @@
                                                                                         </select>
                                                                                     </label>
                                                                                     <label class="block">
+                                                                                        <span>Username</span>
+                                                                                        <input name="username" required
+                                                                                            value="{{ $liste->username }}"
+                                                                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                                                                                            placeholder="Saisir le nom utilisateur"
+                                                                                            type="text" />
+                                                                                    </label>
+                                                                                    <label class="block">
+                                                                                        <span>Nom</span>
+                                                                                        <input name="nom" required
+                                                                                            value="{{ $liste->name_client }}"
+                                                                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                                                                                            placeholder="Saisir le nom client"
+                                                                                            type="text" />
+                                                                                    </label>
+                                                                                    <label class="block">
                                                                                         <span>Code</span>
                                                                                         <input name="code" required
                                                                                             value="{{ $liste->code_client }}"
@@ -350,25 +381,36 @@
                                                                                     </label>
                                                                                     <label class="block">
                                                                                         <span>Precode</span>
-                                                                                        <input name="name" required
+                                                                                        <input name="precode"
                                                                                             value="{{ $liste->precode_client }}"
                                                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                                                            placeholder="Saisir son nom"
+                                                                                            placeholder="Saisir son precode"
                                                                                             type="text" />
                                                                                     </label>
                                                                                     <label class="block">
                                                                                         <span>E-mail</span>
-                                                                                        <input name="email" required
+                                                                                        <input name="email"
                                                                                             value="{{ $liste->email_client }}"
                                                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                                                             placeholder="Saisir son prénom"
                                                                                             type="email" />
                                                                                     </label>
+                                                                                    <label class="block">
+                                                                                        <span>Pays</span>
+                                                                                        <select name="pays" required
+                                                                                            class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                            <option
+                                                                                                value="{{ $liste->pays_id }}">
+                                                                                                Sélectionne</option>
+                                                                                            @foreach ($pays as $pay)
+                                                                                                <option
+                                                                                                    value="{{ $pay->id }}">
+                                                                                                    {{ $pay->libelle_pays }}
+                                                                                                </option>
+                                                                                            @endforeach
+                                                                                        </select>
+                                                                                    </label>
                                                                                     <div class="space-x-2 text-right">
-                                                                                        {{-- <button @click="showModal = false"
-                                                                                    class="btn min-w-[7rem] rounded-full border border-slate-300 font-medium text-slate-800 hover:bg-slate-150 focus:bg-slate-150 active:bg-slate-150/80 dark:border-navy-450 dark:text-navy-50 dark:hover:bg-navy-500 dark:focus:bg-navy-500 dark:active:bg-navy-500/90">
-                                                                                    Annuler
-                                                                                </button> --}}
                                                                                         <button type="submit"
                                                                                             class="btn min-w-[7rem] rounded-full bg-info font-medium text-white hover:bg-info-focus focus:bg-info-focus active:bg-info-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
                                                                                             Modifier

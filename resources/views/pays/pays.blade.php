@@ -1,27 +1,6 @@
 @extends('layouts.master', [
-    'title' => 'Utilisateurs',
+    'title' => 'Pays',
 ])
-
-@push('haut')
-    <link href="{{ asset('assets/table/css') }}/dataTables.tailwindcss.css" />
-@endpush
-
-@push('bas')
-    <script src="{{ asset('assets/table/js') }}/jquery-3.7.1.js"></script>
-    {{-- <link href="{{ asset('assets/table/css') }}/tailwindcss.css" /> --}}
-    <script src="{{ asset('assets/table/js') }}/dataTables.js"></script>
-    <script src="{{ asset('assets/table/js') }}/dataTables.tailwindcss.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#example').DataTable();
-        });
-        $('#example').DataTable({
-            dom: "<'flex justify-between items-center'<'flex items-center'l><'flex items-center'f>>" +
-                "<'mt-4'tr>" +
-                "<'flex justify-between items-center'<'p-2'i><'p-2'p>>",
-        });
-    </script>
-@endpush
 
 @section('content')
     <main class="main-content w-full px-[var(--margin-x)] pb-8">
@@ -29,7 +8,7 @@
 
         <div class="flex items-center space-x-4 py-5 lg:py-6">
             <h2 class="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">
-                Utilisateurs
+                Pays
             </h2>
         </div>
 
@@ -43,7 +22,7 @@
                         <div x-data="{ showModal: false }">
                             <button @click="showModal = true"
                                 class="btn relative bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
-                                Ajouter
+                                Ajouter un pays
                             </button>
                             <template x-teleport="#x-teleport-target">
                                 <div class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5"
@@ -62,7 +41,7 @@
                                         <div
                                             class="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
                                             <h3 class="text-base font-medium text-slate-700 dark:text-navy-100">
-                                                Création
+                                                Ajout
                                             </h3>
                                             <button @click="showModal = !showModal"
                                                 class="btn -mr-1.5 size-7 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
@@ -73,59 +52,20 @@
                                                 </svg>
                                             </button>
                                         </div>
-                                        <form action="{{ route('users.store') }}" method="POST" role="form"
-                                            enctype="multipart/form-data">
+                                        <form action="{{ route('pays.store') }}" method="POST" role="form">
                                             @csrf
                                             <div class="px-4 py-4 sm:px-5">
                                                 <div class="mt-4 space-y-4">
                                                     <label class="block">
-                                                        <span>Fichier</span><br>
-                                                        <small><em>Cliquez pour importer le fichier</em></small>
-                                                        <input name="fichier"
+                                                        <span>Libelle</span>
+                                                        <input name="libelle" required
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                            placeholder="Veuillez sélectionner le fichier" type="file"
-                                                            accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
-                                                    </label>
-                                                    <br>
-                                                    <hr>
-                                                    <div class="text-center"><strong>Ou</strong></div>
-                                                    <hr>
-                                                    <label class="block">
-                                                        <span>Nom</span>
-                                                        <input name="name"
-                                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                            placeholder="Saisir son nom" type="text" />
-                                                    </label>
-                                                    <label class="block">
-                                                        <span>E-mail</span>
-                                                        <input name="email"
-                                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                            placeholder="Saisir son prénom" type="email" />
-                                                    </label>
-                                                    <label class="block">
-                                                        <span>Téléphone</span>
-                                                        <input name="phone"
-                                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                            placeholder="Saisir son prénom" type="text" />
-                                                    </label>
-                                                    <label class="block">
-                                                        <span>Mot de passe</span>
-                                                        <input name="password"
-                                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                            placeholder="Saisir son mot de passe" type="password" />
-                                                    </label>
-                                                    <label class="block">
-                                                        <span>Type</span>
-                                                        <select name="type"
-                                                            class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
-                                                            <option value="admin">Admin</option>
-                                                            <option value="division">Division</option>
-                                                        </select>
+                                                            placeholder="Saisir le pays" type="text" />
                                                     </label>
                                                     <div class="space-x-2 text-right">
                                                         <button type="submit"
                                                             class="btn min-w-[7rem] rounded-full bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
-                                                            Enregistrer
+                                                            Ajouter
                                                         </button>
                                                     </div>
                                                 </div>
@@ -140,7 +80,7 @@
                 <div>
                     <div class="mt-5">
                         <div class="is-scrollbar-hidden min-w-full overflow-x-auto">
-                            <table id="example" class="display" style="width:100%">
+                            <table class="is-zebra w-full text-left">
                                 <thead>
                                     <tr>
                                         <th
@@ -149,15 +89,7 @@
                                         </th>
                                         <th
                                             class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                            Nom
-                                        </th>
-                                        <th
-                                            class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                            E-mail
-                                        </th>
-                                        <th
-                                            class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                            Téléphone
+                                            Libelle
                                         </th>
                                         <th
                                             class="whitespace-nowrap rounded-r-lg bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
@@ -169,19 +101,13 @@
                                     @php
                                         $i = 1;
                                     @endphp
-                                    @foreach ($division as $liste)
+                                    @foreach ($pays as $liste)
                                         <tr>
                                             <td class="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
                                                 {{ $i++ }}
                                             </td>
                                             <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                                                {{ $liste->name }}
-                                            </td>
-                                            <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                                                {{ $liste->email }}
-                                            </td>
-                                            <td class="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
-                                                {{ $liste->telephone }}
+                                                {{ $liste->libelle_pays }}
                                             </td>
                                             <td data-column-id="actions" class="gridjs-td">
                                                 <span>
@@ -233,50 +159,20 @@
                                                                             </button>
                                                                         </div>
                                                                         <form
-                                                                            action="{{ route('users.update', $liste->id) }}"
+                                                                            action="{{ route('pays.update', $liste->id) }}"
                                                                             method="POST" role="form">
                                                                             @csrf
                                                                             @method('PATCH')
                                                                             <div class="px-4 py-4 sm:px-5">
                                                                                 <div class="mt-4 space-y-4">
                                                                                     <label class="block">
-                                                                                        <span>Nom</span>
-                                                                                        <input name="name" required
-                                                                                            value="{{ $liste->name }}"
+                                                                                        <span>Libelle</span>
+                                                                                        <input name="libelle"
+                                                                                            value="{{ $liste->libelle_pays }}"
+                                                                                            required
                                                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                                                            placeholder="Saisir son nom utilisateur"
+                                                                                            placeholder="Saisir la division"
                                                                                             type="text" />
-                                                                                    </label>
-                                                                                    <label class="block">
-                                                                                        <span>E-mail</span>
-                                                                                        <input name="email"
-                                                                                            value="{{ $liste->email }}"
-                                                                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                                                            placeholder="Saisir son email"
-                                                                                            type="email" />
-                                                                                    </label>
-                                                                                    <label class="block">
-                                                                                        <span>Téléphone</span>
-                                                                                        <input name="phone"
-                                                                                            value="{{ $liste->telephone }}"
-                                                                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                                                            placeholder="Saisir son prénom"
-                                                                                            type="text" />
-                                                                                    </label>
-                                                                                    <label class="block">
-                                                                                        <span>Type</span>
-                                                                                        <select name="type" required
-                                                                                            class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
-                                                                                            <option
-                                                                                                value="{{ $liste->type }}">
-                                                                                                Sélectionne</option>
-                                                                                            <option value="superadmin">
-                                                                                                Super Admin</option>
-                                                                                            <option value="admin">Admin
-                                                                                            </option>
-                                                                                            <option value="commercial">
-                                                                                                Commercial</option>
-                                                                                        </select>
                                                                                     </label>
                                                                                     <div class="space-x-2 text-right">
                                                                                         <button type="submit"
@@ -339,7 +235,7 @@
                                                                             </button>
                                                                         </div>
                                                                         <form
-                                                                            action="{{ route('users.destroy', $liste->id) }}"
+                                                                            action="{{ route('pays.destroy', $liste->id) }}"
                                                                             method="POST" role="form">
                                                                             @csrf
                                                                             @method('DELETE')
