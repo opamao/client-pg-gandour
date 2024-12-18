@@ -128,23 +128,23 @@
                         <table id="example" class="is-zebra w-full text-left">
                             <thead>
                                 <tr>
-                                    <th
+                                    <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                         Code
                                     </th>
-                                    <th
+                                    <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                         Unité
                                     </th>
-                                    <th
+                                    <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                         CLS
                                     </th>
-                                    <th
+                                    <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                         Désignation
                                     </th>
-                                    <th
+                                    <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap rounded-r-lg bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                         Action
                                     </th>

@@ -11,37 +11,103 @@
                 Détails clients
             </h2>
         </div>
-
+        <div class="card col-span-12 lg:col-span-12">
+            <div class="mt-4 grid grid-cols-2 gap-3 px-4 sm:mt-5 sm:grid-cols-4 sm:gap-5 sm:px-5 lg:mt-6">
+                <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
+                    <div class="flex justify-between space-x-1">
+                        <p class="text-xl font-semibold text-slate-700 dark:text-navy-100">
+                            {{ $client->username }}
+                        </p>
+                    </div>
+                    <p class="mt-1 text-xs+">Username</p>
+                </div>
+                <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
+                    <div class="flex justify-between space-x-1">
+                        <p class="text-xl font-semibold text-slate-700 dark:text-navy-100">
+                            {{ $client->code_client }}
+                        </p>
+                    </div>
+                    <p class="mt-1 text-xs+">Code</p>
+                </div>
+                <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
+                    <div class="flex justify-between space-x-1">
+                        <p class="text-xl font-semibold text-slate-700 dark:text-navy-100">
+                            {{ $client->precode_client }}
+                        </p>
+                    </div>
+                    <p class="mt-1 text-xs+">Précode</p>
+                </div>
+                <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
+                    <div class="flex justify-between space-x-1">
+                        <p class="text-xl font-semibold text-slate-700 dark:text-navy-100">
+                            {{ $client->name_client }}
+                        </p>
+                    </div>
+                    <p class="mt-1 text-xs+">Nom</p>
+                </div>
+                <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
+                    <div class="flex justify-between space-x-1">
+                        <p class="text-xl font-semibold text-slate-700 dark:text-navy-100">
+                            {{ $client->email_client }}
+                        </p>
+                    </div>
+                    <p class="mt-1 text-xs+">Email</p>
+                </div>
+                <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
+                    <div class="flex justify-between space-x-1">
+                        <p class="text-xl font-semibold text-slate-700 dark:text-navy-100">
+                            {{ $client->libelle_pays  }}
+                        </p>
+                    </div>
+                    <p class="mt-1 text-xs+">Pays</p>
+                </div>
+                <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
+                    <div class="flex justify-between space-x-1">
+                        <p class="text-xl font-semibold text-slate-700 dark:text-navy-100">
+                            {{ $client->libelle  }}
+                        </p>
+                    </div>
+                    <p class="mt-1 text-xs+">Division</p>
+                </div>
+                <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
+                    <div class="flex justify-between space-x-1">
+                        <p class="text-xl font-semibold text-slate-700 dark:text-navy-100">
+                            {{ $client->created_at }}
+                        </p>
+                    </div>
+                    <p class="mt-1 text-xs+">Date de création</p>
+                </div>
+                <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
+                    <div class="flex justify-between space-x-1">
+                        <p class="text-xl font-semibold text-slate-700 dark:text-navy-100">
+                            {{ $client->updated_at }}
+                        </p>
+                    </div>
+                    <p class="mt-1 text-xs+">Date de mise à jour</p>
+                </div>
+            </div>
+        </div>
         <div class="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6">
             <div class="card px-4 pb-4 sm:px-5">
-                <div class="my-3 flex h-8 items-center justify-between px-4 sm:px-5">
-                    <h2 class="font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 lg:text-base">
-
-                    </h2>
-                    <div x-data="usePopper({ placement: 'bottom-end', offset: 4 })" @click.outside="isShowPopper &amp;&amp; (isShowPopper = false)"
-                        class="inline-flex">
-
-                    </div>
-                </div>
                 <div>
                     <div class="mt-5">
                         <div class="is-scrollbar-hidden min-w-full overflow-x-auto">
                             <table class="is-zebra w-full text-left">
                                 <thead>
                                     <tr>
-                                        <th
+                                        <th style="background: #018ea9; color: white;"
                                             class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                             Code
                                         </th>
-                                        <th
+                                        <th style="background: #018ea9; color: white;"
                                             class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                             Quantité
                                         </th>
-                                        <th
+                                        <th style="background: #018ea9; color: white;"
                                             class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                             Date
                                         </th>
-                                        <th
+                                        <th style="background: #018ea9; color: white;"
                                             class="whitespace-nowrap rounded-r-lg bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
 
                                         </th>
@@ -121,10 +187,18 @@
                                                                                 <table class="is-zebra w-full text-left">
                                                                                     <thead>
                                                                                         <tr>
-                                                                                            <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">Action</th>
-                                                                                            <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">Quantité avant</th>
-                                                                                            <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">Quantité après</th>
-                                                                                            <th class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">Created</th>
+                                                                                            <th style="background: #018ea9; color: white;"
+                                                                                                class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                                                                                                Action</th>
+                                                                                            <th style="background: #018ea9; color: white;"
+                                                                                                class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                                                                                                Quantité avant</th>
+                                                                                            <th style="background: #018ea9; color: white;"
+                                                                                                class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                                                                                                Quantité après</th>
+                                                                                            <th style="background: #018ea9; color: white;"
+                                                                                                class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                                                                                                Created</th>
                                                                                         </tr>
                                                                                     </thead>
                                                                                     <tbody>

@@ -83,15 +83,15 @@
                             <table class="is-zebra w-full text-left">
                                 <thead>
                                     <tr>
-                                        <th
+                                        <th style="background: #018ea9; color: white;"
                                             class="whitespace-nowrap rounded-l-lg bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                             #
                                         </th>
-                                        <th
+                                        <th style="background: #018ea9; color: white;"
                                             class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                             Libelle
                                         </th>
-                                        <th
+                                        <th style="background: #018ea9; color: white;"
                                             class="whitespace-nowrap rounded-r-lg bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                             Action
                                         </th>

@@ -7,6 +7,7 @@ use App\Models\Divisions;
 use App\Models\ImportFichierClient;
 use App\Models\Pays;
 use App\Models\Stocks;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -26,6 +27,7 @@ class ClientsController extends Controller
             if (Auth::user()->type == 'division') {
                 $clients = Clients::leftJoin('divisions', 'clients.division_id', '=', 'divisions.id')
                     ->leftJoin('stocks', 'clients.id', '=', 'stocks.client_id')
+                    ->leftJoin('pays', 'clients.pays_id', '=', 'pays.id')
                     ->join('asso_divisions', 'clients.division_id', '=', 'asso_divisions.division_id')
                     ->where('asso_divisions.user_id', '=', Auth::user()->id)
                     ->select(
@@ -35,7 +37,14 @@ class ClientsController extends Controller
                         'clients.precode_client',
                         'clients.email_client',
                         'clients.division_id',
+                        'clients.status_client',
                         'divisions.libelle',
+                        'clients.pays_id',
+                        'clients.created_at',
+                        'clients.updated_at',
+                        'clients.name_client',
+                        'divisions.libelle',
+                        'pays.libelle_pays',
                         DB::raw('SUM(COALESCE(stocks.quantite_initiale, 0)) as sommeQuantiteInitiale')
                     )
                     ->groupBy(
@@ -45,7 +54,14 @@ class ClientsController extends Controller
                         'clients.precode_client',
                         'clients.email_client',
                         'clients.division_id',
-                        'divisions.libelle'
+                        'divisions.libelle',
+                        'clients.pays_id',
+                        'clients.name_client',
+                        'clients.created_at',
+                        'clients.updated_at',
+                        'clients.status_client',
+                        'divisions.libelle',
+                        'pays.libelle_pays',
                     )
                     ->get();
 
@@ -74,6 +90,9 @@ class ClientsController extends Controller
                         'clients.division_id',
                         'clients.pays_id',
                         'clients.name_client',
+                        'clients.created_at',
+                        'clients.updated_at',
+                        'clients.status_client',
                         'divisions.libelle',
                         'pays.libelle_pays',
                         DB::raw('SUM(COALESCE(stocks.quantite_initiale, 0)) as sommeQuantiteInitiale')
@@ -87,6 +106,9 @@ class ClientsController extends Controller
                         'clients.division_id',
                         'clients.pays_id',
                         'clients.name_client',
+                        'clients.created_at',
+                        'clients.updated_at',
+                        'clients.status_client',
                         'divisions.libelle',
                         'pays.libelle_pays',
                     )
@@ -126,7 +148,7 @@ class ClientsController extends Controller
             'fichier.mimes' => "Le fichier doit être un fichier de type : xlsx, xls, ou csv.",
             'fichier.max' => "La taille du fichier ne doit pas dépasser 2 Mo.",
         ];
-        $request->validate($roles, $customMessages);
+        $validated = $request->validate($roles, $customMessages);
 
         // Vérifie si un fichier a été uploadé
         if ($request->hasFile('fichier')) {
@@ -198,7 +220,7 @@ class ClientsController extends Controller
                 'name.required' => "Saisissez son nom",
                 'password.required' => "Saisissez son mot de passe",
             ];
-            $request->validate($roles, $customMessages);
+            $validated = $request->validate($roles, $customMessages);
 
             // Traitement manuel (ajout d'un utilisateur unique)
             $user = new Clients();
@@ -209,12 +231,13 @@ class ClientsController extends Controller
             $user->email_client = $request->email;
             $user->pays_id = $request->pays;
             $user->division_id = $request->division;
+            $user->status_client = $request->statut;
             $user->password_client = Hash::make($request->password);
 
             if ($user->save()) {
-                return back()->with('succes', "Vous avez ajouté " . $request->username);
+                return response()->json(['success' => "Vous avez ajouté " . $request->username]);
             } else {
-                return back()->withErrors(["Impossible d'ajouter " . $request->username . ". Veuillez réessayer!!"]);
+                return response()->json(['errors' => ["Impossible d'ajouter " . $request->username . ". Veuillez réessayer!!"]], 422);
             }
         }
     }
@@ -225,7 +248,16 @@ class ClientsController extends Controller
     public function show(string $id)
     {
         $stock = Stocks::where('client_id', '=', $id)->get();
-        return view('clients.clients-details', compact('stock'));
+        $client = Clients::leftJoin('divisions', 'clients.division_id', '=', 'divisions.id')
+            ->leftJoin('pays', 'clients.pays_id', '=', 'pays.id')
+            ->select(
+                'clients.*',
+                'divisions.libelle',
+                'pays.libelle_pays',
+            )
+            ->where('clients.id', '=', $id)
+            ->first();
+        return view('clients.clients-details', compact('stock', 'client'));
     }
 
     /**
@@ -243,36 +275,64 @@ class ClientsController extends Controller
     {
         $user = Clients::findOrFail($id);
 
+        // Règles de validation
         $roles = [
             'division' => 'required',
             'code' => 'required',
             'nom' => 'required',
             'email' => 'nullable|email|unique:clients,email_client,' . $user->id,
         ];
+
+        // Messages d'erreur personnalisés
         $customMessages = [
             'division.required' => "Veuillez sélectionner sa division",
             'code.required' => "Veuillez saisir son code",
-            'nom' => "Saisissez son nom",
+            'nom.required' => "Saisissez son nom",
             'email.unique' => "L'adresse email est déjà utilisée. Veuillez essayer une autre!",
         ];
+
         $request->validate($roles, $customMessages);
 
-        // Mettre à jour les données uniquement si elles ont changé
-        $user->username = $request->username;
-        $user->precode_client = $request->precode;
-        $user->code_client = $request->code;
-        $user->name_client = $request->nom;
-        $user->division_id = $request->division;
-        $user->pays_id = $request->pays;
+        // Traitement du mot de passe et des autres données
+        if ($request->password == null) {
+            // Mettre à jour les données sans changer le mot de passe
+            $user->username = $request->username;
+            $user->precode_client = $request->precode;
+            $user->code_client = $request->code;
+            $user->name_client = $request->nom;
+            $user->division_id = $request->division;
+            $user->status_client = $request->statut;
+            $user->pays_id = $request->pays;
 
-        if ($user->email_client !== $request->email) {
-            $user->email_client = $request->email;
-        }
+            if ($user->email_client !== $request->email) {
+                $user->email_client = $request->email;
+            }
 
-        if ($user->save()) {
-            return back()->with('succes', "Les informations de " . $request->nom . " ont été mises à jour avec succès.");
+            if ($user->save()) {
+                return back()->with('succes',  "Les informations de " . $request->nom . " ont été mises à jour avec succès.");
+            } else {
+                return back()->withErrors(["Impossible de mettre à jour les informations. Veuillez réessayer!"]);
+            }
         } else {
-            return back()->withErrors(["Impossible de mettre à jour les informations de " . $request->nom . ". Veuillez réessayer!"]);
+            // Mettre à jour les données avec le mot de passe
+            $user->username = $request->username;
+            $user->precode_client = $request->precode;
+            $user->code_client = $request->code;
+            $user->name_client = $request->nom;
+            $user->division_id = $request->division;
+            $user->pays_id = $request->pays;
+            $user->status_client = $request->statut;
+            $user->password_client = Hash::make($request->password);
+
+            if ($user->email_client !== $request->email) {
+                $user->email_client = $request->email;
+            }
+
+            if ($user->save()) {
+                return back()->with('succes',  "Les informations de " . $request->nom . " ont été mises à jour avec succès.");
+            } else {
+                return back()->withErrors(["Impossible de mettre à jour les informations. Veuillez réessayer!"]);
+            }
         }
     }
 

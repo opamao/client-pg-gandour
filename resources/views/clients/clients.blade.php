@@ -21,6 +21,93 @@
                 "<'flex justify-between items-center'<'p-2'i><'p-2'p>>",
         });
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // On écoute l'événement de soumission pour chaque formulaire dans le foreach
+            $('form[id^="formUpdate"]').on('submit', function(e) {
+                e.preventDefault(); // Empêche l'envoi normal du formulaire
+
+                var formId = $(this).attr('id'); // Récupère l'id du formulaire, par exemple 'formUpdate-1'
+                var clientId = formId.split('-')[
+                    1]; // Extrait l'id du client à partir de l'id du formulaire
+
+                // Réinitialiser les messages d'erreur pour ce formulaire
+                $('#formUpdate-' + clientId + ' .text-danger').text(''); // Réinitialiser toutes les erreurs
+                $('#loadingMessage-' + clientId).show(); // Afficher le message "Veuillez patienter"
+
+                var formData = $(this).serialize(); // Sérialiser les données du formulaire
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        // Masquer le message de chargement
+                        $('#loadingMessage-' + clientId).hide();
+
+                        // Si succès, afficher un message de succès
+                        $('#successMessage-' + clientId).text('Mise à jour réussie !')
+                            .show(); // Afficher un message de succès
+                        $('#formUpdate-' + clientId)[0].reset(); // Réinitialiser le formulaire
+                        location
+                            .reload(); // Rafraîchissement de la page (ou vous pouvez choisir de faire un rafraîchissement partiel)
+                    },
+                    error: function(xhr) {
+                        // Masquer le message de chargement
+                        $('#loadingMessage-' + clientId).hide();
+
+                        // Si une erreur de validation se produit, afficher les erreurs dans les éléments correspondants
+                        var errors = xhr.responseJSON.errors;
+                        for (var field in errors) {
+                            // Assurez-vous de cibler chaque champ d'erreur de manière unique pour ce client
+                            $('#error-' + field + '-' + clientId).text(errors[field][
+                                0
+                            ]); // Mettre à jour l'erreur avec l'id spécifique
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#formCreate').on('submit', function(e) {
+                e.preventDefault(); // Empêche l'envoi normal du formulaire
+
+                // Réinitialiser les messages d'erreur
+                $('.text-danger').text('');
+                $('#loadingMessage').show(); // Afficher le message "Veuillez patienter"
+
+                var formData = $(this).serialize(); // Sérialiser les données du formulaire
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        // Masquer le message de chargement
+                        $('#loadingMessage').hide();
+
+                        // Si succès, afficher un message de succès
+                        alert(response.success);
+                        $('#formCreate')[0].reset(); // Réinitialiser le formulaire
+                        location.reload(); // Rafraîchit la page
+                    },
+                    error: function(xhr) {
+                        // Masquer le message de chargement
+                        $('#loadingMessage').hide();
+
+                        // Si une erreur de validation se produit, afficher les erreurs dans les éléments correspondants
+                        var errors = xhr.responseJSON.errors;
+                        for (var field in errors) {
+                            $('#' + 'error-' + field).text(errors[field][0]);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 @endpush
 
 @section('content')
@@ -109,8 +196,8 @@
                                                     </svg>
                                                 </button>
                                             </div>
-                                            <form action="{{ route('clients.store') }}" method="POST" role="form"
-                                                enctype="multipart/form-data">
+                                            <form id="formCreate" action="{{ route('clients.store') }}" method="POST"
+                                                role="form" enctype="multipart/form-data">
                                                 @csrf
                                                 <div class="px-4 py-4 sm:px-5">
                                                     <label class="block">
@@ -120,6 +207,7 @@
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                             placeholder="Veuillez sélectionner le fichier" type="file"
                                                             accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                                                        <span style="color: red;" id="error-fichier"></span>
                                                     </label>
                                                     <br>
                                                     <hr>
@@ -136,44 +224,50 @@
                                                                 </option>
                                                             @endforeach
                                                         </select>
+                                                        <span style="color: red;" id="error-division"></span>
                                                     </label>
                                                     <label class="block">
                                                         <span>Username</span>
                                                         <input name="username"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                             placeholder="Saisir le nom utiisateur" type="text" />
+                                                        <span style="color: red;" id="error-usename"></span>
                                                     </label>
                                                     <label class="block">
                                                         <span>Code</span>
                                                         <input name="code"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                             placeholder="Saisir le code client" type="text" />
+                                                        <span style="color: red;" id="error-code"></span>
                                                     </label>
                                                     <label class="block">
                                                         <span>Precode</span>
                                                         <input name="precode"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                             placeholder="Saisir le precode client" type="text" />
+                                                        <span style="color: red;" id="error-precode"></span>
                                                     </label>
                                                     <label class="block">
                                                         <span>Nom</span>
                                                         <input name="name"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                             placeholder="Saisir son nom" type="text" />
+                                                        <span style="color: red;" id="error-name"></span>
                                                     </label>
                                                     <label class="block">
                                                         <span>E-mail</span>
                                                         <input name="email"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                             placeholder="Saisir son prénom" type="email" />
+                                                        <span style="color: red;" id="error-email"></span>
                                                     </label>
                                                     <label class="block">
                                                         <span>Mot de passe</span>
                                                         <input name="password"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                             placeholder="Saisir un mot de passe" type="password" />
+                                                        <span style="color: red;" id="error-password"></span>
                                                     </label>
-
                                                     <label class="block">
                                                         <span>Pays</span>
                                                         <select name="pays"
@@ -185,7 +279,25 @@
                                                                 </option>
                                                             @endforeach
                                                         </select>
+                                                        <span style="color: red;" id="error-pays"></span>
                                                     </label>
+                                                    <label class="block">
+                                                        <span>Statut</span>
+                                                        <select id="statut" name="statut"
+                                                            class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                            <option value="">
+                                                                Sélectionne</option>
+                                                            <option value="1">Active
+                                                            </option>
+                                                            <option value="0">
+                                                                Désactive</option>
+                                                        </select>
+                                                        <span style="color: red;" id="error-statut"></span>
+                                                    </label>
+                                                    <div id="loadingMessage" style="display: none;">
+                                                        <p>Veuillez patienter, le formulaire
+                                                            est en traitement...</p>
+                                                    </div>
                                                     <br><br>
                                                     <div class="space-x-2 text-right">
                                                         <button type="submit"
@@ -210,39 +322,39 @@
                         <table id="example" class="is-zebra w-full text-left">
                             <thead>
                                 <tr>
-                                    <th
-                                        class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                        Username
-                                    </th>
-                                    <th
+                                    <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                         Nom
                                     </th>
-                                    <th
+                                    <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                         Code
                                     </th>
-                                    <th
-                                        class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                        Precode
-                                    </th>
-                                    <th
-                                        class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                        email
-                                    </th>
-                                    <th
+                                    <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                         Pays
                                     </th>
-                                    <th
+                                    <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                         Division
                                     </th>
-                                    <th
+                                    <th style="background: #018ea9; color: white;"
+                                        class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                                        Statut
+                                    </th>
+                                    <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                         Stocks
                                     </th>
-                                    <th
+                                    <th style="background: #018ea9; color: white;"
+                                        class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                                        Date create
+                                    </th>
+                                    <th style="background: #018ea9; color: white;"
+                                        class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                                        Date update
+                                    </th>
+                                    <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap rounded-r-lg bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                         Action
                                     </th>
@@ -252,19 +364,10 @@
                                 @foreach ($clients as $liste)
                                     <tr>
                                         <td class="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
-                                            {{ $liste->username }}
-                                        </td>
-                                        <td class="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
                                             {{ $liste->name_client }}
                                         </td>
                                         <td class="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
                                             {{ $liste->code_client }}
-                                        </td>
-                                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                                            {{ $liste->precode_client }}
-                                        </td>
-                                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">
-                                            {{ $liste->email_client }}
                                         </td>
                                         <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                                             {{ $liste->libelle_pays }}
@@ -275,8 +378,28 @@
                                                 {{ $liste->libelle }}
                                             </div>
                                         </td>
+                                        <td class="whitespace-nowrap px-4 py-3 sm:px-5">
+                                            @if ($liste->status_client == 1)
+                                                <div
+                                                    class="badge bg-success text-white shadow-soft shadow-success/50 dark:bg-accent dark:shadow-accent/50">
+                                                    Active
+                                                </div>
+                                            @endif
+                                            @if ($liste->status_client == 0)
+                                                <div
+                                                    class="badge bg-error text-white shadow-soft shadow-error/50 dark:bg-accent dark:shadow-accent/50">
+                                                    Désactive
+                                                </div>
+                                            @endif
+                                        </td>
                                         <td class="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
                                             {{ $liste->sommeQuantiteInitiale }}
+                                        </td>
+                                        <td class="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
+                                            {{ $liste->created_at }}
+                                        </td>
+                                        <td class="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
+                                            {{ $liste->updated_at }}
                                         </td>
                                         <td data-column-id="actions" class="gridjs-td">
                                             <span>
@@ -332,7 +455,7 @@
                                                                                 </svg>
                                                                             </button>
                                                                         </div>
-                                                                        <form
+                                                                        <form id="formUpdate-{{ $liste->id }}"
                                                                             action="{{ route('clients.update', $liste->id) }}"
                                                                             method="POST" role="form">
                                                                             @csrf
@@ -341,7 +464,8 @@
                                                                                 <div class="mt-4 space-y-4">
                                                                                     <label class="block">
                                                                                         <span>Division</span>
-                                                                                        <select name="division" required
+                                                                                        <select id="division"
+                                                                                            name="division" required
                                                                                             class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
                                                                                             <option
                                                                                                 value="{{ $liste->division_id }}">
@@ -354,50 +478,77 @@
                                                                                                 </option>
                                                                                             @endforeach
                                                                                         </select>
+                                                                                        <span style="color: red;"
+                                                                                            id="error-division-{{ $liste->id }}"></span>
                                                                                     </label>
                                                                                     <label class="block">
                                                                                         <span>Username</span>
-                                                                                        <input name="username" required
+                                                                                        <input id="username"
+                                                                                            name="username" required
                                                                                             value="{{ $liste->username }}"
                                                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                                                             placeholder="Saisir le nom utilisateur"
                                                                                             type="text" />
+                                                                                        <span style="color: red;"
+                                                                                            id="error-username-{{ $liste->id }}"></span>
                                                                                     </label>
                                                                                     <label class="block">
                                                                                         <span>Nom</span>
-                                                                                        <input name="nom" required
+                                                                                        <input id="nom"
+                                                                                            name="nom"
                                                                                             value="{{ $liste->name_client }}"
                                                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                                                             placeholder="Saisir le nom client"
                                                                                             type="text" />
+                                                                                        <span style="color: red;"
+                                                                                            id="error-nom-{{ $liste->id }}"></span>
+
                                                                                     </label>
                                                                                     <label class="block">
                                                                                         <span>Code</span>
-                                                                                        <input name="code" required
+                                                                                        <input id="code"
+                                                                                            name="code" required
                                                                                             value="{{ $liste->code_client }}"
                                                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                                                             placeholder="Saisir le code client"
                                                                                             type="text" />
+                                                                                        <span style="color: red;"
+                                                                                            id="error-code-{{ $liste->id }}"></span>
                                                                                     </label>
                                                                                     <label class="block">
                                                                                         <span>Precode</span>
-                                                                                        <input name="precode"
+                                                                                        <input id="precode"
+                                                                                            name="precode"
                                                                                             value="{{ $liste->precode_client }}"
                                                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                                                             placeholder="Saisir son precode"
                                                                                             type="text" />
+                                                                                        <span style="color: red;"
+                                                                                            id="error-precode-{{ $liste->id }}"></span>
                                                                                     </label>
                                                                                     <label class="block">
                                                                                         <span>E-mail</span>
-                                                                                        <input name="email"
+                                                                                        <input id="email"
+                                                                                            name="email"
                                                                                             value="{{ $liste->email_client }}"
                                                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                                                             placeholder="Saisir son prénom"
                                                                                             type="email" />
+                                                                                        <span style="color: red;"
+                                                                                            id="error-email-{{ $liste->id }}"></span>
+                                                                                    </label>
+                                                                                    <label class="block">
+                                                                                        <span>Mot de passe</span>
+                                                                                        <input id="password"
+                                                                                            name="password"
+                                                                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                                                                                            placeholder="Saisir son nouveau mot de passe"
+                                                                                            type="password" />
                                                                                     </label>
                                                                                     <label class="block">
                                                                                         <span>Pays</span>
-                                                                                        <select name="pays" required
+                                                                                        <select id="pays"
+                                                                                            name="pays" required
                                                                                             class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
                                                                                             <option
                                                                                                 value="{{ $liste->pays_id }}">
@@ -409,7 +560,33 @@
                                                                                                 </option>
                                                                                             @endforeach
                                                                                         </select>
+                                                                                        <span style="color: red;"
+                                                                                            id="error-pays-{{ $liste->id }}"></span>
                                                                                     </label>
+                                                                                    <label class="block">
+                                                                                        <span>Statut</span>
+                                                                                        <select id="statut"
+                                                                                            name="statut"
+                                                                                            class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                            <option value="">
+                                                                                                Sélectionne</option>
+                                                                                            <option value="1">Active
+                                                                                            </option>
+                                                                                            <option value="0">
+                                                                                                Désactive</option>
+                                                                                        </select>
+                                                                                        <span style="color: red;"
+                                                                                            id="error-statut-{{ $liste->id }}"></span>
+                                                                                    </label>
+                                                                                    <div id="loadingMessage"
+                                                                                        style="display: none;">
+                                                                                        <p>Veuillez patienter, le formulaire
+                                                                                            est en traitement...</p>
+                                                                                    </div>
+                                                                                    <!-- Message de succès -->
+                                                                                    <div id="successMessage-{{ $liste->id }}"
+                                                                                        style="color: green; font-weight: bold; display: none;">
+                                                                                    </div>
                                                                                     <div class="space-x-2 text-right">
                                                                                         <button type="submit"
                                                                                             class="btn min-w-[7rem] rounded-full bg-info font-medium text-white hover:bg-info-focus focus:bg-info-focus active:bg-info-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">

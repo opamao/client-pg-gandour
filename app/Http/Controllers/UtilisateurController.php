@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Divisions;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,8 @@ class UtilisateurController extends Controller
         if (Auth::check()) {
 
             $division = User::all();
-            return view('utilisateurs.utilisateur', compact('division'));
+            $user = Divisions::all();
+            return view('utilisateurs.utilisateur', compact('division', 'user'));
         } else {
             return view('auth.login');
         }
@@ -104,7 +106,9 @@ class UtilisateurController extends Controller
             'email' => 'required|email|unique:users,email',
         ];
         $customMessages = [
+            'email.required' => "L'adresse email est obligatoire.",
             'email.unique' => "L'adresse email est déjà utilisée. Veuillez essayer une autre!",
+            'phone.unique' => "Le numéro de téléphone est déjà utilisé. Veuillez essayer une autre!",
             'name.required' => "Saisissez son nom",
             'type.required' => "Veuillez sélectionner son type",
             'password.required' => "Saisissez son mot de passe",
@@ -119,9 +123,9 @@ class UtilisateurController extends Controller
             $user->password = Hash::make($request->password);
 
             if ($user->save()) {
-                return back()->with('succes',  "Vous avez ajouter " . $request->name);
+                return response()->json(['success' => "Vous avez ajouté " . $request->name]);
             } else {
-                return back()->withErrors(["Impossible d'ajouter " . $request->name . ". Veuillez réessayer!!"]);
+                return response()->json(['errors' => ["Impossible d'ajouter " . $request->name . ". Veuillez réessayer!!"]], 422);
             }
         }
     }
