@@ -20,11 +20,9 @@ class DivisionsController extends Controller
             $division = Divisions::all();
             $membre = User::where('type', '=', 'division')->get();
             return view('divisions.division', compact('division', 'membre'));
-
         } else {
             return view('auth.login');
         }
-
     }
 
     /**
@@ -108,13 +106,31 @@ class DivisionsController extends Controller
         $division->save();
 
         if (!empty($request->membre)) {
-            AssoDivisions::where('division_id', $id)->delete();
+            // On commence par récupérer toutes les associations existantes pour cet utilisateur
+            $existingAssociations = AssoDivisions::where('division_id', $id)->get();
 
-            foreach ($request->membre as $newUserId) {
-                $association = new AssoDivisions();
-                $association->division_id = $division->id;
-                $association->user_id = $newUserId;
-                $association->save();
+            // Supprimer les associations existantes qui ne correspondent pas à la nouvelle liste
+            foreach ($existingAssociations as $association) {
+                if (!in_array($association->user_id, $request->membre)) {
+                    // Si l'association de division pour l'utilisateur n'est pas dans la nouvelle liste, on la supprime
+                    $association->delete();
+                }
+            }
+
+            // Ajouter de nouvelles associations si elles n'existent pas déjà
+            foreach ($request->membre as $newMembreId) {
+                // Vérifier si l'association existe déjà
+                $existingAssociation = AssoDivisions::where('division_id', $id)
+                    ->where('user_id', $newMembreId)
+                    ->first();
+
+                // Si l'association n'existe pas, on la crée
+                if (!$existingAssociation) {
+                    $association = new AssoDivisions();
+                    $association->division_id = $id;
+                    $association->user_id = $newMembreId;
+                    $association->save();
+                }
             }
         }
 

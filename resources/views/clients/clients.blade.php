@@ -151,6 +151,41 @@
             </div>
         </div>
         <br>
+        <div class="grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-2 lg:gap-6">
+            <div class="rounded-lg bg-gradient-to-r from-sky-400 to-blue-600 p-1" style="background: lightcoral;">
+                <a href="{{ url('retard', 2) }}">
+                    <div class="rounded-lg bg-slate-50 px-4 py-4 dark:bg-navy-900 sm:px-5">
+                        <div>
+                            <h2 class="text-lg font-medium tracking-wide text-slate-600 line-clamp-1 dark:text-navy-100">
+                                Nombre de client stock moins de 2 semaines
+                            </h2>
+                        </div>
+                        <div class="pt-2">
+                            <p>
+                                {{ $clientsWithoutStockLastWeek }}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="rounded-lg bg-gradient-to-r from-sky-400 to-blue-600 p-1" style="background: lightcoral;">
+                <a href="{{ url('retard', 1) }}">
+                    <div class="rounded-lg bg-slate-50 px-4 py-4 dark:bg-navy-900 sm:px-5">
+                        <div>
+                            <h2 class="text-lg font-medium tracking-wide text-slate-600 line-clamp-1 dark:text-navy-100">
+                                Nombre de client stock moins de un mois
+                            </h2>
+                        </div>
+                        <div class="pt-2">
+                            <p>
+                                {{ $clientsWithoutStockLastMonth }}
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <br>
         <br>
 
         <div class="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6">

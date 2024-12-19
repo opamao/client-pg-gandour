@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AssoDivisions;
 use App\Models\Divisions;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,8 +18,9 @@ class UtilisateurController extends Controller
     {
         if (Auth::check()) {
 
-            $division = User::all();
-            $user = Divisions::all();
+            $user = User::all();
+
+            $division = Divisions::all();
             return view('utilisateurs.utilisateur', compact('division', 'user'));
         } else {
             return view('auth.login');
@@ -98,22 +100,24 @@ class UtilisateurController extends Controller
             return back()->withErrors($errors);
         } else {
 
-        $roles = [
-            'name' => 'required',
-            'type' => 'required',
-            'password' => 'required',
-            'phone' => 'nullable|unique:users,telephone',
-            'email' => 'required|email|unique:users,email',
-        ];
-        $customMessages = [
-            'email.required' => "L'adresse email est obligatoire.",
-            'email.unique' => "L'adresse email est déjà utilisée. Veuillez essayer une autre!",
-            'phone.unique' => "Le numéro de téléphone est déjà utilisé. Veuillez essayer une autre!",
-            'name.required' => "Saisissez son nom",
-            'type.required' => "Veuillez sélectionner son type",
-            'password.required' => "Saisissez son mot de passe",
-        ];
-        $request->validate($roles, $customMessages);
+            $roles = [
+                'division' => 'required|array',
+                'name' => 'required',
+                'type' => 'required',
+                'password' => 'required',
+                'phone' => 'nullable|unique:users,telephone',
+                'email' => 'required|email|unique:users,email',
+            ];
+            $customMessages = [
+                'division.required' => "Veuillez sélectionner au moins une division.",
+                'email.required' => "L'adresse email est obligatoire.",
+                'email.unique' => "L'adresse email est déjà utilisée. Veuillez essayer une autre!",
+                'phone.unique' => "Le numéro de téléphone est déjà utilisé. Veuillez essayer une autre!",
+                'name.required' => "Saisissez son nom",
+                'type.required' => "Veuillez sélectionner son type",
+                'password.required' => "Saisissez son mot de passe",
+            ];
+            $request->validate($roles, $customMessages);
 
             $user = new User();
             $user->name = $request->name;
@@ -123,6 +127,12 @@ class UtilisateurController extends Controller
             $user->password = Hash::make($request->password);
 
             if ($user->save()) {
+                foreach ($request->division as $divisionId) {
+                    $association = new AssoDivisions();
+                    $association->division_id = $divisionId;
+                    $association->user_id = $user->id;
+                    $association->save();
+                }
                 return response()->json(['success' => "Vous avez ajouté " . $request->name]);
             } else {
                 return response()->json(['errors' => ["Impossible d'ajouter " . $request->name . ". Veuillez réessayer!!"]], 422);
@@ -180,6 +190,36 @@ class UtilisateurController extends Controller
         }
 
         if ($user->save()) {
+
+            if (!empty($request->division)) {
+                // On commence par récupérer toutes les associations existantes pour cet utilisateur
+                $existingAssociations = AssoDivisions::where('user_id', $id)->get();
+
+                // Supprimer les associations existantes qui ne correspondent pas à la nouvelle liste
+                foreach ($existingAssociations as $association) {
+                    if (!in_array($association->division_id, $request->division)) {
+                        // Si l'association de division pour l'utilisateur n'est pas dans la nouvelle liste, on la supprime
+                        $association->delete();
+                    }
+                }
+
+                // Ajouter de nouvelles associations si elles n'existent pas déjà
+                foreach ($request->division as $newDivisionId) {
+                    // Vérifier si l'association existe déjà
+                    $existingAssociation = AssoDivisions::where('user_id', $id)
+                        ->where('division_id', $newDivisionId)
+                        ->first();
+
+                    // Si l'association n'existe pas, on la crée
+                    if (!$existingAssociation) {
+                        $association = new AssoDivisions();
+                        $association->division_id = $newDivisionId;
+                        $association->user_id = $id;
+                        $association->save();
+                    }
+                }
+            }
+
             return back()->with('succes', "Les informations de " . $request->name . " ont été mises à jour avec succès.");
         } else {
             return back()->withErrors(["Impossible de mettre à jour les informations de " . $request->name . ". Veuillez réessayer!"]);
@@ -192,6 +232,7 @@ class UtilisateurController extends Controller
     public function destroy(string $id)
     {
         User::findOrFail($id)->delete();
+        AssoDivisions::where('user_id', $id)->delete();
 
         return back()->with('succes', "La suppression a été effectué");
     }

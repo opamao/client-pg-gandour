@@ -22,93 +22,93 @@
         });
     </script>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        // On écoute l'événement de soumission pour chaque formulaire dans le foreach
-        $('form[id^="formUpdate"]').on('submit', function(e) {
-            e.preventDefault(); // Empêche l'envoi normal du formulaire
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // On écoute l'événement de soumission pour chaque formulaire dans le foreach
+            $('form[id^="formUpdate"]').on('submit', function(e) {
+                e.preventDefault(); // Empêche l'envoi normal du formulaire
 
-            var formId = $(this).attr('id'); // Récupère l'id du formulaire, par exemple 'formUpdate-1'
-            var clientId = formId.split('-')[
-                1]; // Extrait l'id du client à partir de l'id du formulaire
+                var formId = $(this).attr('id'); // Récupère l'id du formulaire, par exemple 'formUpdate-1'
+                var clientId = formId.split('-')[
+                    1]; // Extrait l'id du client à partir de l'id du formulaire
 
-            // Réinitialiser les messages d'erreur pour ce formulaire
-            $('#formUpdate-' + clientId + ' .text-danger').text(''); // Réinitialiser toutes les erreurs
-            $('#loadingMessage-' + clientId).show(); // Afficher le message "Veuillez patienter"
+                // Réinitialiser les messages d'erreur pour ce formulaire
+                $('#formUpdate-' + clientId + ' .text-danger').text(''); // Réinitialiser toutes les erreurs
+                $('#loadingMessage-' + clientId).show(); // Afficher le message "Veuillez patienter"
 
-            var formData = $(this).serialize(); // Sérialiser les données du formulaire
+                var formData = $(this).serialize(); // Sérialiser les données du formulaire
 
-            $.ajax({
-                url: $(this).attr('action'),
-                method: 'POST',
-                data: formData,
-                success: function(response) {
-                    // Masquer le message de chargement
-                    $('#loadingMessage-' + clientId).hide();
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        // Masquer le message de chargement
+                        $('#loadingMessage-' + clientId).hide();
 
-                    // Si succès, afficher un message de succès
-                    $('#successMessage-' + clientId).text('Mise à jour réussie !')
-                        .show(); // Afficher un message de succès
-                    $('#formUpdate-' + clientId)[0].reset(); // Réinitialiser le formulaire
-                    location
-                        .reload(); // Rafraîchissement de la page (ou vous pouvez choisir de faire un rafraîchissement partiel)
-                },
-                error: function(xhr) {
-                    // Masquer le message de chargement
-                    $('#loadingMessage-' + clientId).hide();
+                        // Si succès, afficher un message de succès
+                        $('#successMessage-' + clientId).text('Mise à jour réussie !')
+                            .show(); // Afficher un message de succès
+                        $('#formUpdate-' + clientId)[0].reset(); // Réinitialiser le formulaire
+                        location
+                            .reload(); // Rafraîchissement de la page (ou vous pouvez choisir de faire un rafraîchissement partiel)
+                    },
+                    error: function(xhr) {
+                        // Masquer le message de chargement
+                        $('#loadingMessage-' + clientId).hide();
 
-                    // Si une erreur de validation se produit, afficher les erreurs dans les éléments correspondants
-                    var errors = xhr.responseJSON.errors;
-                    for (var field in errors) {
-                        // Assurez-vous de cibler chaque champ d'erreur de manière unique pour ce client
-                        $('#error-' + field + '-' + clientId).text(errors[field][
-                            0
-                        ]); // Mettre à jour l'erreur avec l'id spécifique
+                        // Si une erreur de validation se produit, afficher les erreurs dans les éléments correspondants
+                        var errors = xhr.responseJSON.errors;
+                        for (var field in errors) {
+                            // Assurez-vous de cibler chaque champ d'erreur de manière unique pour ce client
+                            $('#error-' + field + '-' + clientId).text(errors[field][
+                                0
+                            ]); // Mettre à jour l'erreur avec l'id spécifique
+                        }
                     }
-                }
+                });
             });
         });
-    });
-</script>
-<script>
-    $(document).ready(function() {
-        $('#formCreate').on('submit', function(e) {
-            e.preventDefault(); // Empêche l'envoi normal du formulaire
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#formCreate').on('submit', function(e) {
+                e.preventDefault(); // Empêche l'envoi normal du formulaire
 
-            // Réinitialiser les messages d'erreur
-            $('.text-danger').text('');
-            $('#loadingMessage').show(); // Afficher le message "Veuillez patienter"
+                // Réinitialiser les messages d'erreur
+                $('.text-danger').text('');
+                $('#loadingMessage').show(); // Afficher le message "Veuillez patienter"
 
-            var formData = $(this).serialize(); // Sérialiser les données du formulaire
+                var formData = $(this).serialize(); // Sérialiser les données du formulaire
 
-            $.ajax({
-                url: $(this).attr('action'),
-                method: 'POST',
-                data: formData,
-                success: function(response) {
-                    // Masquer le message de chargement
-                    $('#loadingMessage').hide();
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        // Masquer le message de chargement
+                        $('#loadingMessage').hide();
 
-                    // Si succès, afficher un message de succès
-                    alert(response.success);
-                    $('#formCreate')[0].reset(); // Réinitialiser le formulaire
-                    location.reload(); // Rafraîchit la page
-                },
-                error: function(xhr) {
-                    // Masquer le message de chargement
-                    $('#loadingMessage').hide();
+                        // Si succès, afficher un message de succès
+                        alert(response.success);
+                        $('#formCreate')[0].reset(); // Réinitialiser le formulaire
+                        location.reload(); // Rafraîchit la page
+                    },
+                    error: function(xhr) {
+                        // Masquer le message de chargement
+                        $('#loadingMessage').hide();
 
-                    // Si une erreur de validation se produit, afficher les erreurs dans les éléments correspondants
-                    var errors = xhr.responseJSON.errors;
-                    for (var field in errors) {
-                        $('#' + 'error-' + field).text(errors[field][0]);
+                        // Si une erreur de validation se produit, afficher les erreurs dans les éléments correspondants
+                        var errors = xhr.responseJSON.errors;
+                        for (var field in errors) {
+                            $('#' + 'error-' + field).text(errors[field][0]);
+                        }
                     }
-                }
+                });
             });
         });
-    });
-</script>
+    </script>
 @endpush
 
 @section('content')
@@ -161,8 +161,8 @@
                                                 </svg>
                                             </button>
                                         </div>
-                                        <form id="formCreate" action="{{ route('users.store') }}" method="POST" role="form"
-                                            enctype="multipart/form-data">
+                                        <form id="formCreate" action="{{ route('utilisateurs.store') }}" method="POST"
+                                            role="form" enctype="multipart/form-data">
                                             @csrf
                                             <div class="px-4 py-4 sm:px-5">
                                                 <div class="mt-4 space-y-4">
@@ -173,39 +173,52 @@
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                             placeholder="Veuillez sélectionner le fichier" type="file"
                                                             accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
-                                                            <span style="color: red;" id="error-fichier"></span>
+                                                        <span style="color: red;" id="error-fichier"></span>
                                                     </label>
                                                     <br>
                                                     <hr>
                                                     <div class="text-center"><strong>Ou</strong></div>
                                                     <hr>
                                                     <label class="block">
+                                                        <span>Division</span>
+                                                        <select name="division[]" x-init="$el._tom = new Tom($el)"
+                                                            class="mt-1.5 w-full" multiple placeholder="Sélectionne..."
+                                                            autocomplete="off">
+                                                            <option value="">Sélectionne...</option>
+                                                            @foreach ($division as $item)
+                                                                <option value="{{ $item->id }}">{{ $item->libelle }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                        <span style="color: red;" id="error-division"></span>
+                                                    </label>
+                                                    <label class="block">
                                                         <span>Nom</span>
                                                         <input name="name" id="name"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                             placeholder="Saisir son nom" type="text" />
-                                                            <span style="color: red;" id="error-name"></span>
+                                                        <span style="color: red;" id="error-name"></span>
                                                     </label>
                                                     <label class="block">
                                                         <span>E-mail</span>
                                                         <input name="email" id="email"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                             placeholder="Saisir son prénom" type="email" />
-                                                            <span style="color: red;" id="error-email"></span>
+                                                        <span style="color: red;" id="error-email"></span>
                                                     </label>
                                                     <label class="block">
                                                         <span>Téléphone</span>
                                                         <input name="phone" id="phone"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                             placeholder="Saisir son prénom" type="text" />
-                                                            <span style="color: red;" id="error-phone"></span>
+                                                        <span style="color: red;" id="error-phone"></span>
                                                     </label>
                                                     <label class="block">
                                                         <span>Mot de passe</span>
                                                         <input name="password" id="paswword"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                             placeholder="Saisir son mot de passe" type="password" />
-                                                            <span style="color: red;" id="error-password"></span>
+                                                        <span style="color: red;" id="error-password"></span>
                                                     </label>
                                                     <label class="block">
                                                         <span>Type</span>
@@ -259,6 +272,14 @@
                                             Téléphone
                                         </th>
                                         <th style="background: #018ea9; color: white;"
+                                            class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                                            Type
+                                        </th>
+                                        <th style="background: #018ea9; color: white;"
+                                            class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                                            Division
+                                        </th>
+                                        <th style="background: #018ea9; color: white;"
                                             class="whitespace-nowrap rounded-r-lg bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                             Action
                                         </th>
@@ -268,7 +289,18 @@
                                     @php
                                         $i = 1;
                                     @endphp
-                                    @foreach ($division as $liste)
+                                    @foreach ($user as $liste)
+                                        @php
+                                            $divisions = App\Models\AssoDivisions::leftJoin(
+                                                'divisions',
+                                                'asso_divisions.division_id',
+                                                '=',
+                                                'divisions.id',
+                                            )
+                                                ->where('asso_divisions.user_id', '=', $liste->id)
+                                                ->select('divisions.libelle', 'divisions.id')
+                                                ->get();
+                                        @endphp
                                         <tr>
                                             <td class="whitespace-nowrap rounded-l-lg px-4 py-3 sm:px-5">
                                                 {{ $i++ }}
@@ -281,6 +313,17 @@
                                             </td>
                                             <td class="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
                                                 {{ $liste->telephone }}
+                                            </td>
+                                            <td class="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
+                                                {{ $liste->type }}
+                                            </td>
+                                            <td class="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
+                                                @foreach ($divisions as $divise)
+                                                    <div
+                                                        class="badge bg-primary text-white shadow-soft shadow-primary/50 dark:bg-accent dark:shadow-accent/50">
+                                                        {{ $divise->libelle }}
+                                                    </div>
+                                                @endforeach
                                             </td>
                                             <td data-column-id="actions" class="gridjs-td">
                                                 <span>
@@ -332,45 +375,72 @@
                                                                             </button>
                                                                         </div>
                                                                         <form id="formUpdate-{{ $liste->id }}"
-                                                                            action="{{ route('users.update', $liste->id) }}"
+                                                                            action="{{ route('utilisateurs.update', $liste->id) }}"
                                                                             method="POST" role="form">
                                                                             @csrf
                                                                             @method('PATCH')
                                                                             <div class="px-4 py-4 sm:px-5">
                                                                                 <div class="mt-4 space-y-4">
                                                                                     <label class="block">
+                                                                                        <span>Division</span>
+                                                                                        <select name="division[]"
+                                                                                            x-init="$el._tom = new Tom($el)"
+                                                                                            class="mt-1.5 w-full" multiple
+                                                                                            placeholder="Sélectionne..."
+                                                                                            autocomplete="off">
+                                                                                            @foreach ($divisions as $divis)
+                                                                                                <option selected
+                                                                                                    value="{{ $divis->id }}">
+                                                                                                    {{ $divis->libelle }}
+                                                                                                </option>
+                                                                                            @endforeach
+                                                                                            @foreach ($division as $item)
+                                                                                                <option
+                                                                                                    value="{{ $item->id }}">
+                                                                                                    {{ $item->libelle }}
+                                                                                                </option>
+                                                                                            @endforeach
+                                                                                        </select>
+                                                                                        <span style="color: red;"
+                                                                                            id="error-division"></span>
+                                                                                    </label>
+                                                                                    <label class="block">
                                                                                         <span>Nom</span>
-                                                                                        <input name="name" required id="name"
+                                                                                        <input name="name" required
+                                                                                            id="name"
                                                                                             value="{{ $liste->name }}"
                                                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                                                             placeholder="Saisir son nom utilisateur"
                                                                                             type="text" />
-                                                                                            <span style="color: red;"
-                                                                                                id="error-name-{{ $liste->id }}"></span>
+                                                                                        <span style="color: red;"
+                                                                                            id="error-name-{{ $liste->id }}"></span>
                                                                                     </label>
                                                                                     <label class="block">
                                                                                         <span>E-mail</span>
-                                                                                        <input name="email" id="email"
+                                                                                        <input name="email"
+                                                                                            id="email"
                                                                                             value="{{ $liste->email }}"
                                                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                                                             placeholder="Saisir son email"
                                                                                             type="email" />
-                                                                                            <span style="color: red;"
-                                                                                                id="error-email-{{ $liste->id }}"></span>
+                                                                                        <span style="color: red;"
+                                                                                            id="error-email-{{ $liste->id }}"></span>
                                                                                     </label>
                                                                                     <label class="block">
                                                                                         <span>Téléphone</span>
-                                                                                        <input name="phone" id="phone"
+                                                                                        <input name="phone"
+                                                                                            id="phone"
                                                                                             value="{{ $liste->telephone }}"
                                                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                                                             placeholder="Saisir son prénom"
                                                                                             type="text" />
-                                                                                            <span style="color: red;"
-                                                                                                id="error-phone-{{ $liste->id }}"></span>
+                                                                                        <span style="color: red;"
+                                                                                            id="error-phone-{{ $liste->id }}"></span>
                                                                                     </label>
                                                                                     <label class="block">
                                                                                         <span>Type</span>
-                                                                                        <select name="type" required id="type"
+                                                                                        <select name="type" required
+                                                                                            id="type"
                                                                                             class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
                                                                                             <option
                                                                                                 value="{{ $liste->type }}">
@@ -455,7 +525,7 @@
                                                                             </button>
                                                                         </div>
                                                                         <form
-                                                                            action="{{ route('users.destroy', $liste->id) }}"
+                                                                            action="{{ route('utilisateurs.destroy', $liste->id) }}"
                                                                             method="POST" role="form">
                                                                             @csrf
                                                                             @method('DELETE')

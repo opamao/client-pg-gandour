@@ -25,7 +25,8 @@ Route::get('password', function () {
 });
 
 Route::resource('clients', ClientsController::class);
-Route::resource('users', UtilisateurController::class);
+Route::get('retard/{date}', [ClientsController::class, 'dateCalcul']);
+Route::resource('utilisateurs', UtilisateurController::class);
 Route::resource('divisions', DivisionsController::class);
 Route::resource('articles', ArticlesController::class);
 Route::resource('pays', PaysController::class);

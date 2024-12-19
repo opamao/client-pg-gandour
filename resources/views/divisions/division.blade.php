@@ -223,8 +223,12 @@
                                                                                             class="mt-1.5 w-full" multiple
                                                                                             placeholder="Sélectionne..."
                                                                                             autocomplete="off">
-                                                                                            <option value="">
-                                                                                                Sélectionne...</option>
+                                                                                            @foreach ($membres as $memb)
+                                                                                                <option selected
+                                                                                                    value="{{ $memb->id }}">
+                                                                                                    {{ $memb->name }}
+                                                                                                </option>
+                                                                                            @endforeach
                                                                                             @foreach ($membre as $itemM)
                                                                                                 <option
                                                                                                     value="{{ $itemM->id }}">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Clients;
 use App\Models\Divisions;
 use App\Models\ImportFichierClient;
@@ -22,6 +23,11 @@ class ClientsController extends Controller
      */
     public function index()
     {
+
+        // Récupérer la date d'une semaine et d'un mois en arrière
+        $oneWeekAgo = Carbon::now()->subWeek(2); // Date il y a une semaine
+        $oneMonthAgo = Carbon::now()->subMonth(); // Date il y a un mois
+
         if (Auth::check()) {
 
             if (Auth::user()->type == 'division') {
@@ -76,7 +82,23 @@ class ClientsController extends Controller
                     ->sum('stocks.quantite_initiale');
                 $pays = Pays::all();
 
-                return view('clients.clients', compact('clients', 'division', 'nbreClient', 'totalStock', 'pays'));
+                // Clients qui n'ont pas chargé leur stock depuis une semaine
+                $clientsWithoutStockLastWeek = Stocks::join('clients', 'stocks.client_id', '=', 'clients.id')
+                    ->join('asso_divisions', 'clients.division_id', '=', 'asso_divisions.division_id')
+                    ->where('asso_divisions.user_id', '=', Auth::user()->id)
+                    ->where('stocks.updated_at', '<', $oneWeekAgo) // Clients qui n'ont pas chargé leur stock depuis une semaine
+                    ->distinct('stocks.client_id') // Pour compter les clients uniques
+                    ->count('stocks.client_id'); // Compter le nombre de clients
+
+                // Clients qui n'ont pas chargé leur stock depuis un mois
+                $clientsWithoutStockLastMonth = Stocks::join('clients', 'stocks.client_id', '=', 'clients.id')
+                    ->join('asso_divisions', 'clients.division_id', '=', 'asso_divisions.division_id')
+                    ->where('asso_divisions.user_id', '=', Auth::user()->id)
+                    ->where('stocks.updated_at', '<', $oneMonthAgo) // Clients qui n'ont pas chargé leur stock depuis un mois
+                    ->distinct('stocks.client_id') // Pour compter les clients uniques
+                    ->count('stocks.client_id'); // Compter le nombre de clients
+
+                return view('clients.clients', compact('clients', 'division', 'nbreClient', 'totalStock', 'pays', 'clientsWithoutStockLastWeek', 'clientsWithoutStockLastMonth'));
             } else {
                 $clients = Clients::leftJoin('divisions', 'clients.division_id', '=', 'divisions.id')
                     ->leftJoin('stocks', 'clients.id', '=', 'stocks.client_id')
@@ -120,7 +142,10 @@ class ClientsController extends Controller
                 $totalStock = Stocks::sum('quantite_initiale');
                 $pays = Pays::all();
 
-                return view('clients.clients', compact('clients', 'division', 'nbreClient', 'totalStock', 'pays'));
+                $clientsWithoutStockLastWeek = Stocks::where('updated_at', '<', $oneWeekAgo)->count();
+                $clientsWithoutStockLastMonth = Stocks::where('updated_at', '<', $oneMonthAgo)->count();
+
+                return view('clients.clients', compact('clients', 'division', 'nbreClient', 'totalStock', 'pays', 'clientsWithoutStockLastWeek', 'clientsWithoutStockLastMonth'));
             }
         } else {
             return view('auth.login');
@@ -344,5 +369,45 @@ class ClientsController extends Controller
         Clients::findOrFail($id)->delete();
 
         return back()->with('succes', "La suppression a été effectué");
+    }
+
+    public function dateCalcul($date)
+    {
+        $oneWeekAgo = Carbon::now()->subWeek(2);
+        $oneMonthAgo = Carbon::now()->subMonth();
+
+        if ($date == 1) {
+            if (Auth::user()->type == 'division') {
+                $clientsWithoutStock = Stocks::join('clients', 'stocks.client_id', '=', 'clients.id')
+                    ->join('asso_divisions', 'clients.division_id', '=', 'asso_divisions.division_id')
+                    ->where('asso_divisions.user_id', '=', Auth::user()->id)
+                    ->where('stocks.updated_at', '<', $oneMonthAgo)
+                    ->distinct('stocks.client_id')
+                    ->get(['stocks.client_id']);
+
+                return view('clients.retard', compact('clientsWithoutStock'));
+            } else {
+                $clientsWithoutStock = Stocks::join('clients', 'stocks.client_id', '=', 'clients.id')
+                    ->where('stocks.updated_at', '<', $oneMonthAgo)
+                    ->get(['stocks.client_id']);
+                return view('clients.retard', compact('clientsWithoutStock'));
+            }
+        } else {
+            if (Auth::user()->type == 'division') {
+                $clientsWithoutStock = Stocks::join('clients', 'stocks.client_id', '=', 'clients.id')
+                    ->join('asso_divisions', 'clients.division_id', '=', 'asso_divisions.division_id')
+                    ->where('asso_divisions.user_id', '=', Auth::user()->id)
+                    ->where('stocks.updated_at', '<', $oneWeekAgo)
+                    ->distinct('stocks.client_id')
+                    ->get(['stocks.client_id']);
+
+                return view('clients.retard', compact('clientsWithoutStock'));
+            } else {
+                $clientsWithoutStock = Stocks::join('clients', 'stocks.client_id', '=', 'clients.id')
+                    ->where('stocks.updated_at', '<', $oneWeekAgo)
+                    ->get(['stocks.client_id']);
+                return view('clients.retard', compact('clientsWithoutStock'));
+            }
+        }
     }
 }

@@ -39,15 +39,7 @@ class CustomAuthController extends Controller
             // Lorque les paramètres sont valides, garde les informations dans la session
             Auth::login($user);
 
-            if (Auth::user()->type == 'admin') {
-
-                return redirect()->intended('index')->withSuccess('Bon retour');
-            } else if (Auth::user()->type == 'division') {
-
-                return redirect()->intended('clients')->withSuccess('Bon retour');
-            }
-
-            return back()->withInput()->withErrors(["Vous n'êtes pas autoriser"]);
+            return redirect()->intended('index')->withSuccess('Bon retour');
         } else {
             // Les identifiants ne sont pas valides
             return back()->withInput()->withErrors(['E-mail ou mot de passe incorrect']);
