@@ -53,7 +53,7 @@
                                 <div>
                                     <a href="#"
                                         class="text-base font-medium text-slate-700 hover:text-primary focus:text-primary dark:text-navy-100 dark:hover:text-accent-light dark:focus:text-accent-light">
-                                        {{ Auth::user()->username }}
+                                        {{ Auth::user()->name }}
                                     </a>
                                     <p class="text-xs text-slate-400 dark:text-navy-300">
                                         {{ Auth::user()->type }}
@@ -75,10 +75,10 @@
                                     <div>
                                         <h2
                                             class="font-medium text-slate-700 transition-colors group-hover:text-primary group-focus:text-primary dark:text-navy-100 dark:group-hover:text-accent-light dark:group-focus:text-accent-light">
-                                            Mot de passe
+                                            {{ __('messages.password') }}
                                         </h2>
                                         <div class="text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
-                                            Modifier mot de passe
+                                            {{ __('messages.editPassword') }}
                                         </div>
                                     </div>
                                 </a>
@@ -90,7 +90,7 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                                 d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                                         </svg>
-                                        <span>Se déconnecter</span>
+                                        <span>{{ __('messages.logout') }}</span>
                                     </a>
                                 </div>
                             </div>
@@ -128,7 +128,7 @@
                                 :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
                                     'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
                                 class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                                Clients
+                                {{ __('messages.client') }}
                             </a>
                         </li>
                     @else
@@ -137,7 +137,7 @@
                                 :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
                                     'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
                                 class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                                Tableau de bord
+                                {{ __('messages.dashboard') }}
                             </a>
                         </li>
                         <li>
@@ -145,7 +145,7 @@
                                 :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
                                     'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
                                 class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                                Utilisateurs
+                                {{ __('messages.user') }}
                             </a>
                         </li>
                         <li>
@@ -161,7 +161,7 @@
                                 :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
                                     'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
                                 class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                                Pays
+                                {{ __('messages.pays') }}
                             </a>
                         </li>
                         <li>
@@ -169,7 +169,7 @@
                                 :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
                                     'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
                                 class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                                Clients
+                                {{ __('messages.client') }}
                             </a>
                         </li>
                         <li>
@@ -177,7 +177,7 @@
                                 :class="isActive ? 'font-medium text-primary dark:text-accent-light' :
                                     'text-slate-600 hover:text-slate-900 dark:text-navy-200 dark:hover:text-navy-50'"
                                 class="flex py-2 text-xs+ tracking-wide outline-none transition-colors duration-300 ease-in-out">
-                                Articles
+                                {{ __('messages.items') }}
                             </a>
                         </li>
                     @endif

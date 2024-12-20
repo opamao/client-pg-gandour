@@ -8,7 +8,7 @@
 
         <div class="flex items-center space-x-4 py-5 lg:py-6">
             <h2 class="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">
-                Détails clients
+                {{ __('messages.detail') }} {{ __('messages.client') }}
             </h2>
         </div>
         <div class="card col-span-12 lg:col-span-12">
@@ -19,7 +19,7 @@
                             {{ $client->username }}
                         </p>
                     </div>
-                    <p class="mt-1 text-xs+">Username</p>
+                    <p class="mt-1 text-xs+">{{ __('messages.username') }}</p>
                 </div>
                 <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
                     <div class="flex justify-between space-x-1">
@@ -35,7 +35,7 @@
                             {{ $client->precode_client }}
                         </p>
                     </div>
-                    <p class="mt-1 text-xs+">Précode</p>
+                    <p class="mt-1 text-xs+">Precode</p>
                 </div>
                 <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
                     <div class="flex justify-between space-x-1">
@@ -43,7 +43,7 @@
                             {{ $client->name_client }}
                         </p>
                     </div>
-                    <p class="mt-1 text-xs+">Nom</p>
+                    <p class="mt-1 text-xs+">{{ __('messages.name') }}</p>
                 </div>
                 <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
                     <div class="flex justify-between space-x-1">
@@ -59,7 +59,7 @@
                             {{ $client->libelle_pays  }}
                         </p>
                     </div>
-                    <p class="mt-1 text-xs+">Pays</p>
+                    <p class="mt-1 text-xs+">{{ __('messages.pays') }}</p>
                 </div>
                 <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
                     <div class="flex justify-between space-x-1">
@@ -75,7 +75,7 @@
                             {{ $client->created_at }}
                         </p>
                     </div>
-                    <p class="mt-1 text-xs+">Date de création</p>
+                    <p class="mt-1 text-xs+">{{ __('messages.dateCreate') }}</p>
                 </div>
                 <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
                     <div class="flex justify-between space-x-1">
@@ -83,7 +83,7 @@
                             {{ $client->updated_at }}
                         </p>
                     </div>
-                    <p class="mt-1 text-xs+">Date de mise à jour</p>
+                    <p class="mt-1 text-xs+">{{ __('messages.dateUpdate') }}</p>
                 </div>
             </div>
         </div>
@@ -101,7 +101,7 @@
                                         </th>
                                         <th style="background: #018ea9; color: white;"
                                             class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                            Quantité
+                                            {{ __('messages.quantite') }}
                                         </th>
                                         <th style="background: #018ea9; color: white;"
                                             class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
@@ -160,7 +160,7 @@
                                                                             class="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
                                                                             <h3
                                                                                 class="text-base font-medium text-slate-700 dark:text-navy-100">
-                                                                                Détails
+                                                                                {{ __('messages.detail') }}
                                                                             </h3>
                                                                             <button
                                                                                 @click="showModalDelete{{ $liste->id }} = !showModalDelete{{ $liste->id }}"

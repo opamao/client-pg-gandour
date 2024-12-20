@@ -19,7 +19,7 @@
 
         <div class="flex items-center space-x-4 py-5 lg:py-6">
             <h2 class="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">
-                Client en retard de stock
+                {{ __('messages.retard') }}
             </h2>
         </div>
         <br>
@@ -33,11 +33,11 @@
                                 <tr>
                                     <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                        Username
+                                        {{ __('messages.username') }}
                                     </th>
                                     <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                        Nom
+                                        {{ __('messages.name') }}
                                     </th>
                                     <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
@@ -49,7 +49,7 @@
                                     </th>
                                     <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                        Statut
+                                        {{ __('messages.status') }}
                                     </th>
                                     <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
@@ -86,7 +86,7 @@
                                             @if ($liste->status_client == 0)
                                                 <div
                                                     class="badge bg-error text-white shadow-soft shadow-error/50 dark:bg-accent dark:shadow-accent/50">
-                                                    Désactive
+                                                    {{ __('messages.disable') }}
                                                 </div>
                                             @endif
                                         </td>

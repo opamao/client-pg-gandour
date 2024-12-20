@@ -29,7 +29,7 @@
 
         <div class="flex items-center space-x-4 py-5 lg:py-6">
             <h2 class="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">
-                Articles
+                {{ __('messages.items') }}
             </h2>
         </div>
 
@@ -38,7 +38,7 @@
                 <div class="rounded-lg bg-slate-50 px-4 py-4 dark:bg-navy-900 sm:px-5">
                     <div>
                         <h2 class="text-lg font-medium tracking-wide text-slate-600 line-clamp-1 dark:text-navy-100">
-                            Nombre article
+                            {{ __('messages.nbrItem') }}
                         </h2>
                     </div>
                     <div class="pt-2">
@@ -134,7 +134,7 @@
                                     </th>
                                     <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                        Unité
+                                        {{ __('messages.unit') }}
                                     </th>
                                     <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
@@ -142,7 +142,7 @@
                                     </th>
                                     <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                        Désignation
+                                        {{ __('messages.designation') }}
                                     </th>
                                     <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap rounded-r-lg bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
@@ -199,7 +199,7 @@
                                                                         class="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
                                                                         <h3
                                                                             class="text-base font-medium text-slate-700 dark:text-navy-100">
-                                                                            Détails
+                                                                            {{ __('messages.detail') }}
                                                                         </h3>
                                                                         <button
                                                                             @click="showModalDelete{{ $liste->id }} = !showModalDelete{{ $liste->id }}"
@@ -228,7 +228,7 @@
                                                                                 </div>
                                                                                 <div class="w-1/3 bg-blue-500 p-4">
                                                                                     <label class="block">
-                                                                                        <span>Unité</span>
+                                                                                        <span>{{ __('messages.unit') }}</span>
                                                                                         <h3
                                                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
                                                                                             {{ $liste->unite }}
@@ -257,7 +257,7 @@
                                                                                 </div>
                                                                                 <div class="w-1/3 bg-blue-500 p-4">
                                                                                     <label class="block">
-                                                                                        <span>Référence</span>
+                                                                                        <span>{{ __('messages.ref') }}</span>
                                                                                         <h3
                                                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
                                                                                             {{ $liste->ref }}
@@ -266,7 +266,7 @@
                                                                                 </div>
                                                                                 <div class="w-1/3 bg-green-500 p-4">
                                                                                     <label class="block">
-                                                                                        <span>Description</span>
+                                                                                        <span>{{ __('messages.designation') }}</span>
                                                                                         <h3
                                                                                             class="form-textarea mt-1.5 w-full resize-none rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
                                                                                             {{ $liste->designation }}
@@ -286,7 +286,7 @@
                                                                                 </div>
                                                                                 <div class="w-1/3 bg-green-500 p-4">
                                                                                     <label class="block">
-                                                                                        <span>Désignation ABC</span>
+                                                                                        <span>{{ __('messages.designation') }} ABC</span>
                                                                                         <h3
                                                                                             class="form-textarea mt-1.5 w-full resize-none rounded-lg border border-slate-300 bg-transparent p-2.5 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent">
                                                                                             {{ $liste->designation_abc }}

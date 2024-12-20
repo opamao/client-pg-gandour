@@ -116,7 +116,7 @@
 
         <div class="flex items-center space-x-4 py-5 lg:py-6">
             <h2 class="text-xl font-medium text-slate-800 dark:text-navy-50 lg:text-2xl">
-                Clients
+                {{ __('messages.client') }}
             </h2>
         </div>
 
@@ -125,7 +125,7 @@
                 <div class="rounded-lg bg-slate-50 px-4 py-4 dark:bg-navy-900 sm:px-5">
                     <div>
                         <h2 class="text-lg font-medium tracking-wide text-slate-600 line-clamp-1 dark:text-navy-100">
-                            Nombre de client
+                            {{ __('messages.nbreClient') }}
                         </h2>
                     </div>
                     <div class="pt-2">
@@ -139,7 +139,7 @@
                 <div class="rounded-lg bg-slate-50 px-4 py-4 dark:bg-navy-900 sm:px-5">
                     <div>
                         <h2 class="text-lg font-medium tracking-wide text-slate-600 line-clamp-1 dark:text-navy-100">
-                            Total stock
+                            {{ __('messages.tStock') }}
                         </h2>
                     </div>
                     <div class="pt-2">
@@ -157,7 +157,7 @@
                     <div class="rounded-lg bg-slate-50 px-4 py-4 dark:bg-navy-900 sm:px-5">
                         <div>
                             <h2 class="text-lg font-medium tracking-wide text-slate-600 line-clamp-1 dark:text-navy-100">
-                                Nombre de client stock moins de 2 semaines
+                                {{ __('messages.semaine') }}
                             </h2>
                         </div>
                         <div class="pt-2">
@@ -173,7 +173,7 @@
                     <div class="rounded-lg bg-slate-50 px-4 py-4 dark:bg-navy-900 sm:px-5">
                         <div>
                             <h2 class="text-lg font-medium tracking-wide text-slate-600 line-clamp-1 dark:text-navy-100">
-                                Nombre de client stock moins de un mois
+                                {{ __('messages.mois') }}
                             </h2>
                         </div>
                         <div class="pt-2">
@@ -200,7 +200,7 @@
                             <div x-data="{ showModal: false }">
                                 <button @click="showModal = true"
                                     class="btn relative bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
-                                    Ajouter client
+                                    {{ __('messages.add') }}
                                 </button>
                                 <template x-teleport="#x-teleport-target">
                                     <div class="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden px-4 py-6 sm:px-5"
@@ -220,7 +220,7 @@
                                             <div
                                                 class="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
                                                 <h3 class="text-base font-medium text-slate-700 dark:text-navy-100">
-                                                    Ajouter d'un client
+                                                    {{ __('messages.add') }}
                                                 </h3>
                                                 <button @click="showModal = !showModal"
                                                     class="btn -mr-1.5 size-7 rounded-full p-0 hover:bg-slate-300/20 focus:bg-slate-300/20 active:bg-slate-300/25 dark:hover:bg-navy-300/20 dark:focus:bg-navy-300/20 dark:active:bg-navy-300/25">
@@ -236,8 +236,8 @@
                                                 @csrf
                                                 <div class="px-4 py-4 sm:px-5">
                                                     <label class="block">
-                                                        <span>Fichier</span><br>
-                                                        <small><em>Cliquez pour importer le fichier</em></small>
+                                                        <span>{{ __('messages.file') }}</span><br>
+                                                        <small><em>{{ __('messages.click') }}</em></small>
                                                         <input name="fichier"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                             placeholder="Veuillez sélectionner le fichier" type="file"
@@ -246,14 +246,14 @@
                                                     </label>
                                                     <br>
                                                     <hr>
-                                                    <div class="text-center"><strong>Ou</strong></div>
+                                                    <div class="text-center"><strong>{{ __('messages.or') }}</strong></div>
                                                     <br>
                                                     <hr>
                                                     <label class="block">
                                                         <span>Division</span>
                                                         <select name="division"
                                                             class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
-                                                            <option value="">Sélectionne</option>
+                                                            <option value="">{{ __('messages.select') }}</option>
                                                             @foreach ($division as $item)
                                                                 <option value="{{ $item->id }}">{{ $item->libelle }}
                                                                 </option>
@@ -262,52 +262,53 @@
                                                         <span style="color: red;" id="error-division"></span>
                                                     </label>
                                                     <label class="block">
-                                                        <span>Username</span>
+                                                        <span>{{ __('messages.username') }}</span>
                                                         <input name="username"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                            placeholder="Saisir le nom utiisateur" type="text" />
+                                                            placeholder="{{ __('messages.username') }}" type="text" />
                                                         <span style="color: red;" id="error-usename"></span>
                                                     </label>
                                                     <label class="block">
                                                         <span>Code</span>
                                                         <input name="code"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                            placeholder="Saisir le code client" type="text" />
+                                                            placeholder="Code" type="text" />
                                                         <span style="color: red;" id="error-code"></span>
                                                     </label>
                                                     <label class="block">
                                                         <span>Precode</span>
                                                         <input name="precode"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                            placeholder="Saisir le precode client" type="text" />
+                                                            placeholder="Precode" type="text" />
                                                         <span style="color: red;" id="error-precode"></span>
                                                     </label>
                                                     <label class="block">
-                                                        <span>Nom</span>
+                                                        <span>{{ __('messages.name') }}</span>
                                                         <input name="name"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                            placeholder="Saisir son nom" type="text" />
+                                                            placeholder="{{ __('messages.name') }}" type="text" />
                                                         <span style="color: red;" id="error-name"></span>
                                                     </label>
                                                     <label class="block">
                                                         <span>E-mail</span>
                                                         <input name="email"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                            placeholder="Saisir son prénom" type="email" />
+                                                            placeholder="Email" type="email" />
                                                         <span style="color: red;" id="error-email"></span>
                                                     </label>
                                                     <label class="block">
-                                                        <span>Mot de passe</span>
+                                                        <span>{{ __('messages.password') }}</span>
                                                         <input name="password"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                            placeholder="Saisir un mot de passe" type="password" />
+                                                            placeholder="{{ __('messages.password') }}"
+                                                            type="password" />
                                                         <span style="color: red;" id="error-password"></span>
                                                     </label>
                                                     <label class="block">
-                                                        <span>Pays</span>
+                                                        <span>{{ __('messages.pays') }}</span>
                                                         <select name="pays"
                                                             class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
-                                                            <option value="">Sélectionne</option>
+                                                            <option value="">{{ __('messages.select') }}</option>
                                                             @foreach ($pays as $pay)
                                                                 <option value="{{ $pay->id }}">
                                                                     {{ $pay->libelle_pays }}
@@ -317,27 +318,26 @@
                                                         <span style="color: red;" id="error-pays"></span>
                                                     </label>
                                                     <label class="block">
-                                                        <span>Statut</span>
+                                                        <span>{{ __('messages.status') }}</span>
                                                         <select id="statut" name="statut"
                                                             class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
                                                             <option value="">
-                                                                Sélectionne</option>
+                                                                {{ __('messages.select') }}</option>
                                                             <option value="1">Active
                                                             </option>
                                                             <option value="0">
-                                                                Désactive</option>
+                                                                {{ __('messages.disable') }}</option>
                                                         </select>
                                                         <span style="color: red;" id="error-statut"></span>
                                                     </label>
                                                     <div id="loadingMessage" style="display: none;">
-                                                        <p>Veuillez patienter, le formulaire
-                                                            est en traitement...</p>
+                                                        <p>{{ __('messages.warning') }}</p>
                                                     </div>
                                                     <br><br>
                                                     <div class="space-x-2 text-right">
                                                         <button type="submit"
                                                             class="btn min-w-[7rem] rounded-full bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
-                                                            Enregistrer
+                                                            {{ __('messages.add') }}
                                                         </button>
                                                     </div>
                                                 </div>
@@ -359,7 +359,7 @@
                                 <tr>
                                     <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                        Nom
+                                        {{ __('messages.name') }}
                                     </th>
                                     <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
@@ -367,7 +367,7 @@
                                     </th>
                                     <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                        Pays
+                                        {{ __('messages.pays') }}
                                     </th>
                                     <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
@@ -375,7 +375,7 @@
                                     </th>
                                     <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
-                                        Statut
+                                        {{ __('messages.status') }}
                                     </th>
                                     <th style="background: #018ea9; color: white;"
                                         class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
@@ -423,7 +423,7 @@
                                             @if ($liste->status_client == 0)
                                                 <div
                                                     class="badge bg-error text-white shadow-soft shadow-error/50 dark:bg-accent dark:shadow-accent/50">
-                                                    Désactive
+                                                    {{ __('messages.disable') }}
                                                 </div>
                                             @endif
                                         </td>
@@ -474,7 +474,7 @@
                                                                             class="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
                                                                             <h3
                                                                                 class="text-base font-medium text-slate-700 dark:text-navy-100">
-                                                                                Modification
+                                                                                {{ __('messages.edit') }}
                                                                             </h3>
                                                                             <button
                                                                                 @click="showModal{{ $liste->id }} = !showModal{{ $liste->id }}"
@@ -504,7 +504,7 @@
                                                                                             class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
                                                                                             <option
                                                                                                 value="{{ $liste->division_id }}">
-                                                                                                Sélectionne
+                                                                                                {{ __('messages.select') }}
                                                                                             </option>
                                                                                             @foreach ($division as $item)
                                                                                                 <option
@@ -517,23 +517,23 @@
                                                                                             id="error-division-{{ $liste->id }}"></span>
                                                                                     </label>
                                                                                     <label class="block">
-                                                                                        <span>Username</span>
+                                                                                        <span>{{ __('messages.username') }}</span>
                                                                                         <input id="username"
                                                                                             name="username" required
                                                                                             value="{{ $liste->username }}"
                                                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                                                            placeholder="Saisir le nom utilisateur"
+                                                                                            placeholder="{{ __('messages.username') }}"
                                                                                             type="text" />
                                                                                         <span style="color: red;"
                                                                                             id="error-username-{{ $liste->id }}"></span>
                                                                                     </label>
                                                                                     <label class="block">
-                                                                                        <span>Nom</span>
+                                                                                        <span>{{ __('messages.name') }}</span>
                                                                                         <input id="nom"
                                                                                             name="nom"
                                                                                             value="{{ $liste->name_client }}"
                                                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                                                            placeholder="Saisir le nom client"
+                                                                                            placeholder="{{ __('messages.name') }}"
                                                                                             type="text" />
                                                                                         <span style="color: red;"
                                                                                             id="error-nom-{{ $liste->id }}"></span>
@@ -545,7 +545,7 @@
                                                                                             name="code" required
                                                                                             value="{{ $liste->code_client }}"
                                                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                                                            placeholder="Saisir le code client"
+                                                                                            placeholder="Code"
                                                                                             type="text" />
                                                                                         <span style="color: red;"
                                                                                             id="error-code-{{ $liste->id }}"></span>
@@ -567,27 +567,28 @@
                                                                                             name="email"
                                                                                             value="{{ $liste->email_client }}"
                                                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                                                            placeholder="Saisir son prénom"
+                                                                                            placeholder="Email"
                                                                                             type="email" />
                                                                                         <span style="color: red;"
                                                                                             id="error-email-{{ $liste->id }}"></span>
                                                                                     </label>
                                                                                     <label class="block">
-                                                                                        <span>Mot de passe</span>
+                                                                                        <span>{{ __('messages.password') }}</span>
                                                                                         <input id="password"
                                                                                             name="password"
                                                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                                                            placeholder="Saisir son nouveau mot de passe"
+                                                                                            placeholder="{{ __('messages.password') }}"
                                                                                             type="password" />
                                                                                     </label>
                                                                                     <label class="block">
-                                                                                        <span>Pays</span>
+                                                                                        <span>{{ __('messages.pays') }}</span>
                                                                                         <select id="pays"
                                                                                             name="pays" required
                                                                                             class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
                                                                                             <option
                                                                                                 value="{{ $liste->pays_id }}">
-                                                                                                Sélectionne</option>
+                                                                                                {{ __('messages.select') }}
+                                                                                            </option>
                                                                                             @foreach ($pays as $pay)
                                                                                                 <option
                                                                                                     value="{{ $pay->id }}">
@@ -599,24 +600,25 @@
                                                                                             id="error-pays-{{ $liste->id }}"></span>
                                                                                     </label>
                                                                                     <label class="block">
-                                                                                        <span>Statut</span>
+                                                                                        <span>{{ __('messages.status') }}</span>
                                                                                         <select id="statut"
                                                                                             name="statut"
                                                                                             class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
                                                                                             <option value="">
-                                                                                                Sélectionne</option>
+                                                                                                {{ __('messages.select') }}
+                                                                                            </option>
                                                                                             <option value="1">Active
                                                                                             </option>
                                                                                             <option value="0">
-                                                                                                Désactive</option>
+                                                                                                {{ __('messages.disable') }}
+                                                                                            </option>
                                                                                         </select>
                                                                                         <span style="color: red;"
                                                                                             id="error-statut-{{ $liste->id }}"></span>
                                                                                     </label>
                                                                                     <div id="loadingMessage"
                                                                                         style="display: none;">
-                                                                                        <p>Veuillez patienter, le formulaire
-                                                                                            est en traitement...</p>
+                                                                                        <p>{{ __('messages.warning') }}</p>
                                                                                     </div>
                                                                                     <!-- Message de succès -->
                                                                                     <div id="successMessage-{{ $liste->id }}"
@@ -625,7 +627,7 @@
                                                                                     <div class="space-x-2 text-right">
                                                                                         <button type="submit"
                                                                                             class="btn min-w-[7rem] rounded-full bg-info font-medium text-white hover:bg-info-focus focus:bg-info-focus active:bg-info-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
-                                                                                            Modifier
+                                                                                            {{ __('messages.edit') }}
                                                                                         </button>
                                                                                     </div>
                                                                                 </div>
@@ -666,7 +668,7 @@
                                                                             class="flex justify-between rounded-t-lg bg-slate-200 px-4 py-3 dark:bg-navy-800 sm:px-5">
                                                                             <h3
                                                                                 class="text-base font-medium text-slate-700 dark:text-navy-100">
-                                                                                Suppression
+                                                                                {{ __('messages.delete') }}
                                                                             </h3>
                                                                             <button
                                                                                 @click="showModalDelete{{ $liste->id }} = !showModalDelete{{ $liste->id }}"
@@ -690,12 +692,12 @@
                                                                             <div class="px-4 py-4 sm:px-5">
                                                                                 <div class="mt-4 space-y-4">
                                                                                     <label class="block">
-                                                                                        Êtes-vous sûre de vouloir supprimer?
+                                                                                        {{ __('messages.sure') }}
                                                                                     </label>
                                                                                     <div class="space-x-2 text-right">
                                                                                         <button type="submit"
                                                                                             class="btn min-w-[7rem] rounded-full bg-error font-medium text-white hover:bg-error-focus focus:bg-error-focus active:bg-error-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
-                                                                                            Supprimer
+                                                                                            {{ __('messages.delete') }}
                                                                                         </button>
                                                                                     </div>
                                                                                 </div>
