@@ -78,17 +78,22 @@
 
                 // Réinitialiser les messages d'erreur
                 $('.text-danger').text('');
+                $('#loadingButton').hide(); // Cacher le bouton
                 $('#loadingMessage').show(); // Afficher le message "Veuillez patienter"
 
-                var formData = $(this).serialize(); // Sérialiser les données du formulaire
+                // Créer un objet FormData pour gérer le fichier et les autres champs
+                var formData = new FormData(this);
 
                 $.ajax({
                     url: $(this).attr('action'),
                     method: 'POST',
                     data: formData,
+                    processData: false, // Ne pas traiter les données
+                    contentType: false, // Ne pas définir de type de contenu (important pour l'envoi de fichiers)
                     success: function(response) {
                         // Masquer le message de chargement
                         $('#loadingMessage').hide();
+                        $('#loadingButton').show();
 
                         // Si succès, afficher un message de succès
                         alert(response.success);
@@ -98,6 +103,7 @@
                     error: function(xhr) {
                         // Masquer le message de chargement
                         $('#loadingMessage').hide();
+                        $('#loadingButton').show();
 
                         // Si une erreur de validation se produit, afficher les erreurs dans les éléments correspondants
                         var errors = xhr.responseJSON.errors;
@@ -182,7 +188,8 @@
                                                     <label class="block">
                                                         <span>Division</span>
                                                         <select name="division[]" x-init="$el._tom = new Tom($el)"
-                                                            class="mt-1.5 w-full" multiple placeholder="{{ __('messages.select') }}..."
+                                                            class="mt-1.5 w-full" multiple
+                                                            placeholder="{{ __('messages.select') }}..."
                                                             autocomplete="off">
                                                             <option value="">{{ __('messages.select') }}...</option>
                                                             @foreach ($division as $item)
@@ -217,7 +224,8 @@
                                                         <span>{{ __('messages.password') }}</span>
                                                         <input name="password" id="paswword"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                            placeholder="{{ __('messages.password') }}" type="password" />
+                                                            placeholder="{{ __('messages.password') }}"
+                                                            type="password" />
                                                         <span style="color: red;" id="error-password"></span>
                                                     </label>
                                                     <label class="block">
@@ -229,15 +237,16 @@
                                                         </select>
                                                         <span style="color: red;" id="error-type"></span>
                                                     </label>
-                                                    <div id="loadingMessage" style="display: none;">
-                                                        <p>{{ __('messages.warning') }}</p>
-                                                    </div>
-                                                    <br><br>
                                                     <div class="space-x-2 text-right">
-                                                        <button type="submit"
-                                                            class="btn min-w-[7rem] rounded-full bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
-                                                            {{ __('messages.add') }}
-                                                        </button>
+                                                        <div id="loadingMessage" style="display: none;">
+                                                            <p style="color: #018ea9">{{ __('messages.warning') }}</p>
+                                                        </div>
+                                                        <div id="loadingButton">
+                                                            <button type="submit"
+                                                                class="btn min-w-[7rem] rounded-full bg-primary font-medium text-white hover:bg-primary-focus focus:bg-primary-focus active:bg-primary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
+                                                                {{ __('messages.add') }}
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -443,7 +452,8 @@
                                                                                             class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
                                                                                             <option
                                                                                                 value="{{ $liste->type }}">
-                                                                                                {{ __('messages.select') }}</option>
+                                                                                                {{ $liste->type }}
+                                                                                            </option>
                                                                                             <option value="admin">Admin
                                                                                             </option>
                                                                                             <option value="division">

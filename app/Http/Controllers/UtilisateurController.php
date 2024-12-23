@@ -94,7 +94,7 @@ class UtilisateurController extends Controller
 
             // Retourne les résultats de l'importation
             if ($successCount > 0) {
-                return back()->with('succes',  $successCount . " utilisateurs ont été importés avec succès.");
+                return response()->json(['success' => $successCount . " utilisateurs ont été importés avec succès."]);
             }
 
             return back()->withErrors($errors);

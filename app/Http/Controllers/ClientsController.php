@@ -221,7 +221,7 @@ class ClientsController extends Controller
 
             // Retourne les résultats de l'importation
             if ($successCount > 0) {
-                return back()->with('succes',  $successCount . " clients ont été importés avec succès.");
+                return response()->json(['success' => $successCount . " clients ont été importés avec succès."]);
             }
 
             return back()->withErrors($errors);

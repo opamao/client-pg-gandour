@@ -22,7 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('pays_id')->nullable();
             $table->foreign('pays_id')->references('id')->on('pays');
             $table->string('last_sync_attempt')->nullable();
-            $table->integer('status_client')->comment('0 = on, 1 = off')->nullable();
+            $table->integer('status_client')->comment('0 = on, 1 = off')->default(1)->nullable();
             $table->string('password_client');
             $table->unsignedBigInteger('division_id')->nullable();
             $table->foreign('division_id')->references('id')->on('divisions');
