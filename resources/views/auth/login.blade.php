@@ -53,7 +53,6 @@
                     @include('components.language-switch')
                 </div>
             </div>
-
         </div>
         <div class="hidden w-full place-items-center lg:grid">
             <div class="w-full max-w-lg p-6">
