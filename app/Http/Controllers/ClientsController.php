@@ -140,7 +140,7 @@ class ClientsController extends Controller
 
                 $nbreClient = Clients::count();
                 $totalStock = Stocks::sum('quantite_initiale');
-                $pays = Pays::all();
+                $pays = Pays::orderBy('libelle_pays', 'asc')->get();
 
                 $clientsWithoutStockLastWeek = Stocks::where('updated_at', '<', $oneWeekAgo)->count();
                 $clientsWithoutStockLastMonth = Stocks::where('updated_at', '<', $oneMonthAgo)->count();
@@ -170,8 +170,8 @@ class ClientsController extends Controller
             'fichier' => 'nullable|mimes:xlsx,xls,csv|max:2048',
         ];
         $customMessages = [
-            'fichier.mimes' => "Le fichier doit être un fichier de type : xlsx, xls, ou csv.",
-            'fichier.max' => "La taille du fichier ne doit pas dépasser 2 Mo.",
+            'fichier.mimes' => __("messages.fileMine"),
+            'fichier.max' => __("messages.fileMax"),
         ];
         $validated = $request->validate($roles, $customMessages);
 
@@ -184,7 +184,7 @@ class ClientsController extends Controller
 
             // Vérifie si des données sont disponibles dans le fichier
             if (empty($data) || count($data[0]) === 0) {
-                return back()->withErrors(["Le fichier est vide ou mal formaté."]);
+                return back()->withErrors([__("messages.fileEmpty")]);
             }
 
             $rows = $data[0]; // Première feuille du fichier
@@ -221,7 +221,7 @@ class ClientsController extends Controller
 
             // Retourne les résultats de l'importation
             if ($successCount > 0) {
-                return response()->json(['success' => $successCount . " clients ont été importés avec succès."]);
+                return response()->json(['success' => $successCount . " clients" . __("messages.fileImport")]);
             }
 
             return back()->withErrors($errors);
@@ -237,13 +237,13 @@ class ClientsController extends Controller
                 'email' => 'nullable|email|unique:clients,email_client',
             ];
             $customMessages = [
-                'email.unique' => "L'adresse email est déjà utilisée. Veuillez essayer une autre!",
-                'division.required' => "Veuillez sélectionner la division",
-                'pays.required' => "Veuillez sélectionner le pays",
-                'username.required' => "Saisissez son nom utilisateur",
-                'code.required' => "Saisissez son code",
-                'name.required' => "Saisissez son nom",
-                'password.required' => "Saisissez son mot de passe",
+                'email.unique' => __("messages.emailRequired"),
+                'division.required' => __("messages.selectDivision"),
+                'pays.required' => __("messages.selectPays"),
+                'username.required' => __("messages.enterUsername"),
+                'code.required' => __("messages.enterCode"),
+                'name.required' => __("messages.enterName"),
+                'password.required' => __("messages.enterPassword"),
             ];
             $validated = $request->validate($roles, $customMessages);
 
@@ -251,7 +251,6 @@ class ClientsController extends Controller
             $user = new Clients();
             $user->username = $request->username;
             $user->code_client = $request->code;
-            $user->precode_client = $request->precode;
             $user->name_client = $request->name;
             $user->email_client = $request->email;
             $user->pays_id = $request->pays;
@@ -260,9 +259,9 @@ class ClientsController extends Controller
             $user->password_client = Hash::make($request->password);
 
             if ($user->save()) {
-                return response()->json(['success' => "Vous avez ajouté " . $request->username]);
+                return response()->json(['success' => __("messages.fileAdd") . $request->username]);
             } else {
-                return response()->json(['errors' => ["Impossible d'ajouter " . $request->username . ". Veuillez réessayer!!"]], 422);
+                return response()->json(['errors' => [__("messages.fileImpossible") . $request->username . ". " . __("messages.fileReessaye")]], 422);
             }
         }
     }
@@ -310,10 +309,11 @@ class ClientsController extends Controller
 
         // Messages d'erreur personnalisés
         $customMessages = [
-            'division.required' => "Veuillez sélectionner sa division",
-            'code.required' => "Veuillez saisir son code",
-            'nom.required' => "Saisissez son nom",
-            'email.unique' => "L'adresse email est déjà utilisée. Veuillez essayer une autre!",
+            'division.required' => __("messages.selectDivision"),
+            'username.required' => __("messages.enterUsername"),
+            'code.required' => __("messages.enterCode"),
+            'nom.required' => __("messages.enterName"),
+            'email.unique' => __("messages.emailRequired"),
         ];
 
         $request->validate($roles, $customMessages);
@@ -334,9 +334,9 @@ class ClientsController extends Controller
             }
 
             if ($user->save()) {
-                return back()->with('succes',  "Les informations de " . $request->nom . " ont été mises à jour avec succès.");
+                return back()->with('succes',  __("messages.update"));
             } else {
-                return back()->withErrors(["Impossible de mettre à jour les informations. Veuillez réessayer!"]);
+                return back()->withErrors([__("messages.impossible")]);
             }
         } else {
             // Mettre à jour les données avec le mot de passe
@@ -354,9 +354,9 @@ class ClientsController extends Controller
             }
 
             if ($user->save()) {
-                return back()->with('succes',  "Les informations de " . $request->nom . " ont été mises à jour avec succès.");
+                return back()->with('succes',  __("messages.update"));
             } else {
-                return back()->withErrors(["Impossible de mettre à jour les informations. Veuillez réessayer!"]);
+                return back()->withErrors([__("messages.impossible")]);
             }
         }
     }
@@ -368,7 +368,7 @@ class ClientsController extends Controller
     {
         Clients::findOrFail($id)->delete();
 
-        return back()->with('succes', "La suppression a été effectué");
+        return back()->with('succes', __("messages.supprime"));
     }
 
     public function dateCalcul($date)

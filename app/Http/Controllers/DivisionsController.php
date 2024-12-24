@@ -43,8 +43,8 @@ class DivisionsController extends Controller
             'membre' => 'required|array',
         ];
         $customMessages = [
-            'libelle.required' => "Veuillez saisir le libelle de la division",
-            'membre.required' => "Veuillez sélectionner au moins un membre",
+            'libelle.required' => __("messages.libelleDivision"),
+            'membre.required' => __("messages.membres"),
         ];
         $request->validate($roles, $customMessages);
 
@@ -58,9 +58,9 @@ class DivisionsController extends Controller
                 $association->user_id = $userId;
                 $association->save();
             }
-            return back()->with('succes',  "Vous avez ajouter " . $request->libelle);
+            return back()->with('succes',  __("messages.fileAdd") . $request->libelle);
         } else {
-            return back()->withErrors(["Impossible d'ajouter " . $request->libelle . ". Veuillez réessayer!!"]);
+            return back()->withErrors([__("messages.fileImpossible") . $request->libelle . ". " . __("messages.fileReessaye")]);
         }
     }
 
@@ -92,14 +92,14 @@ class DivisionsController extends Controller
         ];
 
         $customMessages = [
-            'libelle.required' => "Veuillez saisir le libelle de la division",
+            'libelle.required' => __("messages.libelleDivision"),
         ];
 
         $request->validate($roles, $customMessages);
 
         $division = Divisions::find($id);
         if (!$division) {
-            return back()->withErrors(["Impossible de trouver la division"]);
+            return back()->withErrors([__("messages.ipossibleDivision")]);
         }
 
         $division->libelle = $request->libelle;
@@ -134,7 +134,7 @@ class DivisionsController extends Controller
             }
         }
 
-        return back()->with('succes', "Vous avez modifié la division avec succès.");
+        return back()->with('succes', __("messages.update"));
     }
 
     /**
@@ -144,6 +144,6 @@ class DivisionsController extends Controller
     {
         Divisions::findOrFail($id)->delete();
 
-        return back()->with('succes', "La suppression a été effectué");
+        return back()->with('succes', __("messages.supprime"));
     }
 }

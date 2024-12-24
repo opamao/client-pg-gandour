@@ -81,8 +81,8 @@ class ArticlesController extends Controller
             'fichier' => 'required|mimes:xlsx,xls,csv|max:2048',
         ];
         $customMessages = [
-            'fichier.mimes' => "Le fichier doit être un fichier de type : xlsx, xls, ou csv.",
-            'fichier.max' => "La taille du fichier ne doit pas dépasser 2 Mo.",
+            'fichier.mimes' => __("messages.fileMine"),
+            'fichier.max' => __("messages.fileMax"),
         ];
         $request->validate($roles, $customMessages);
 
@@ -93,7 +93,7 @@ class ArticlesController extends Controller
 
         // Vérifie si des données sont disponibles dans le fichier
         if (empty($data) || count($data[0]) === 0) {
-            return back()->withErrors(["Le fichier est vide ou mal formaté."]);
+            return back()->withErrors([__("messages.fileEmpty")]);
         }
 
         $rows = $data[0]; // Première feuille du fichier
@@ -126,7 +126,7 @@ class ArticlesController extends Controller
 
         // Retourne les résultats de l'importation
         if ($successCount > 0) {
-            return back()->with('succes',  $successCount . " articles ont été importés avec succès.");
+            return back()->with('succes',  $successCount . " articles " . __("messages.fileImport"));
         }
 
         return back()->withErrors($errors);
@@ -162,10 +162,11 @@ class ArticlesController extends Controller
             'email' => 'required|email|unique:clients,email_client,' . $user->id,
         ];
         $customMessages = [
-            'division.required' => "Veuillez sélectionner sa division",
-            'code.required' => "Veuillez saisir son code",
-            'name' => "Saisissez son nom",
-            'email.unique' => "L'adresse email est déjà utilisée. Veuillez essayer une autre!",
+            'division.required' => __("messages.selectDivision"),
+            'username.required' => __("messages.enterUsername"),
+            'code.required' => __("messages.enterCode"),
+            'name.required' => __("messages.enterName"),
+            'email.unique' => __("messages.emailRequired"),
         ];
         $request->validate($roles, $customMessages);
 
@@ -179,9 +180,9 @@ class ArticlesController extends Controller
         }
 
         if ($user->save()) {
-            return back()->with('succes', "Les informations de " . $request->name . " ont été mises à jour avec succès.");
+            return back()->with('succes', __("messages.update"));
         } else {
-            return back()->withErrors(["Impossible de mettre à jour les informations de " . $request->name . ". Veuillez réessayer!"]);
+            return back()->withErrors([__("messages.impossible")]);
         }
     }
 
@@ -192,7 +193,7 @@ class ArticlesController extends Controller
     {
         Articles::findOrFail($id)->delete();
 
-        return back()->with('succes', "La suppression a été effectué");
+        return back()->with('succes', __("messages.supprime"));
     }
 
     public function editPassword(Request $request)
@@ -203,9 +204,9 @@ class ArticlesController extends Controller
             'codeconfirm' => 'required',
         ];
         $customMessages = [
-            'code.required' => "Veuillez saisir votre mot de passe que vous utilisez en ce moment.",
-            'codenew.required' => "Veuillez saisir votre nouveau mot de passe.",
-            'codeconfirm.required' => "Veuillez saisir a nouveau votre mot de passe.",
+            'code.required' => __("messages.passwordActuel"),
+            'codenew.required' => __("messages.codenew"),
+            'codeconfirm.required' => __("messages.codeconfirm"),
         ];
         $request->validate($roles, $customMessages);
 
@@ -220,12 +221,12 @@ class ArticlesController extends Controller
                         'password' => Hash::make($request->codenew),
                     ]);
 
-                return back()->with('succes', "Votre mot de passe a été modifié.");
+                return back()->with('succes', __("messages.updatePassword"));
             } else {
-                return back()->withErrors(["Votre mot de passe actuel n'est pas correct. Veuillez réessayer!!!"]);
+                return back()->withErrors([__("messages.updateActuel")]);
             }
         } else {
-            return back()->withErrors(["Les nouveaux mot de passe ne correspondent pas."]);
+            return back()->withErrors([__("messages.updateConfirm")]);
         }
     }
 }

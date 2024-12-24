@@ -12,7 +12,7 @@ class PaysController extends Controller
      */
     public function index()
     {
-        $pays = Pays::all();
+        $pays = Pays::orderBy('libelle_pays', 'asc')->get();
         return view('pays.pays', compact('pays'));
     }
 

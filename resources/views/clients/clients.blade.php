@@ -7,10 +7,11 @@
 @endpush
 
 @push('bas')
+    <script src="{{ asset('assets/js') }}/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('assets/table/js') }}/jquery-3.7.1.js"></script>
-    {{-- <link href="{{ asset('assets/table/css') }}/tailwindcss.css" /> --}}
     <script src="{{ asset('assets/table/js') }}/dataTables.js"></script>
     <script src="{{ asset('assets/table/js') }}/dataTables.tailwindcss.js"></script>
+    <link href="{{ asset('assets/table/css') }}/tailwindcss.css" />
     <script>
         $(document).ready(function() {
             $('#example').DataTable();
@@ -21,7 +22,6 @@
                 "<'flex justify-between items-center'<'p-2'i><'p-2'p>>",
         });
     </script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
             // On écoute l'événement de soumission pour chaque formulaire dans le foreach
@@ -272,7 +272,7 @@
                                                         <input name="username"
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                             placeholder="{{ __('messages.username') }}" type="text" />
-                                                        <span style="color: red;" id="error-usename"></span>
+                                                        <span style="color: red;" id="error-username"></span>
                                                     </label>
                                                     <label class="block">
                                                         <span>Code</span>
@@ -280,13 +280,6 @@
                                                             class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
                                                             placeholder="Code" type="text" />
                                                         <span style="color: red;" id="error-code"></span>
-                                                    </label>
-                                                    <label class="block">
-                                                        <span>Precode</span>
-                                                        <input name="precode"
-                                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                            placeholder="Precode" type="text" />
-                                                        <span style="color: red;" id="error-precode"></span>
                                                     </label>
                                                     <label class="block">
                                                         <span>{{ __('messages.name') }}</span>
@@ -336,6 +329,7 @@
                                                         </select>
                                                         <span style="color: red;" id="error-statut"></span>
                                                     </label>
+                                                    <br>
                                                     <div class="space-x-2 text-right">
                                                         <div id="loadingMessage" style="display: none;">
                                                             <p style="color: #018ea9">{{ __('messages.warning') }}</p>
@@ -361,7 +355,7 @@
             <div class="card px-4 pb-4 sm:px-5">
                 <div class="mt-5">
                     <div class="is-scrollbar-hidden min-w-full overflow-x-auto">
-                        <table id="example" class="is-zebra w-full text-left">
+                        <table id="example" class="display">
                             <thead>
                                 <tr>
                                     <th style="background: #018ea9; color: white;"

@@ -26,8 +26,8 @@ class CustomAuthController extends Controller
             'password' => 'required',
         ];
         $customMessages = [
-            'email.required' => "Veuillez saisir votre nom utilisateur",
-            'password.required' => "Veuillez saisir votre mot de passe",
+            'email.required' => __("messages.adresseEmail"),
+            'password.required' => __("messages.adressePassword"),
         ];
         $request->validate($roles, $customMessages);
 
@@ -42,7 +42,7 @@ class CustomAuthController extends Controller
             return redirect()->intended('index')->withSuccess('Bon retour');
         } else {
             // Les identifiants ne sont pas valides
-            return back()->withInput()->withErrors(['E-mail ou mot de passe incorrect']);
+            return back()->withInput()->withErrors([__("messages.emailPassword")]);
         }
     }
 

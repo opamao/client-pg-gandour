@@ -44,8 +44,8 @@ class UtilisateurController extends Controller
             'fichier' => 'nullable|mimes:xlsx,xls,csv|max:2048',
         ];
         $customMessages = [
-            'fichier.mimes' => "Le fichier doit être un fichier de type : xlsx, xls, ou csv.",
-            'fichier.max' => "La taille du fichier ne doit pas dépasser 2 Mo.",
+            'fichier.mimes' => __("messages.fileMine"),
+            'fichier.max' => __("messages.fileMax"),
         ];
         $request->validate($roles, $customMessages);
 
@@ -58,7 +58,7 @@ class UtilisateurController extends Controller
 
             // Vérifie si des données sont disponibles dans le fichier
             if (empty($data) || count($data[0]) === 0) {
-                return back()->withErrors(["Le fichier est vide ou mal formaté."]);
+                return back()->withErrors([__("messages.fileEmpty")]);
             }
 
             $rows = $data[0]; // Première feuille du fichier
@@ -94,7 +94,7 @@ class UtilisateurController extends Controller
 
             // Retourne les résultats de l'importation
             if ($successCount > 0) {
-                return response()->json(['success' => $successCount . " utilisateurs ont été importés avec succès."]);
+                return response()->json(['success' => $successCount . " utilisateurs" . __("messages.fileImport")]);
             }
 
             return back()->withErrors($errors);
@@ -109,13 +109,13 @@ class UtilisateurController extends Controller
                 'email' => 'required|email|unique:users,email',
             ];
             $customMessages = [
-                'division.required' => "Veuillez sélectionner au moins une division.",
-                'email.required' => "L'adresse email est obligatoire.",
-                'email.unique' => "L'adresse email est déjà utilisée. Veuillez essayer une autre!",
-                'phone.unique' => "Le numéro de téléphone est déjà utilisé. Veuillez essayer une autre!",
-                'name.required' => "Saisissez son nom",
-                'type.required' => "Veuillez sélectionner son type",
-                'password.required' => "Saisissez son mot de passe",
+                'phone.unique' => __("messages.phoneUser"),
+                'email.required' => __("messages.emailRequired"),
+                'email.unique' => __("messages.emailRequired"),
+                'division.required' => __("messages.divisionMulti"),
+                'name.required' => __("messages.enterName"),
+                'password.required' => __("messages.enterPassword"),
+                'type.required' => __("messages.type"),
             ];
             $request->validate($roles, $customMessages);
 
@@ -133,9 +133,9 @@ class UtilisateurController extends Controller
                     $association->user_id = $user->id;
                     $association->save();
                 }
-                return response()->json(['success' => "Vous avez ajouté " . $request->name]);
+                return response()->json(['success' => __("messages.fileAdd") . $request->name]);
             } else {
-                return response()->json(['errors' => ["Impossible d'ajouter " . $request->name . ". Veuillez réessayer!!"]], 422);
+                return response()->json(['errors' => [__("messages.fileImpossible") . $request->name . ". " . __("messages.fileReessaye")]], 422);
             }
         }
     }
@@ -171,8 +171,8 @@ class UtilisateurController extends Controller
         ];
 
         $customMessages = [
-            'phone.unique' => "Le numéro de téléphone est déjà utilisé. Veuillez essayer un autre!",
-            'email.unique' => "L'adresse email est déjà utilisée. Veuillez essayer une autre!",
+            'phone.unique' => __("messages.phoneUser"),
+            'email.unique' => __("messages.emailRequired"),
         ];
 
         $request->validate($roles, $customMessages);
@@ -220,9 +220,9 @@ class UtilisateurController extends Controller
                 }
             }
 
-            return back()->with('succes', "Les informations de " . $request->name . " ont été mises à jour avec succès.");
+            return back()->with('succes', __("messages.update"));
         } else {
-            return back()->withErrors(["Impossible de mettre à jour les informations de " . $request->name . ". Veuillez réessayer!"]);
+            return back()->withErrors([__("messages.impossible")]);
         }
     }
 
@@ -234,6 +234,6 @@ class UtilisateurController extends Controller
         User::findOrFail($id)->delete();
         AssoDivisions::where('user_id', $id)->delete();
 
-        return back()->with('succes', "La suppression a été effectué");
+        return back()->with('succes', __("messages.supprime"));
     }
 }

@@ -19,7 +19,7 @@ class LanguageMiddleware
         $language = session('language');
         app()->setLocale($language);
 
-        Log::info("Locale set to: ".$language. " (selected language: ".$language.")");
+       // Log::info("Locale set to: ".$language. " (selected language: ".$language.")");
 
         return $next($request);
     }
