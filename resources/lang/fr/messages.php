@@ -32,6 +32,7 @@ return [
     'division' => "Créer une division",
     'addPays' => "Ajouter un Pays",
     'status' => "Statut",
+    'disable' => "Désactive",
     'username' => "Nom utilsateur",
     'semaine' => "Nombre de client stock moins de 2 semaines",
     'mois' => "Nombre de client stock moins de un mois",
@@ -82,4 +83,5 @@ return [
     'divisionMulti' => "Veuillez sélectionner au moins une division",
     'type' => "Veuillez sélectionner son type",
     'phoneUser' => "Le numéro de téléphone est déjà utilisé. Veuillez essayer une autre!",
+    'export' => "Exporter",
 ];

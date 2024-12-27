@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\StocksExport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StocksController extends Controller
 {
@@ -60,5 +63,10 @@ class StocksController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function exportStock($id, $code)
+    {
+        return Excel::download(new StocksExport($id), 'stock_details_' . $code . now() . '.xlsx');
     }
 }

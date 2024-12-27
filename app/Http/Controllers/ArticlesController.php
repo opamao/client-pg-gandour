@@ -214,7 +214,9 @@ class ArticlesController extends Controller
 
             $user = User::where('email', Auth::user()->email)->first();
 
-            if ($user && Hash::check($request->codenew, $user->password)) {
+
+
+            if ($user && !Hash::check($request->codenew, $user->password)) {
 
                 User::where('id', Auth::user()->id)
                     ->update([

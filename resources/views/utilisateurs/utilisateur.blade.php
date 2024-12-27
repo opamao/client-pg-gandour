@@ -285,6 +285,10 @@
                                         </th>
                                         <th style="background: #018ea9; color: white;"
                                             class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                                            {{ __('messages.status') }}
+                                        </th>
+                                        <th style="background: #018ea9; color: white;"
+                                            class="whitespace-nowrap bg-slate-200 px-3 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                             Division
                                         </th>
                                         <th style="background: #018ea9; color: white;"
@@ -324,6 +328,20 @@
                                             </td>
                                             <td class="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
                                                 {{ $liste->type }}
+                                            </td>
+                                            <td class="whitespace-nowrap px-4 py-3 sm:px-5">
+                                                @if ($liste->status == 1)
+                                                    <div
+                                                        class="badge bg-success text-white shadow-soft shadow-success/50 dark:bg-accent dark:shadow-accent/50">
+                                                        Active
+                                                    </div>
+                                                @endif
+                                                @if ($liste->status == 0)
+                                                    <div
+                                                        class="badge bg-error text-white shadow-soft shadow-error/50 dark:bg-accent dark:shadow-accent/50">
+                                                        {{ __('messages.disable') }}
+                                                    </div>
+                                                @endif
                                             </td>
                                             <td class="whitespace-nowrap rounded-r-lg px-4 py-3 sm:px-5">
                                                 @foreach ($divisions as $divise)
@@ -445,6 +463,17 @@
                                                                                         <span style="color: red;"
                                                                                             id="error-phone-{{ $liste->id }}"></span>
                                                                                     </label>
+
+                                                                                    <label class="block">
+                                                                                        <span>{{ __('messages.password') }}</span>
+                                                                                        <input name="password"
+                                                                                            id="paswword"
+                                                                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
+                                                                                            placeholder="{{ __('messages.password') }}"
+                                                                                            type="password" />
+                                                                                        <span style="color: red;"
+                                                                                            id="error-password"></span>
+                                                                                    </label>
                                                                                     <label class="block">
                                                                                         <span>Type</span>
                                                                                         <select name="type" required
@@ -461,6 +490,24 @@
                                                                                         </select>
                                                                                         <span style="color: red;"
                                                                                             id="error-type-{{ $liste->id }}"></span>
+                                                                                    </label>
+                                                                                    <label class="block">
+                                                                                        <span>{{ __('messages.status') }}</span>
+                                                                                        <select id="statut"
+                                                                                            name="statut"
+                                                                                            class="form-select mt-1.5 w-full rounded-lg border border-slate-300 bg-white px-3 py-2 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:bg-navy-700 dark:hover:border-navy-400 dark:focus:border-accent">
+                                                                                            <option
+                                                                                                value="{{ $liste->status }}">
+                                                                                                {{ $liste->status == 1 ? 'Active' : 'Désactive' }}
+                                                                                            </option>
+                                                                                            <option value="1">Active
+                                                                                            </option>
+                                                                                            <option value="0">
+                                                                                                {{ __('messages.disable') }}
+                                                                                            </option>
+                                                                                        </select>
+                                                                                        <span style="color: red;"
+                                                                                            id="error-statut-{{ $liste->id }}"></span>
                                                                                     </label>
                                                                                     <div id="loadingMessage"
                                                                                         style="display: none;">

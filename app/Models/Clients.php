@@ -12,7 +12,6 @@ class Clients extends Model
     protected $fillable = [
         'username',
         'code_client',
-        'precode_client',
         'name_client',
         'email_client',
         'logo_client',

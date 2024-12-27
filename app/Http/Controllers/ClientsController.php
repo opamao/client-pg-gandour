@@ -40,7 +40,6 @@ class ClientsController extends Controller
                         'clients.id',
                         'clients.username',
                         'clients.code_client',
-                        'clients.precode_client',
                         'clients.email_client',
                         'clients.division_id',
                         'clients.status_client',
@@ -57,7 +56,6 @@ class ClientsController extends Controller
                         'clients.id',
                         'clients.username',
                         'clients.code_client',
-                        'clients.precode_client',
                         'clients.email_client',
                         'clients.division_id',
                         'divisions.libelle',
@@ -107,7 +105,6 @@ class ClientsController extends Controller
                         'clients.id',
                         'clients.username',
                         'clients.code_client',
-                        'clients.precode_client',
                         'clients.email_client',
                         'clients.division_id',
                         'clients.pays_id',
@@ -123,7 +120,6 @@ class ClientsController extends Controller
                         'clients.id',
                         'clients.username',
                         'clients.code_client',
-                        'clients.precode_client',
                         'clients.email_client',
                         'clients.division_id',
                         'clients.pays_id',
@@ -204,14 +200,12 @@ class ClientsController extends Controller
                 $username = $row[0];
                 $password = $row[1];
                 $code = $row[2];
-                $precode = $row[3];
-                $name = $row[4];
+                $name = $row[3];
 
                 // Création du client
                 Clients::create([
                     'username' => $username,
                     'code_client' => $code,
-                    'precode_client' => $precode,
                     'name_client' => $name,
                     'password_client' => Hash::make($password),
                 ]);
@@ -271,7 +265,13 @@ class ClientsController extends Controller
      */
     public function show(string $id)
     {
-        $stock = Stocks::where('client_id', '=', $id)->get();
+        $stock = Stocks::where('client_id', '=', $id)
+            ->leftJoin('articles', 'stocks.code_stock', '=', 'articles.code_article')
+            ->select(
+                'stocks.*',
+                'articles.designation',
+            )
+            ->get();
         $client = Clients::leftJoin('divisions', 'clients.division_id', '=', 'divisions.id')
             ->leftJoin('pays', 'clients.pays_id', '=', 'pays.id')
             ->select(
@@ -322,7 +322,6 @@ class ClientsController extends Controller
         if ($request->password == null) {
             // Mettre à jour les données sans changer le mot de passe
             $user->username = $request->username;
-            $user->precode_client = $request->precode;
             $user->code_client = $request->code;
             $user->name_client = $request->nom;
             $user->division_id = $request->division;
@@ -341,7 +340,6 @@ class ClientsController extends Controller
         } else {
             // Mettre à jour les données avec le mot de passe
             $user->username = $request->username;
-            $user->precode_client = $request->precode;
             $user->code_client = $request->code;
             $user->name_client = $request->nom;
             $user->division_id = $request->division;

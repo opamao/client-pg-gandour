@@ -83,4 +83,5 @@ return [
     'divisionMulti' => "Please select at least one division",
     'type' => "Please select its type",
     'phoneUser' => "The phone number is already in use. Please try another!",
+    'export' => "Export",
 ];

@@ -19,4 +19,9 @@ class Articles extends Model
     protected $primaryKey = 'id';
 
     protected $table = 'articles';
+
+    public function stock()
+    {
+        return $this->hasOne(Stocks::class, 'code_stock', 'code_article');
+    }
 }

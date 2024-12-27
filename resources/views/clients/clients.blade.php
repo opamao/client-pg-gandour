@@ -20,6 +20,7 @@
             dom: "<'flex justify-between items-center'<'flex items-center'l><'flex items-center'f>>" +
                 "<'mt-4'tr>" +
                 "<'flex justify-between items-center'<'p-2'i><'p-2'p>>",
+
         });
     </script>
     <script>
@@ -550,17 +551,6 @@
                                                                                             type="text" />
                                                                                         <span style="color: red;"
                                                                                             id="error-code-{{ $liste->id }}"></span>
-                                                                                    </label>
-                                                                                    <label class="block">
-                                                                                        <span>Precode</span>
-                                                                                        <input id="precode"
-                                                                                            name="precode"
-                                                                                            value="{{ $liste->precode_client }}"
-                                                                                            class="form-input mt-1.5 w-full rounded-lg border border-slate-300 bg-transparent px-3 py-2 placeholder:text-slate-400/70 hover:border-slate-400 focus:border-primary dark:border-navy-450 dark:hover:border-navy-400 dark:focus:border-accent"
-                                                                                            placeholder="Saisir son precode"
-                                                                                            type="text" />
-                                                                                        <span style="color: red;"
-                                                                                            id="error-precode-{{ $liste->id }}"></span>
                                                                                     </label>
                                                                                     <label class="block">
                                                                                         <span>E-mail</span>

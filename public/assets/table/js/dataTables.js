@@ -4239,62 +4239,70 @@
 	 *  @returns {bool} block the table drawing or not
 	 *  @memberof DataTable#oApi
 	 */
-	function _fnAjaxParameters( settings )
-	{
-		var
-			columns = settings.aoColumns,
-			features = settings.oFeatures,
-			preSearch = settings.oPreviousSearch,
-			preColSearch = settings.aoPreSearchCols,
-			colData = function ( idx, prop ) {
-				return typeof columns[idx][prop] === 'function' ?
-					'function' :
-					columns[idx][prop];
-			};
+	function _fnAjaxParameters(settings) {
+        var
+            columns = settings.aoColumns,
+            features = settings.oFeatures,
+            preSearch = settings.oPreviousSearch,
+            preColSearch = settings.aoPreSearchCols,
+            colData = function (idx, prop) {
+                return typeof columns[idx][prop] === 'function' ?
+                    'function' :
+                    columns[idx][prop];
+            };
 
-		return {
-			draw: settings.iDraw,
-			columns: columns.map( function ( column, i ) {
-				return {
-					data: colData(i, 'mData'),
-					name: column.sName,
-					searchable: column.bSearchable,
-					orderable: column.bSortable,
-					search: {
-						value: preColSearch[i].search,
-						regex: preColSearch[i].regex,
-						fixed: Object.keys(column.searchFixed).map( function(name) {
-							return {
-								name: name,
-								term: column.searchFixed[name].toString()
-							}
-						})
-					}
-				};
-			} ),
-			order: _fnSortFlatten( settings ).map( function ( val ) {
-				return {
-					column: val.col,
-					dir: val.dir,
-					name: colData(val.col, 'sName')
-				};
-			} ),
-			start: settings._iDisplayStart,
-			length: features.bPaginate ?
-				settings._iDisplayLength :
-				-1,
-			search: {
-				value: preSearch.search,
-				regex: preSearch.regex,
-				fixed: Object.keys(settings.searchFixed).map( function(name) {
-					return {
-						name: name,
-						term: settings.searchFixed[name].toString()
-					}
-				})
-			}
-		};
-	}
+        // Recherche globale appliquée à toutes les colonnes
+        var globalSearchValue = preSearch.search;
+        var globalSearchRegex = preSearch.regex;
+
+        return {
+            draw: settings.iDraw,
+            columns: columns.map(function (column, i) {
+                // Pour chaque colonne, appliquer la recherche globale si elle est activée
+                var columnSearchValue = preColSearch[i].search;
+                var columnSearchRegex = preColSearch[i].regex;
+
+                return {
+                    data: colData(i, 'mData'),
+                    name: column.sName,
+                    searchable: column.bSearchable,
+                    orderable: column.bSortable,
+                    search: {
+                        // Appliquer la recherche globale si la colonne est recherchable
+                        value: column.bSearchable ? globalSearchValue : columnSearchValue,
+                        regex: column.bSearchable ? globalSearchRegex : columnSearchRegex,
+                        fixed: Object.keys(column.searchFixed).map(function (name) {
+                            return {
+                                name: name,
+                                term: column.searchFixed[name].toString()
+                            };
+                        })
+                    }
+                };
+            }),
+            order: _fnSortFlatten(settings).map(function (val) {
+                return {
+                    column: val.col,
+                    dir: val.dir,
+                    name: colData(val.col, 'sName')
+                };
+            }),
+            start: settings._iDisplayStart,
+            length: features.bPaginate ?
+                settings._iDisplayLength :
+                -1,
+            search: {
+                value: globalSearchValue, // Recherche globale sur tout le tableau
+                regex: globalSearchRegex,  // Si l'option regex est activée
+                fixed: Object.keys(settings.searchFixed).map(function (name) {
+                    return {
+                        name: name,
+                        term: settings.searchFixed[name].toString()
+                    };
+                })
+            }
+        };
+    }
 
 
 	/**

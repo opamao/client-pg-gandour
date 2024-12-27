@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('username');
             $table->string('code_client');
-            $table->string('precode_client')->nullable();
             $table->string('name_client');
             $table->string('email_client')->nullable();
             $table->string('logo_client')->nullable();

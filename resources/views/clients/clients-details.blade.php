@@ -2,6 +2,29 @@
     'title' => 'Clients',
 ])
 
+@push('haut')
+    <link href="{{ asset('assets/table/css') }}/dataTables.tailwindcss.css" />
+@endpush
+
+@push('bas')
+    <script src="{{ asset('assets/js') }}/jquery-3.6.0.min.js"></script>
+    <script src="{{ asset('assets/table/js') }}/jquery-3.7.1.js"></script>
+    <script src="{{ asset('assets/table/js') }}/dataTables.js"></script>
+    <script src="{{ asset('assets/table/js') }}/dataTables.tailwindcss.js"></script>
+    <link href="{{ asset('assets/table/css') }}/tailwindcss.css" />
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable();
+        });
+        $('#example').DataTable({
+            dom: "<'flex justify-between items-center'<'flex items-center'l><'flex items-center'f>>" +
+                "<'mt-4'tr>" +
+                "<'flex justify-between items-center'<'p-2'i><'p-2'p>>",
+
+        });
+    </script>
+@endpush
+
 @section('content')
     <main class="main-content w-full px-[var(--margin-x)] pb-8">
         @include('layouts.status')
@@ -28,14 +51,6 @@
                         </p>
                     </div>
                     <p class="mt-1 text-xs+">Code</p>
-                </div>
-                <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
-                    <div class="flex justify-between space-x-1">
-                        <p class="text-xl font-semibold text-slate-700 dark:text-navy-100">
-                            {{ $client->precode_client }}
-                        </p>
-                    </div>
-                    <p class="mt-1 text-xs+">Precode</p>
                 </div>
                 <div class="rounded-lg bg-slate-100 p-4 dark:bg-navy-600">
                     <div class="flex justify-between space-x-1">
@@ -89,10 +104,24 @@
         </div>
         <div class="grid grid-cols-1 gap-4 sm:gap-5 lg:gap-6">
             <div class="card px-4 pb-4 sm:px-5">
+                <br>
+                <div class="my-3 flex h-8 items-center justify-between px-4 sm:px-5">
+                    <h2 class="font-medium tracking-wide text-slate-700 line-clamp-1 dark:text-navy-100 lg:text-base">
+                    </h2>
+                    <div x-data="usePopper({ placement: 'bottom-end', offset: 4 })" @click.outside="isShowPopper &amp;&amp; (isShowPopper = false)"
+                        class="inline-flex">
+                        <div x-data="{ showModal: false }">
+                            <a href="{{ url('export', [$client->id, $client->code_client]) }}"
+                                class="btn relative bg-secondary font-medium text-white hover:bg-secondary-focus focus:bg-secondary-focus active:bg-secondary-focus/90 dark:bg-accent dark:hover:bg-accent-focus dark:focus:bg-accent-focus dark:active:bg-accent/90">
+                                {{ __('messages.export') }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
                 <div>
                     <div class="mt-5">
                         <div class="is-scrollbar-hidden min-w-full overflow-x-auto">
-                            <table class="is-zebra w-full text-left">
+                            <table id="example" class="display">
                                 <thead>
                                     <tr>
                                         <th style="background: #018ea9; color: white;"
@@ -102,6 +131,10 @@
                                         <th style="background: #018ea9; color: white;"
                                             class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
                                             {{ __('messages.quantite') }}
+                                        </th>
+                                        <th style="background: #018ea9; color: white;"
+                                            class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
+                                            Designation
                                         </th>
                                         <th style="background: #018ea9; color: white;"
                                             class="whitespace-nowrap bg-slate-200 px-4 py-3 font-semibold uppercase text-slate-800 dark:bg-navy-800 dark:text-navy-100 lg:px-5">
@@ -121,6 +154,9 @@
                                             </td>
                                             <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                                                 {{ $liste->quantite_initiale }}
+                                            </td>
+                                            <td class="whitespace-nowrap px-4 py-3 sm:px-5">
+                                                {{ $liste->designation }}
                                             </td>
                                             <td class="whitespace-nowrap px-4 py-3 sm:px-5">
                                                 {{ $liste->created_at }}

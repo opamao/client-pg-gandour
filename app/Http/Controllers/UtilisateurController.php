@@ -177,52 +177,105 @@ class UtilisateurController extends Controller
 
         $request->validate($roles, $customMessages);
 
-        // Mettre à jour les données uniquement si elles ont changé
-        $user->name = $request->name;
-        $user->type = $request->type;
+        if ($request->password == null) {
+            // Mettre à jour les données uniquement si elles ont changé
+            $user->name = $request->name;
+            $user->type = $request->type;
+            $user->status = $request->statut;
 
-        if ($user->email !== $request->email) {
-            $user->email = $request->email;
-        }
-
-        if ($user->telephone !== $request->phone) {
-            $user->telephone = $request->phone;
-        }
-
-        if ($user->save()) {
-
-            if (!empty($request->division)) {
-                // On commence par récupérer toutes les associations existantes pour cet utilisateur
-                $existingAssociations = AssoDivisions::where('user_id', $id)->get();
-
-                // Supprimer les associations existantes qui ne correspondent pas à la nouvelle liste
-                foreach ($existingAssociations as $association) {
-                    if (!in_array($association->division_id, $request->division)) {
-                        // Si l'association de division pour l'utilisateur n'est pas dans la nouvelle liste, on la supprime
-                        $association->delete();
-                    }
-                }
-
-                // Ajouter de nouvelles associations si elles n'existent pas déjà
-                foreach ($request->division as $newDivisionId) {
-                    // Vérifier si l'association existe déjà
-                    $existingAssociation = AssoDivisions::where('user_id', $id)
-                        ->where('division_id', $newDivisionId)
-                        ->first();
-
-                    // Si l'association n'existe pas, on la crée
-                    if (!$existingAssociation) {
-                        $association = new AssoDivisions();
-                        $association->division_id = $newDivisionId;
-                        $association->user_id = $id;
-                        $association->save();
-                    }
-                }
+            if ($user->email !== $request->email) {
+                $user->email = $request->email;
             }
 
-            return back()->with('succes', __("messages.update"));
+            if ($user->telephone !== $request->phone) {
+                $user->telephone = $request->phone;
+            }
+
+            if ($user->save()) {
+
+                if (!empty($request->division)) {
+                    // On commence par récupérer toutes les associations existantes pour cet utilisateur
+                    $existingAssociations = AssoDivisions::where('user_id', $id)->get();
+
+                    // Supprimer les associations existantes qui ne correspondent pas à la nouvelle liste
+                    foreach ($existingAssociations as $association) {
+                        if (!in_array($association->division_id, $request->division)) {
+                            // Si l'association de division pour l'utilisateur n'est pas dans la nouvelle liste, on la supprime
+                            $association->delete();
+                        }
+                    }
+
+                    // Ajouter de nouvelles associations si elles n'existent pas déjà
+                    foreach ($request->division as $newDivisionId) {
+                        // Vérifier si l'association existe déjà
+                        $existingAssociation = AssoDivisions::where('user_id', $id)
+                            ->where('division_id', $newDivisionId)
+                            ->first();
+
+                        // Si l'association n'existe pas, on la crée
+                        if (!$existingAssociation) {
+                            $association = new AssoDivisions();
+                            $association->division_id = $newDivisionId;
+                            $association->user_id = $id;
+                            $association->save();
+                        }
+                    }
+                }
+
+                return back()->with('succes', __("messages.update"));
+            } else {
+                return back()->withErrors([__("messages.impossible")]);
+            }
         } else {
-            return back()->withErrors([__("messages.impossible")]);
+            // Mettre à jour les données uniquement si elles ont changé
+            $user->name = $request->name;
+            $user->type = $request->type;
+            $user->status = $request->statut;
+            $user->password = Hash::make($request->password);
+
+            if ($user->email !== $request->email) {
+                $user->email = $request->email;
+            }
+
+            if ($user->telephone !== $request->phone) {
+                $user->telephone = $request->phone;
+            }
+
+            if ($user->save()) {
+
+                if (!empty($request->division)) {
+                    // On commence par récupérer toutes les associations existantes pour cet utilisateur
+                    $existingAssociations = AssoDivisions::where('user_id', $id)->get();
+
+                    // Supprimer les associations existantes qui ne correspondent pas à la nouvelle liste
+                    foreach ($existingAssociations as $association) {
+                        if (!in_array($association->division_id, $request->division)) {
+                            // Si l'association de division pour l'utilisateur n'est pas dans la nouvelle liste, on la supprime
+                            $association->delete();
+                        }
+                    }
+
+                    // Ajouter de nouvelles associations si elles n'existent pas déjà
+                    foreach ($request->division as $newDivisionId) {
+                        // Vérifier si l'association existe déjà
+                        $existingAssociation = AssoDivisions::where('user_id', $id)
+                            ->where('division_id', $newDivisionId)
+                            ->first();
+
+                        // Si l'association n'existe pas, on la crée
+                        if (!$existingAssociation) {
+                            $association = new AssoDivisions();
+                            $association->division_id = $newDivisionId;
+                            $association->user_id = $id;
+                            $association->save();
+                        }
+                    }
+                }
+
+                return back()->with('succes', __("messages.update"));
+            } else {
+                return back()->withErrors([__("messages.impossible")]);
+            }
         }
     }
 
@@ -231,8 +284,8 @@ class UtilisateurController extends Controller
      */
     public function destroy(string $id)
     {
+        AssoDivisions::where('user_id', '=', $id)->delete();
         User::findOrFail($id)->delete();
-        AssoDivisions::where('user_id', $id)->delete();
 
         return back()->with('succes', __("messages.supprime"));
     }

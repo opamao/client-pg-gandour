@@ -6,6 +6,7 @@ use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\DivisionsController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PaysController;
+use App\Http\Controllers\StocksController;
 use App\Http\Controllers\UtilisateurController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -33,3 +34,5 @@ Route::resource('articles', ArticlesController::class);
 Route::resource('pays', PaysController::class);
 Route::post('password', [ArticlesController::class, 'editPassword']);
 Route::post('language-switch', [LanguageController::class, 'languageSwitch'])->name('language.switch');
+
+Route::get('export/{id}/{code}', [StocksController::class, 'exportStock']);
