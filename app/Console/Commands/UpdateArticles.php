@@ -25,7 +25,7 @@ class UpdateArticles extends Command
     // Exécution de la commande
     public function handle()
     {
-        $response = Http::get('http://10.10.32.2:1003/products');
+        $response = Http::get('http://10.10.2.17:1003/products');
         $retour = json_decode($response, true);
 
         foreach ($retour as $name => $data) {
